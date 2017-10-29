@@ -9,6 +9,7 @@ namespace DotNetBlog.Models
     public class DotNetBlogDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         public DotNetBlogDbContext(DbContextOptions options) : base(options)
         {
