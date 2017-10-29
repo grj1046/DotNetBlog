@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,6 +21,7 @@ namespace DotNetBlog.Models
 
         [EnumDataType(typeof(Gender))]
         [Column(TypeName = "tinyint")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public Gender? Gender { get; set; }
 
         [DataType(DataType.Date)]
