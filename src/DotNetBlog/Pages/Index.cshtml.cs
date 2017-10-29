@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DotNetBlog.Models;
 using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotNetBlog.Pages
 {
@@ -22,7 +23,7 @@ namespace DotNetBlog.Pages
 
         public void OnGet()
         {
-            this.Users = db.Users.ToList();
+            this.Users = db.Users.Include(a => a.Account).ToList();
         }
     }
 }

@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using DotNetBlog.Models;
 
 namespace DotNetBlog.Pages.Account
 {
     public class LoginModel : PageModel
     {
+        public DotNetBlogDbContext DbContext { get; set; }
+
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -22,9 +25,9 @@ namespace DotNetBlog.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
-        public LoginModel()
+        public LoginModel(DotNetBlogDbContext dotNetBlog)
         {
-
+            this.DbContext = dotNetBlog;
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -46,7 +49,8 @@ namespace DotNetBlog.Pages.Account
                 //This doesn't count login failures towards account lockout
                 //To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 //var result = await _signManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
-                if ("guorenjun@outlook.com".Equals(Input.Email, StringComparison.OrdinalIgnoreCase) && Input.Password == "123456")
+                //"guorenjun@outlook.com".Equals(Input.Email, StringComparison.OrdinalIgnoreCase) && Input.Password == "123456"
+                if (this.DbContext.Accounts.Any(a => a.Email == Input.Email && a.Password == Input.Password))
                 {
                     //_logger.LogInformation("User Logged in.");
                     return LocalRedirect(Url.GetLocalUrl(returnUrl));

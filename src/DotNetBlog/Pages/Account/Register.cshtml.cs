@@ -5,15 +5,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using DotNetBlog.Models;
 
 namespace DotNetBlog.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        public DotNetBlogDbContext DbContext { get; set; }
+
         [BindProperty]
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public RegisterModel(DotNetBlogDbContext dotNetBlog)
+        {
+            this.DbContext = dotNetBlog;
+        }
 
         public void OnGet(string returnUrl = null)
         {
@@ -25,15 +33,23 @@ namespace DotNetBlog.Pages.Account
             this.ReturnUrl = returnUrl;
             if (this.ModelState.IsValid)
             {
-                if (Input.Email == "guorenjun@outlook.com" && Input.Password == "123456")
+                if (this.DbContext.Accounts.Any(a => a.Email == Input.Email))
                 {
-                    //create user when pass authentication
-                    //send confirm email
+                    this.ModelState.AddModelError(string.Empty, "the email address is already registered");
+                    return Page();
                 }
-                await Task.CompletedTask;
+                //create user when pass authentication
+                //send confirm email
+                Models.Account account = new Models.Account();
+                account.Email = Input.Email;
+                account.Password = Input.Password;
+                Models.User user = new Models.User();
+                user.Account = account;
+                user.NickName = Input.Email.Substring(0, Input.Email.IndexOf('@'));
+                this.DbContext.Users.Add(user);
+                await this.DbContext.SaveChangesAsync();
                 return LocalRedirect(Url.GetLocalUrl(returnUrl));
             }
-
             return Page();
         }
 

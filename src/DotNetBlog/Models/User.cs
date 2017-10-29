@@ -19,11 +19,11 @@ namespace DotNetBlog.Models
 
         [EnumDataType(typeof(Gender))]
         [Column(TypeName = "tinyint")]
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
 
         //[Range()]
         public Account Account { get; set; }
