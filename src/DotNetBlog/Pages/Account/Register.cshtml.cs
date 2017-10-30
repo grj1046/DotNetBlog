@@ -38,12 +38,12 @@ psLBYuApa66NcVHJpCECQQDTjI2AQhFc1yRnCU/YgDnSpJVm1nASoRUnU8Jfm3Oz
 uku7JUXcVpt08DFSceCEX9unCuMcT72rAQlLpdZir876".Replace("\n", "");
 
         //openssl rsa -pubout -in rsa_1024_priv.pem -out rsa_1024_pub.pem
-//        private static readonly string _publicKey = @"-----BEGIN PUBLIC KEY-----
-//MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDlOJu6TyygqxfWT7eLtGDwajtN
-//FOb9I5XRb6khyfD1Yt3YiCgQWMNW649887VGJiGr/L5i2osbl8C9+WJTeucF+S76
-//xFxdU6jE0NQ+Z+zEdhUTooNRaY5nZiu5PgDB0ED/ZKBUSLKL7eibMxZtMlUDHjm4
-//gwQco1KRMDSmXSMkDwIDAQAB
-//-----END PUBLIC KEY-----";
+        //        private static readonly string _publicKey = @"-----BEGIN PUBLIC KEY-----
+        //MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDlOJu6TyygqxfWT7eLtGDwajtN
+        //FOb9I5XRb6khyfD1Yt3YiCgQWMNW649887VGJiGr/L5i2osbl8C9+WJTeucF+S76
+        //xFxdU6jE0NQ+Z+zEdhUTooNRaY5nZiu5PgDB0ED/ZKBUSLKL7eibMxZtMlUDHjm4
+        //gwQco1KRMDSmXSMkDwIDAQAB
+        //-----END PUBLIC KEY-----";
 
         public RegisterModel(DotNetBlogDbContext dotNetBlog)
         {
@@ -69,13 +69,29 @@ uku7JUXcVpt08DFSceCEX9unCuMcT72rAQlLpdZir876".Replace("\n", "");
                 RSA rsa = RSAExtensions.CreateRsaFromPrivateKey(_privateKey);
                 var cipherBytes = System.Convert.FromBase64String(Input.Password);
                 var plainTextBytes = rsa.Decrypt(cipherBytes, RSAEncryptionPadding.Pkcs1);
-                var planText = Encoding.UTF8.GetString(plainTextBytes);
+                //var planText = Encoding.UTF8.GetString(plainTextBytes);
+
+                string strRandomStr = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
+                StringBuilder sb = new StringBuilder();
+                Random rnd = new Random();
+                for (int i = 0; i < 5; i++)
+                {
+                    sb.Append(strRandomStr[rnd.Next(strRandomStr.Length)]);
+                }
+                string strSalt = sb.ToString();
+
+                var hashedTextBytes = Encoding.UTF8.GetBytes(strSalt).Concat(plainTextBytes).ToArray();
+
+                MD5 md5 = MD5.Create();
+                var byteMd5Pwd = md5.ComputeHash(hashedTextBytes);
+                var strMd5Pwd = BytesToHexString(byteMd5Pwd);
 
                 //create user when pass authentication
                 //send confirm email
                 Models.Account account = new Models.Account();
                 account.Email = Input.Email;
-                account.Password = planText;
+                account.Salt = strSalt;
+                account.Password = strMd5Pwd;
                 Models.User user = new Models.User();
                 user.Account = account;
                 user.NickName = Input.Email.Substring(0, Input.Email.IndexOf('@'));
