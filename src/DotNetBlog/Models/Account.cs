@@ -28,7 +28,7 @@ namespace DotNetBlog.Models
         [StringLength(5, MinimumLength = 5)]
         public string Salt { get; set; }
         [StringLength(32, MinimumLength = 32)]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
 
         //[DisplayColumn()]
         [JsonIgnore]

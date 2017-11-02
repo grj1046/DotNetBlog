@@ -4,6 +4,11 @@
     ViewData["Title"] = "Home page";
 }
 <div>
+    <p>@this.User.Identity.AuthenticationType</p>
+    <p>@this.User.Identity.IsAuthenticated</p>
+    <p>@this.User.Identity.Name</p>
+</div>
+<div>
     @for (int i = 0; i < Model.Users.Count; i++)
     {
         <div>@Model.Users[i].Gender</div>

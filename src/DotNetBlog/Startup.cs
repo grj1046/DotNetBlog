@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using DotNetBlog.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace DotNetBlog
 {
@@ -27,7 +29,11 @@ namespace DotNetBlog
             {
                 options.UseMySql(Configuration.GetConnectionString("DotNetBlogConnection"));
             });
-            //services.AddIdentity
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
+                });
             services.AddMvc();
         }
 
@@ -37,6 +43,7 @@ namespace DotNetBlog
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {

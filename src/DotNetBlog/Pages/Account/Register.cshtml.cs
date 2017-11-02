@@ -79,19 +79,18 @@ uku7JUXcVpt08DFSceCEX9unCuMcT72rAQlLpdZir876".Replace("\n", "");
                     sb.Append(strRandomStr[rnd.Next(strRandomStr.Length)]);
                 }
                 string strSalt = sb.ToString();
-
                 var hashedTextBytes = Encoding.UTF8.GetBytes(strSalt).Concat(plainTextBytes).ToArray();
 
                 MD5 md5 = MD5.Create();
                 var byteMd5Pwd = md5.ComputeHash(hashedTextBytes);
-                var strMd5Pwd = BytesToHexString(byteMd5Pwd);
+                var strMd5Pwd = BitConverter.ToString(byteMd5Pwd).Replace("-", "");
 
                 //create user when pass authentication
                 //send confirm email
                 Models.Account account = new Models.Account();
                 account.Email = Input.Email;
                 account.Salt = strSalt;
-                account.Password = strMd5Pwd;
+                account.PasswordHash = strMd5Pwd;
                 Models.User user = new Models.User();
                 user.Account = account;
                 user.NickName = Input.Email.Substring(0, Input.Email.IndexOf('@'));
@@ -120,31 +119,6 @@ uku7JUXcVpt08DFSceCEX9unCuMcT72rAQlLpdZir876".Replace("\n", "");
             [DataType(DataType.Password)]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-        }
-        private string BytesToHexString(byte[] input)
-        {
-            StringBuilder hexString = new StringBuilder(64);
-            for (int i = 0; i < input.Length; i++)
-            {
-                hexString.Append(String.Format("{0:X2}", input[i]));
-            }
-            return hexString.ToString();
-        }
-
-        public static byte[] HexStringToBytes(string hex)
-        {
-            if (hex.Length == 0)
-                return new byte[] { 0 };
-
-            if (hex.Length % 2 == 1)
-                hex = "0" + hex;
-
-            byte[] result = new byte[hex.Length / 2];
-            for (int i = 0; i < hex.Length / 2; i++)
-            {
-                result[i] = byte.Parse(hex.Substring(2 * i, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
-            }
-            return result;
         }
     }
 }

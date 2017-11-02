@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-md-4">
         <section>
-            <form method="post" autocomplete="off" novalidate="novalidate">
+            <form method="post" autocomplete="off" novalidate="novalidate" onsubmit="cmdEncrypt();">
                 <h4>Use a local account to log in.</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -51,3 +51,28 @@
         </section>
     </div>
 </div>
+
+@section Scripts {
+
+    <environment>
+        <script src="~/lib/jquery-md5/jquery.md5.js"></script>
+        <script src="~/js/jsencrypt.min.js"></script>
+    </environment>
+    <script type="text/javascript">
+        function cmdEncrypt() {
+            var encrypt = new JSEncrypt({ log: true });
+            encrypt.setPublicKey('-----BEGIN PUBLIC KEY-----\
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDlOJu6TyygqxfWT7eLtGDwajtN\
+FOb9I5XRb6khyfD1Yt3YiCgQWMNW649887VGJiGr/L5i2osbl8C9+WJTeucF+S76\
+xFxdU6jE0NQ+Z+zEdhUTooNRaY5nZiu5PgDB0ED/ZKBUSLKL7eibMxZtMlUDHjm4\
+gwQco1KRMDSmXSMkDwIDAQAB\
+-----END PUBLIC KEY-----');
+            //var pwdMD5Twice = $.md5($.md5($("#Input_Password").attr("value")));
+            var pass = $("#Input_Password").val();
+            var data = encrypt.encrypt(pass);
+            $("#Input_Password").val(data);
+            $("#Input_ConfirmPassword").val(data);
+            return;
+        }
+    </script>
+}
