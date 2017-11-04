@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using DotNetBlog.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using DotNetBlog.Services;
 
 namespace DotNetBlog
 {
@@ -34,7 +35,15 @@ namespace DotNetBlog
                 {
                     //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
                 });
-            services.AddMvc();
+            services.AddMvc().AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AuthorizeFolder("/Account/Manage");
+                options.Conventions.AuthorizePage("/Account/Logout");
+            });
+
+            // Register no-op EmailSender used by account confirmation and password reset during development
+            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+            services.AddSingleton<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

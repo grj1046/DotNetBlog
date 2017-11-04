@@ -9,11 +9,5 @@ namespace DotNetBlog.Identity
 {
     public static class UserManager
     {
-        public static string GetUserName(ClaimsPrincipal principal)
-        {
-            if (principal == null)
-                throw new ArgumentNullException(nameof(principal));
-            return principal.FindFirstValue(ClaimTypesConstants.Name);
-        }
     }
 }
