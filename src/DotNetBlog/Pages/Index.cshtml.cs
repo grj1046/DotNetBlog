@@ -23,7 +23,7 @@ namespace DotNetBlog.Pages
 
         public void OnGet()
         {
-            this.Users = db.Users.Include(a => a.Account).ToList();
+            this.Users = db.Users.Include(a => a.Account).Include(a => a.UserRoles).ToList();
         }
     }
 }

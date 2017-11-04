@@ -16,7 +16,7 @@ namespace DotNetBlog.Models
         [Column("ID")]
         public Guid UserID { get; set; }
 
-        [StringLength(16, MinimumLength = 2)]
+        [StringLength(16, MinimumLength = 3)]
         public string NickName { get; set; }
 
         [EnumDataType(typeof(Gender))]
@@ -33,6 +33,8 @@ namespace DotNetBlog.Models
 
         //[Range()]
         public Account Account { get; set; }
+
+        public IEnumerable<UserRole> UserRoles { get; set; }
     }
 
     public enum Gender

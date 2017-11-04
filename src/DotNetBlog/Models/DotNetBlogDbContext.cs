@@ -11,6 +11,10 @@ namespace DotNetBlog.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Account> Accounts { get; set; }
 
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<UserRole> UserRoles { get; set; }
+
         public DotNetBlogDbContext(DbContextOptions options) : base(options)
         {
 
@@ -18,6 +22,7 @@ namespace DotNetBlog.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<UserRole>().HasKey(a => new { a.UserID, a.RoleID });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

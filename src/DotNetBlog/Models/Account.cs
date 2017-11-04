@@ -37,6 +37,7 @@ namespace DotNetBlog.Models
 
         //[DisplayColumn()]
         [JsonIgnore]
+        //[ForeignKey("UserID")]
         public Guid UserID { get; set; }
         [JsonIgnore]
         public User User { get; set; }
