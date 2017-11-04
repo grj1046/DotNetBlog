@@ -11,13 +11,15 @@ namespace DotNetBlog.Models
     public class Account
     {
         [Key]
-        public int AccountID { get; set; }
+        //[Column(TypeName = "char")]
+        public Guid AccountID { get; set; }
 
         [StringLength(16, MinimumLength = 4)]
         public string UserName { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone Number")]
+        [MaxLength(11)]
         public string PhoneNumber { get; set; }
 
         [DataType(DataType.EmailAddress)]
@@ -30,9 +32,12 @@ namespace DotNetBlog.Models
         [StringLength(32, MinimumLength = 32)]
         public string PasswordHash { get; set; }
 
+        public DateTime CreateAt { get; set; }
+        public DateTime UpdateAt { get; set; }
+
         //[DisplayColumn()]
         [JsonIgnore]
-        public int? UserID { get; set; }
+        public Guid UserID { get; set; }
         [JsonIgnore]
         public User User { get; set; }
     }

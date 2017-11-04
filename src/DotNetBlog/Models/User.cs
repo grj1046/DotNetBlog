@@ -14,7 +14,7 @@ namespace DotNetBlog.Models
     {
         [Key]
         [Column("ID")]
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
         [StringLength(16, MinimumLength = 2)]
         public string NickName { get; set; }
@@ -27,6 +27,9 @@ namespace DotNetBlog.Models
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? Birthday { get; set; }
+
+        public DateTime CreateAt { get; set; }
+        public DateTime UpdateAt { get; set; }
 
         //[Range()]
         public Account Account { get; set; }
