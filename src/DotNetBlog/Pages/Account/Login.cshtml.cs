@@ -35,8 +35,13 @@ namespace DotNetBlog.Pages.Account
             this.DbContext = dotNetBlog;
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                //maybe it can be redirect to account profile page or account manager page
+                return RedirectToPage("/Index");
+            }
             if (!string.IsNullOrEmpty(this.ErrorMessage))
                 this.ModelState.AddModelError(string.Empty, this.ErrorMessage);
 
@@ -44,6 +49,7 @@ namespace DotNetBlog.Pages.Account
             await Task.FromResult(0);
             //this.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemeAsync().ToList());
             this.ReturnUrl = returnUrl;
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -76,19 +82,20 @@ namespace DotNetBlog.Pages.Account
                 if (account != null)
                 {
                     //_logger.LogInformation("User Logged in.");
-                    var id = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, ClaimTypes.Role);
-                    id.AddClaim(new Claim(ClaimTypes.NameIdentifier, account.User.UserID.ToString()));
-                    id.AddClaim(new Claim(ClaimTypes.Name, account.User.NickName));
-                    id.AddClaim(new Claim(ClaimTypes.AuthenticationMethod, "Email"));
+                    var id = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypesConstants.Name, ClaimTypesConstants.Role);
+                    id.AddClaim(new Claim(ClaimTypesConstants.NameIdentifier, account.User.UserID.ToString()));
+                    id.AddClaim(new Claim(ClaimTypesConstants.Name, account.User.NickName));
+                    id.AddClaim(new Claim(ClaimTypesConstants.AuthenticationMethod, "Email"));
                     //get roles of this type
                     var roles = new[] { "Manager" };//await this.DbContext.GetRolesAsync(user);
                     foreach (var roleName in roles)
                     {
-                        id.AddClaim(new Claim(ClaimTypes.Role, roleName));
+                        id.AddClaim(new Claim(ClaimTypesConstants.Role, roleName));
                     }
                     var userPrincipal = new ClaimsPrincipal(id);
+
                     await this.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        userPrincipal, new AuthenticationProperties());
+                        userPrincipal, new AuthenticationProperties() { IsPersistent = Input.RememberMe });
 
                     return LocalRedirect(Url.GetLocalUrl(returnUrl));
                 }
