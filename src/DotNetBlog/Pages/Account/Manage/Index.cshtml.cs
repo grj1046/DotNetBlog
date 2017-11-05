@@ -22,10 +22,10 @@ namespace DotNetBlog.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public DotNetBlogDbContext DbContext { get; set; }
+        public GuorjAccountDbContext DbContext { get; set; }
         public IEmailSender EmailSender { get; set; }
 
-        public IndexModel(DotNetBlogDbContext dbContext, IEmailSender emailSender)
+        public IndexModel(GuorjAccountDbContext dbContext, IEmailSender emailSender)
         {
             this.DbContext = dbContext;
             this.EmailSender = emailSender;

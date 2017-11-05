@@ -12,10 +12,10 @@ namespace DotNetBlog.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly DotNetBlogDbContext DbContext;
+        private readonly GuorjAccountDbContext DbContext;
         private readonly ILogger Logger;
 
-        public AccountController(DotNetBlogDbContext dbContext, ILogger<AccountController> logger)
+        public AccountController(GuorjAccountDbContext dbContext, ILogger<AccountController> logger)
         {
             this.DbContext = dbContext;
             this.Logger = logger;

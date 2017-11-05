@@ -15,14 +15,14 @@ namespace DotNetBlog.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        public DotNetBlogDbContext DbContext { get; set; }
+        public GuorjAccountDbContext DbContext { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
 
-        public RegisterModel(DotNetBlogDbContext dotNetBlog)
+        public RegisterModel(GuorjAccountDbContext dotNetBlog)
         {
             this.DbContext = dotNetBlog;
         }

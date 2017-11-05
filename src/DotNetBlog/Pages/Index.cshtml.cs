@@ -12,11 +12,11 @@ namespace DotNetBlog.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly DotNetBlogDbContext db;
+        private readonly GuorjAccountDbContext db;
 
         public List<User> Users { get; set; }
 
-        public IndexModel(DotNetBlogDbContext dotNetBlogDb)
+        public IndexModel(GuorjAccountDbContext dotNetBlogDb)
         {
             this.db = dotNetBlogDb;
         }

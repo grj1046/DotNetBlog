@@ -12,29 +12,29 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure for dotnetblog
-DROP DATABASE IF EXISTS `dotnetblog`;
-CREATE DATABASE IF NOT EXISTS `dotnetblog` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `dotnetblog`;
+-- Dumping database structure for guorjaccount
+DROP DATABASE IF EXISTS `guorjaccount`;
+CREATE DATABASE IF NOT EXISTS `guorjaccount` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `guorjaccount`;
 
--- Dumping structure for table dotnetblog.accounts
+-- Dumping structure for table guorjaccount.accounts
 CREATE TABLE IF NOT EXISTS `accounts` (
   `AccountID` char(36) NOT NULL,
-  `CreateAt` datetime(6) NOT NULL,
+  `UserName` varchar(16) DEFAULT NULL,
   `Email` longtext DEFAULT NULL,
   `PhoneNumber` varchar(11) DEFAULT NULL,
   `Salt` varchar(5) DEFAULT NULL,
   `PasswordHash` varchar(32) DEFAULT NULL,
-  `UpdateAt` datetime(6) NOT NULL,
   `UserID` char(36) NOT NULL,
-  `UserName` varchar(16) DEFAULT NULL,
+  `CreateAt` datetime(6) NOT NULL,
+  `UpdateAt` datetime(6) NOT NULL,
   PRIMARY KEY (`AccountID`),
   UNIQUE KEY `IX_Accounts_UserID` (`UserID`),
   CONSTRAINT `FK_Accounts_Users_UserID` FOREIGN KEY (`UserID`) REFERENCES `users` (`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
--- Dumping structure for table dotnetblog.roles
+-- Dumping structure for table guorjaccount.roles
 CREATE TABLE IF NOT EXISTS `roles` (
   `RoleID` char(36) NOT NULL,
   `Name` longtext DEFAULT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
--- Dumping structure for table dotnetblog.userroles
+-- Dumping structure for table guorjaccount.userroles
 CREATE TABLE IF NOT EXISTS `userroles` (
   `UserID` char(36) NOT NULL,
   `RoleID` char(36) NOT NULL,
@@ -53,12 +53,12 @@ CREATE TABLE IF NOT EXISTS `userroles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
--- Dumping structure for table dotnetblog.users
+-- Dumping structure for table guorjaccount.users
 CREATE TABLE IF NOT EXISTS `users` (
   `ID` char(36) NOT NULL,
+  `NickName` varchar(16) DEFAULT NULL,
   `Birthday` datetime(6) DEFAULT NULL,
   `Gender` tinyint(4) DEFAULT NULL,
-  `NickName` varchar(16) DEFAULT NULL,
   `CreateAt` datetime(6) NOT NULL,
   `UpdateAt` datetime(6) NOT NULL,
   PRIMARY KEY (`ID`)

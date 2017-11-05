@@ -18,7 +18,7 @@ namespace DotNetBlog.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        public DotNetBlogDbContext DbContext { get; set; }
+        public GuorjAccountDbContext DbContext { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -30,7 +30,7 @@ namespace DotNetBlog.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
-        public LoginModel(DotNetBlogDbContext dotNetBlog)
+        public LoginModel(GuorjAccountDbContext dotNetBlog)
         {
             this.DbContext = dotNetBlog;
         }

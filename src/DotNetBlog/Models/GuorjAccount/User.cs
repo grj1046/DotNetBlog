@@ -21,6 +21,7 @@ namespace DotNetBlog.Models
 
         [EnumDataType(typeof(Gender))]
         [Column(TypeName = "tinyint")]
+        //[MaxLength(1)]
         [JsonConverter(typeof(StringEnumConverter))]
         public Gender? Gender { get; set; }
 
@@ -29,11 +30,12 @@ namespace DotNetBlog.Models
         public DateTime? Birthday { get; set; }
 
         public DateTime CreateAt { get; set; }
+
         public DateTime UpdateAt { get; set; }
+
 
         //[Range()]
         public Account Account { get; set; }
-
         public IEnumerable<UserRole> UserRoles { get; set; }
     }
 

@@ -15,7 +15,7 @@ namespace DotNetBlog.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        public DotNetBlogDbContext DbContext { get; set; }
+        public GuorjAccountDbContext DbContext { get; set; }
         public ILogger<ChangePasswordModel> Logger { get; set; }
 
         [BindProperty]
@@ -23,7 +23,7 @@ namespace DotNetBlog.Pages.Account.Manage
 
         public string StatusMessage { get; set; }
 
-        public ChangePasswordModel(DotNetBlogDbContext dbContext, ILogger<ChangePasswordModel> logger)
+        public ChangePasswordModel(GuorjAccountDbContext dbContext, ILogger<ChangePasswordModel> logger)
         {
             this.DbContext = dbContext;
             this.Logger = logger;

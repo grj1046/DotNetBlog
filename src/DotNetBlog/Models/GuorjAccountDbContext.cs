@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DotNetBlog.Models
 {
-    public class DotNetBlogDbContext : DbContext
+    public class GuorjAccountDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Account> Accounts { get; set; }
@@ -15,7 +15,7 @@ namespace DotNetBlog.Models
 
         public DbSet<UserRole> UserRoles { get; set; }
 
-        public DotNetBlogDbContext(DbContextOptions options) : base(options)
+        public GuorjAccountDbContext(DbContextOptions options) : base(options)
         {
 
         }
