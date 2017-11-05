@@ -9,6 +9,7 @@ using DotNetBlog.Models;
 using System.Security.Cryptography;
 using System.Text;
 using DotNetBlog.Common;
+using DotNetBlog.Identity;
 
 namespace DotNetBlog.Pages.Account
 {
@@ -41,24 +42,8 @@ namespace DotNetBlog.Pages.Account
                     this.ModelState.AddModelError(string.Empty, "the email address is already registered");
                     return Page();
                 }
-                RSA rsa = RSAExtensions.CreateRsaFromPrivateKey(RSAConstants.PrivateKey);
-                var cipherBytes = System.Convert.FromBase64String(Input.Password);
-                var plainTextBytes = rsa.Decrypt(cipherBytes, RSAEncryptionPadding.Pkcs1);
-                //var planText = Encoding.UTF8.GetString(plainTextBytes);
-
-                string strRandomStr = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz";
-                StringBuilder sb = new StringBuilder();
-                Random rnd = new Random();
-                for (int i = 0; i < 5; i++)
-                {
-                    sb.Append(strRandomStr[rnd.Next(strRandomStr.Length)]);
-                }
-                string strSalt = sb.ToString();
-                var hashedTextBytes = Encoding.UTF8.GetBytes(strSalt).Concat(plainTextBytes).ToArray();
-
-                MD5 md5 = MD5.Create();
-                var byteMd5Pwd = md5.ComputeHash(hashedTextBytes);
-                var strMd5Pwd = BitConverter.ToString(byteMd5Pwd).Replace("-", "");
+                string strSalt = UserManager.GetSalt();
+                var strMd5Pwd = UserManager.GetPasswordHash(strSalt, Input.Password);
 
                 //create user when pass authentication
                 //send confirm email

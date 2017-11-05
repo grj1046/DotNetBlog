@@ -22,9 +22,9 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `AccountID` char(36) NOT NULL,
   `CreateAt` datetime(6) NOT NULL,
   `Email` longtext DEFAULT NULL,
-  `PasswordHash` varchar(32) DEFAULT NULL,
   `PhoneNumber` varchar(11) DEFAULT NULL,
   `Salt` varchar(5) DEFAULT NULL,
+  `PasswordHash` varchar(32) DEFAULT NULL,
   `UpdateAt` datetime(6) NOT NULL,
   `UserID` char(36) NOT NULL,
   `UserName` varchar(16) DEFAULT NULL,
@@ -57,9 +57,9 @@ CREATE TABLE IF NOT EXISTS `userroles` (
 CREATE TABLE IF NOT EXISTS `users` (
   `ID` char(36) NOT NULL,
   `Birthday` datetime(6) DEFAULT NULL,
-  `CreateAt` datetime(6) NOT NULL,
   `Gender` tinyint(4) DEFAULT NULL,
   `NickName` varchar(16) DEFAULT NULL,
+  `CreateAt` datetime(6) NOT NULL,
   `UpdateAt` datetime(6) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
