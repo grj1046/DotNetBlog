@@ -30,6 +30,11 @@ namespace DotNetBlog
             {
                 options.UseMySql(Configuration.GetConnectionString("GuorjAccountConnection"));
             });
+
+            services.AddDbContextPool<GuorjBlogDbContext>(options =>
+            {
+                options.UseMySql(Configuration.GetConnectionString("GuorjBlogConnection"));
+            });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {

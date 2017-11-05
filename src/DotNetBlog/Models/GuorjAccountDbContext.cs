@@ -15,7 +15,7 @@ namespace DotNetBlog.Models
 
         public DbSet<UserRole> UserRoles { get; set; }
 
-        public GuorjAccountDbContext(DbContextOptions options) : base(options)
+        public GuorjAccountDbContext(DbContextOptions<GuorjAccountDbContext> options) : base(options)
         {
 
         }
