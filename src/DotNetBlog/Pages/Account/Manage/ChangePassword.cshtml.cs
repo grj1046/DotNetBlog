@@ -72,6 +72,7 @@ namespace DotNetBlog.Pages.Account.Manage
 
             user.Account.Salt = strNewSalt;
             user.Account.PasswordHash = strMd5Pwd;
+            user.Account.UpdateAt = DateTime.Now;
             await this.DbContext.SaveChangesAsync();
 
             //call SignIn function again
