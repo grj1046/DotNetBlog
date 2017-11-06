@@ -26,12 +26,12 @@ namespace DotNetBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<GuorjAccountDbContext>(options =>
+            services.AddDbContext<GuorjAccountDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("GuorjAccountConnection"));
             });
 
-            services.AddDbContextPool<GuorjBlogDbContext>(options =>
+            services.AddDbContext<GuorjBlogDbContext>(options =>
             {
                 options.UseMySql(Configuration.GetConnectionString("GuorjBlogConnection"));
             });
