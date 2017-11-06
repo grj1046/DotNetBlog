@@ -15,6 +15,17 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    <script type="text/javascript">
+        if (top.location !== self.location) {
+            top.location = self.location
+        } else {
+            if (top !== self) {
+                if (confirm("Reload?")) {
+                    top.location.reload()
+                }
+            }
+        };
+    </script>
 
     @RenderSection("Styles", required: false)
 </head>
@@ -68,7 +79,6 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

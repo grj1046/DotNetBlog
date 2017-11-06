@@ -38,6 +38,13 @@ namespace DotNetBlog
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    //CookieBuilder builder = new CookieBuilder();
+                    //builder.Name = "s";
+                    //builder.Build(context: null);
+#pragma warning disable CS0618 // 类型或成员已过时
+                    options.CookieName = "s";
+#pragma warning restore CS0618 // 类型或成员已过时
+
                     //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
                 });
             services.AddMvc().AddRazorPagesOptions(options =>
@@ -45,7 +52,10 @@ namespace DotNetBlog
                 options.Conventions.AuthorizeFolder("/Account/Manage");
                 options.Conventions.AuthorizePage("/Account/Logout");
             });
-
+            //services.AddMemoryCache(options =>
+            //{
+            //    options.SizeLimit = 1024 * 1024;
+            //});
             // Register no-op EmailSender used by account confirmation and password reset during development
             // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
             services.AddSingleton<IEmailSender, EmailSender>();
