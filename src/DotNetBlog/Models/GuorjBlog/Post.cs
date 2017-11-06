@@ -15,13 +15,25 @@ namespace DotNetBlog.Models
         [MaxLength(256)]
         public string URL { get; set; }
 
+        [Required]
+        [MaxLength(256)]
         public string Title { get; set; }
 
+        [MaxLength(1000)]
         public string Summary { get; set; }
 
-        public string Content { get; set; }
+        public IEnumerable<PostTag> Tags { get; set; }
 
-        public DateTime CreateAt { get; set; }
-        public DateTime UpdateAt { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
+
+        /// <summary>
+        /// Content is latest content
+        /// </summary>
+        public PostContent Content => this.Contents?.OrderByDescending(a => a.CreateAt)?.FirstOrDefault();
+
+        public IEnumerable<PostContent> Contents { get; set; }
+
+        public DateTime CreateAt { get; set; } = DateTime.Now;
+        public DateTime UpdateAt { get; set; } = DateTime.Now;
     }
 }

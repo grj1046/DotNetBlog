@@ -10,6 +10,10 @@ namespace DotNetBlog.Models
     {
 
         public DbSet<Post> Posts { get; set; }
+        public DbSet<PostContent> PostContents { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<PostTag> PostTags { get; set; }
 
         public GuorjBlogDbContext(DbContextOptions<GuorjBlogDbContext> options) : base(options)
         {

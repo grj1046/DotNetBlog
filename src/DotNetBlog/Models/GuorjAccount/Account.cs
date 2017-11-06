@@ -32,8 +32,8 @@ namespace DotNetBlog.Models
         [StringLength(32, MinimumLength = 32)]
         public string PasswordHash { get; set; }
 
-        public DateTime CreateAt { get; set; }
-        public DateTime UpdateAt { get; set; }
+        public DateTime CreateAt { get; set; } = DateTime.Now;
+        public DateTime UpdateAt { get; set; } = DateTime.Now;
 
         //[DisplayColumn()]
         [JsonIgnore]
