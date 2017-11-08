@@ -22,6 +22,10 @@ namespace DotNetBlog.Models
         public EditorType EditorType { get; set; } = EditorType.Text;
 
         [Required]
+        [StringLength(32, MinimumLength = 32)]
+        public string MD5Hash { get; set; }
+
+        [Required]
         public string Content { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
 

@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 -- Dumping structure for table guorjblog.postcontents
 CREATE TABLE IF NOT EXISTS `postcontents` (
   `ID` char(36) NOT NULL,
+  `MD5Hash` varchar(32) NOT NULL,
   `Content` longtext NOT NULL,
   `CreateAt` datetime(6) NOT NULL,
   `EditorType` tinyint(4) NOT NULL,

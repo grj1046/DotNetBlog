@@ -51,6 +51,9 @@ namespace DotNetBlog
             {
                 options.Conventions.AuthorizeFolder("/Account/Manage");
                 options.Conventions.AuthorizePage("/Account/Logout");
+            }).AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
             //services.AddMemoryCache(options =>
             //{
