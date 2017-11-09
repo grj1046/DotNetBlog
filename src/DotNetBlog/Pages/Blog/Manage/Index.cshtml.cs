@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using DotNetBlog.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DotNetBlog.Pages.Blog
+namespace DotNetBlog.Pages.Blog.Manage
 {
     public class IndexModel : PageModel
     {

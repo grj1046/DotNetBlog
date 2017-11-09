@@ -50,6 +50,8 @@ namespace DotNetBlog
             services.AddMvc().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeFolder("/Account/Manage");
+                options.Conventions.AuthorizeFolder("/Blog/Manage");
+
                 options.Conventions.AuthorizePage("/Account/Logout");
             }).AddJsonOptions(options =>
             {

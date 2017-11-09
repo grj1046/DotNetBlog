@@ -7,6 +7,6 @@
 <ul>
     @foreach (var item in Model.Posts)
     {
-        <li>@item.Title</li>
+        <li><a asp-page="Post" asp-route-p="@item.URL">@item.Title</a></li>
     }
 </ul>

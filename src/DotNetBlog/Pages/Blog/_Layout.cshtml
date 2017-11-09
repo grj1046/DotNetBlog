@@ -39,15 +39,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-page="/Index" class="navbar-brand">Blog</a>
+                <a asp-page="/Index" class="navbar-brand">Home</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-page="Index">Home</a></li>
-                    <li><a asp-page="About">About</a></li>
-                    <li><a asp-page="Contact">Contact</a></li>
+                    <li><a asp-page="/Blog/Index">Blog</a></li>
+                    <li><a asp-page="/Blog/About">About</a></li>
+                    <li><a asp-page="/Blog/Contact">Contact</a></li>
                 </ul>
-                @await Html.PartialAsync("_LoginPartial")
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a asp-page="/Blog/Manage/Index" title="Manager Post">Hello @this.User.Identity.Name!</a>
+                        </li>
+                        <li>
+                            <a asp-page="/Blog/Manage/Edit" title="New Post">New Post</a>
+                        </li>
+                    </ul>
+                }
             </div>
         </div>
     </nav>

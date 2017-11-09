@@ -1,0 +1,12 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Post List";
+}
+<h2>@ViewData["Title"]</h2>
+<ul>
+    @foreach (var item in Model.Posts)
+    {
+        <li><a asp-page="/Blog/Post" asp-route-p="@item.URL" target="_blank">@item.Title</a></li>
+    }
+</ul>

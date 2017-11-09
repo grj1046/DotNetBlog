@@ -21,16 +21,16 @@ namespace DotNetBlog.Pages.Blog
             this.DbBlog = dbBlog;
         }
 
-        public async Task<IActionResult> OnGetAsync(Guid postID)
+        public async Task<IActionResult> OnGetAsync(string p)
         {
-            if (postID == Guid.Empty)
+            if (string.IsNullOrEmpty(p) || p.Length > 256)
                 return NotFound();
             //get guid
             var query = from post in this.DbBlog.Posts.Include(a => a.Tags)
                         join postContent in this.DbBlog.PostContents
                         on post.PostID equals postContent.PostID
                         orderby postContent.CreateAt descending
-                        where post.PostID == postID
+                        where post.URL == p
                         select new PostViewModel()
                         {
                             PostID = post.PostID,

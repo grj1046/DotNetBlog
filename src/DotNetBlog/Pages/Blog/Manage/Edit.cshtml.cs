@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DotNetBlog.Pages.Blog
+namespace DotNetBlog.Pages.Blog.Manage
 {
     public class EditModel : PageModel
     {
@@ -56,6 +56,8 @@ namespace DotNetBlog.Pages.Blog
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+                return Page();
             Post post = null;
 
             MD5 md5 = MD5.Create();
@@ -101,7 +103,7 @@ namespace DotNetBlog.Pages.Blog
             post.Summary = this.Input.Summary;
 
             await this.DbBlog.SaveChangesAsync();
-            return RedirectToPage("Post", null, new { PostID = post.PostID });
+            return RedirectToPage("../Post", null, new { p = post.URL });
         }
 
         public class InputModel
@@ -120,6 +122,7 @@ namespace DotNetBlog.Pages.Blog
 
             public IEnumerable<PostTag> Tags { get; set; }
 
+            [Required]
             public string Content { get; set; }
             public EditorType EditorType { get; set; }
             public string MD5Hash { get; internal set; }
