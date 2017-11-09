@@ -14,7 +14,7 @@ namespace DotNetBlog.Pages.Blog
         public GuorjBlogDbContext DbBlog { get; set; }
 
         [BindProperty]
-        public Post Post { get; set; }
+        public PostViewModel Post { get; set; }
 
         public PostModel(GuorjBlogDbContext dbBlog)
         {
@@ -26,22 +26,47 @@ namespace DotNetBlog.Pages.Blog
             if (postID == Guid.Empty)
                 return NotFound();
             //get guid
-            this.Post = await this.DbBlog.Posts
-                    .Include(a => a.Tags)
-                    .FirstOrDefaultAsync(a => a.PostID == postID);
-            if (this.Post == null)
-                return NotFound();
+            var query = from post in this.DbBlog.Posts.Include(a => a.Tags)
+                        join postContent in this.DbBlog.PostContents
+                        on post.PostID equals postContent.PostID
+                        orderby postContent.CreateAt descending
+                        where post.PostID == postID
+                        select new PostViewModel()
+                        {
+                            PostID = post.PostID,
+                            Title = post.Title,
+                            URL = post.URL,
+                            Summary = post.Summary,
+                            Tags = post.Tags,
+                            EditorType = postContent.EditorType,
+                            MD5Hash = postContent.MD5Hash,
+                            Content = postContent.Content,
+                            ContentCreateAt = postContent.CreateAt
+                        };
 
-            var latestPostContent = await this.DbBlog.PostContents
-                .OrderByDescending(a => a.CreateAt)
-                .FirstOrDefaultAsync(a => a.PostID == this.Post.PostID);
-            if (latestPostContent != null)
-            {
-                var list = new List<PostContent>();
-                list.Add(latestPostContent);
-                this.Post.Contents = list;
-            }
+            var currPost = await query.FirstOrDefaultAsync();
+            if (currPost == null)
+                return NotFound();
+            this.Post = currPost;
             return Page();
+        }
+
+        public class PostViewModel
+        {
+            public Guid PostID { get; set; }
+
+            public string URL { get; set; }
+
+            public string Title { get; set; }
+
+            public string Summary { get; set; }
+
+            public IEnumerable<PostTag> Tags { get; set; }
+
+            public string Content { get; set; }
+            public EditorType EditorType { get; set; }
+            public string MD5Hash { get; internal set; }
+            public DateTime ContentCreateAt { get; set; }
         }
     }
 }

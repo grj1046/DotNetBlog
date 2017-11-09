@@ -28,28 +28,29 @@ namespace DotNetBlog.Pages.Blog
         {
             if (postID != Guid.Empty)
             {
-                //get guid
-                var post = await this.DbBlog.Posts
-                    .Include(a => a.Tags)
-                    .Select(a => new InputModel()
-                    {
-                        PostID = a.PostID,
-                        Title = a.Title,
-                        URL = a.URL,
-                        Summary = a.Summary,
-                        Tags = a.Tags
-                    }).FirstOrDefaultAsync(a => a.PostID == postID);
-                if (post == null)
-                    return NotFound();
+                var query = from post in this.DbBlog.Posts.Include(a => a.Tags)
+                            join postContent in this.DbBlog.PostContents
+                            on post.PostID equals postContent.PostID
+                            orderby postContent.CreateAt descending
+                            where post.PostID == postID
+                            select new InputModel()
+                            {
+                                PostID = post.PostID,
+                                Title = post.Title,
+                                URL = post.URL,
+                                Summary = post.Summary,
+                                Tags = post.Tags,
+                                EditorType = postContent.EditorType,
+                                MD5Hash = postContent.MD5Hash,
+                                Content = postContent.Content,
+                                ContentCreateAt = postContent.CreateAt
+                            };
 
-                var latestPostContent = await this.DbBlog.PostContents
-                    .OrderByDescending(a => a.CreateAt)
-                    .FirstOrDefaultAsync(a => a.PostID == post.PostID);
-                this.Input = post;
-                if (latestPostContent != null)
-                    this.Input.Content = latestPostContent.Content;
+                var currPost = await query.FirstOrDefaultAsync();
+                if (currPost == null)
+                    return NotFound();
+                this.Input = currPost;
             }
-            //invalid guid, create new
             return Page();
         }
 
@@ -81,7 +82,7 @@ namespace DotNetBlog.Pages.Blog
                     .FirstOrDefaultAsync(a => a.PostID == this.Input.PostID);
                 PostContent content = await this.DbBlog.PostContents
                     .OrderByDescending(a => a.CreateAt)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsync(a => a.PostID == post.PostID);
                 if (content == null)
                     return NotFound();
                 if (content.MD5Hash != md5Hash)
@@ -93,6 +94,7 @@ namespace DotNetBlog.Pages.Blog
                     newPostContent.Content = this.Input.Content;
                     newPostContent.Post = post;
                     post.UpdateAt = DateTime.Now;
+                    this.DbBlog.PostContents.Add(newPostContent);
                 }
             }
             post.Title = this.Input.Title;
@@ -119,6 +121,9 @@ namespace DotNetBlog.Pages.Blog
             public IEnumerable<PostTag> Tags { get; set; }
 
             public string Content { get; set; }
+            public EditorType EditorType { get; set; }
+            public string MD5Hash { get; internal set; }
+            public DateTime ContentCreateAt { get; set; }
         }
     }
 }
