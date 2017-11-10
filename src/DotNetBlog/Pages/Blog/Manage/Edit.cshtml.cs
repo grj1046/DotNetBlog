@@ -9,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using System.Security.Claims;
 
 namespace DotNetBlog.Pages.Blog.Manage
 {
@@ -28,11 +29,13 @@ namespace DotNetBlog.Pages.Blog.Manage
         {
             if (postID != Guid.Empty)
             {
+                var userID = this.User.GetUserID();
+
                 var query = from post in this.DbBlog.Posts.Include(a => a.Tags)
                             join postContent in this.DbBlog.PostContents
                             on post.PostID equals postContent.PostID
                             orderby postContent.CreateAt descending
-                            where post.PostID == postID
+                            where post.PostID == postID && post.UserID == userID
                             select new InputModel()
                             {
                                 PostID = post.PostID,
@@ -58,15 +61,17 @@ namespace DotNetBlog.Pages.Blog.Manage
         {
             if (!ModelState.IsValid)
                 return Page();
+            var userID = this.User.GetUserID();
             Post post = null;
 
             MD5 md5 = MD5.Create();
             var byteMd5 = md5.ComputeHash(Encoding.UTF8.GetBytes(this.Input.Content));
             var md5Hash = BitConverter.ToString(byteMd5).Replace("-", "");
-            if (this.Input.PostID == Guid.Empty)
+            if (this.Input.PostID == null || this.Input.PostID == Guid.Empty)
             {
                 post = new Post();
                 post.PostID = Guid.NewGuid();
+                post.UserID = userID;
                 post.URL = post.PostID.ToString().Substring(0, 8);
                 //PostTag tag = new PostTag();
                 PostContent content = new PostContent();
@@ -81,7 +86,9 @@ namespace DotNetBlog.Pages.Blog.Manage
             else
             {
                 post = await this.DbBlog.Posts
-                    .FirstOrDefaultAsync(a => a.PostID == this.Input.PostID);
+                    .FirstOrDefaultAsync(a => a.PostID == this.Input.PostID && a.UserID == userID);
+                if (post == null)
+                    return NotFound();
                 PostContent content = await this.DbBlog.PostContents
                     .OrderByDescending(a => a.CreateAt)
                     .FirstOrDefaultAsync(a => a.PostID == post.PostID);
@@ -108,7 +115,7 @@ namespace DotNetBlog.Pages.Blog.Manage
 
         public class InputModel
         {
-            public Guid PostID { get; set; }
+            public Guid? PostID { get; set; }
 
             [MaxLength(256)]
             public string URL { get; set; }

@@ -12,6 +12,9 @@ namespace DotNetBlog.Models
         [Column("ID")]
         public Guid PostID { get; set; }
 
+        [Required]
+        public Guid UserID { get; set; }
+
         [MaxLength(256)]
         public string URL { get; set; }
 

@@ -4,9 +4,11 @@
     ViewData["Title"] = "Home";
 }
 <h2>@ViewData["Title"]</h2>
-<ul>
+<dl>
     @foreach (var item in Model.Posts)
     {
-        <li><a asp-page="Post" asp-route-p="@item.URL">@item.Title</a></li>
+        <dt><a asp-page="Post" asp-route-p="@item.URL">@item.Title</a></dt>
+        <dd>@item.Summary</dd>
+        <dd style="color:gray; font-size:small;">@item.UserNickName Posted @item.CreateAt</dd>
     }
-</ul>
+</dl>

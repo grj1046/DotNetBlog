@@ -4,9 +4,16 @@
     ViewData["Title"] = "Post List";
 }
 <h2>@ViewData["Title"]</h2>
-<ul>
+<dl>
     @foreach (var item in Model.Posts)
     {
-        <li><a asp-page="/Blog/Post" asp-route-p="@item.URL" target="_blank">@item.Title</a></li>
+        <dt><a asp-page="/Blog/Post" asp-route-p="@item.URL" target="_blank">@item.Title</a></dt>
+        <dd>
+            <span>@item.CreateAt</span>
+            <span>
+                <a asp-page="/Blog/Manage/Edit" asp-route-postID="@item.PostID" title="Edit">Edit</a>
+                <a asp-page-handler="DeletePost" asp-route-postID="@item.PostID" title="Delete">Delete</a>
+            </span>
+        </dd>
     }
-</ul>
+</dl>
