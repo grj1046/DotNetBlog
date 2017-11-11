@@ -10,6 +10,7 @@ using System.Security.Claims;
 
 namespace DotNetBlog.Pages.Blog
 {
+    //https://www.oschina.net/blog
     public class IndexModel : PageModel
     {
         public GuorjAccountDbContext DbAccount { get; set; }
