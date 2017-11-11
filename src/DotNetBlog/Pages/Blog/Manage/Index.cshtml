@@ -4,6 +4,7 @@
     ViewData["Title"] = "Post List";
 }
 <h2>@ViewData["Title"]</h2>
+@Html.Partial("Templates/_StatusMessage", Model.StatusMessage)
 <dl>
     @foreach (var item in Model.Posts)
     {

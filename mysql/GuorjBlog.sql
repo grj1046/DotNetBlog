@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `ID` char(36) NOT NULL,
   `UserID` char(36) NOT NULL,
   `CreateAt` datetime(6) NOT NULL,
+  `IsDeleted` bit(1) NOT NULL,
   `Summary` varchar(1000) DEFAULT NULL,
   `Title` varchar(256) NOT NULL,
   `URL` varchar(256) DEFAULT NULL,

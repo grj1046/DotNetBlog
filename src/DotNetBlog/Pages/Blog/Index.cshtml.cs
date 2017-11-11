@@ -36,6 +36,7 @@ namespace DotNetBlog.Pages.Blog
             var queryPosts = from p in this.DbBlog.Posts.Include(a => a.Tags)
                              join pc in this.DbBlog.PostContents
                              on p.PostID equals pc.PostID
+                             where p.IsDeleted == false
                              orderby pc.CreateAt descending
                              select new
                              {

@@ -35,7 +35,7 @@ namespace DotNetBlog.Pages.Blog.Manage
                             join postContent in this.DbBlog.PostContents
                             on post.PostID equals postContent.PostID
                             orderby postContent.CreateAt descending
-                            where post.PostID == postID && post.UserID == userID
+                            where post.PostID == postID && post.UserID == userID && post.IsDeleted == false
                             select new InputModel()
                             {
                                 PostID = post.PostID,
@@ -86,7 +86,7 @@ namespace DotNetBlog.Pages.Blog.Manage
             else
             {
                 post = await this.DbBlog.Posts
-                    .FirstOrDefaultAsync(a => a.PostID == this.Input.PostID && a.UserID == userID);
+                    .FirstOrDefaultAsync(a => a.PostID == this.Input.PostID && a.UserID == userID && a.IsDeleted == false);
                 if (post == null)
                     return NotFound();
                 PostContent content = await this.DbBlog.PostContents

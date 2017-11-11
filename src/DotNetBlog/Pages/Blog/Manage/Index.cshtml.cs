@@ -34,7 +34,7 @@ namespace DotNetBlog.Pages.Blog.Manage
 
             var query = from p in this.DbBlog.Posts.Include(a => a.Tags)
                         orderby p.CreateAt descending
-                        where p.UserID == userID
+                        where p.UserID == userID && p.IsDeleted == false
                         select new PostViewModel()
                         {
                             PostID = p.PostID,
@@ -54,13 +54,16 @@ namespace DotNetBlog.Pages.Blog.Manage
 
             var userID = this.User.GetUserID();
 
-            var user = await this.DbAccount.Users.Include(a => a.Account).FirstOrDefaultAsync();
+            var user = await this.DbAccount.Users.FirstOrDefaultAsync(a => a.UserID == userID);
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{userID}'.");
 
-            //set delete flag
+            var post = await this.DbBlog.Posts
+                .FirstOrDefaultAsync(a => a.UserID == user.UserID && a.PostID == postID && a.IsDeleted == false);
+            post.IsDeleted = true;
+            await this.DbBlog.SaveChangesAsync();
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            StatusMessage = $"The Post [{post.Title}] has been deleted.";
             return RedirectToPage();
         }
 

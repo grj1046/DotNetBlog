@@ -25,6 +25,8 @@ namespace DotNetBlog.Models
         [MaxLength(1000)]
         public string Summary { get; set; }
 
+        public bool IsDeleted { get; set; } = false;
+
         public IEnumerable<PostTag> Tags { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }
