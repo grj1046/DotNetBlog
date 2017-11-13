@@ -54,6 +54,14 @@ namespace DotNetBlog.Pages.Blog.Manage
                     return NotFound();
                 this.Input = currPost;
             }
+            else
+            {
+                //TODO: maybe can custom it.
+                this.Input = new InputModel
+                {
+                    EditorType = EditorType.Markdown
+                };
+            }
             return Page();
         }
 
@@ -77,9 +85,10 @@ namespace DotNetBlog.Pages.Blog.Manage
                 PostContent content = new PostContent();
                 content.PostID = post.PostID;
                 content.PostContentID = Guid.NewGuid();
+                content.EditorType = this.Input.EditorType;
                 content.MD5Hash = md5Hash;
-                content.Post = post;
                 content.Content = this.Input.Content;
+                content.Post = post;
                 this.DbBlog.Posts.Add(post);
                 this.DbBlog.PostContents.Add(content);
             }
@@ -97,7 +106,7 @@ namespace DotNetBlog.Pages.Blog.Manage
                 if (content.MD5Hash != md5Hash)
                 {
                     PostContent newPostContent = new PostContent();
-                    newPostContent.EditorType = EditorType.Markdown;
+                    newPostContent.EditorType = this.Input.EditorType;
                     newPostContent.PostID = post.PostID;
                     newPostContent.MD5Hash = md5Hash;
                     newPostContent.Content = this.Input.Content;

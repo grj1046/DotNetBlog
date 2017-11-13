@@ -14,44 +14,65 @@
         </div>
         <div class="form-group">
             <label asp-for="Input.Content"></label>
-            <textarea asp-for="Input.Content" rows="50" class="form-control"></textarea>
+            <textarea asp-for="Input.Content" rows="20" class="form-control"></textarea>
             <span asp-validation-for="Input.Content" class="text-danger"></span>
         </div>
         <div class="form-group">
             <input type="hidden" asp-for="Input.PostID" />
+            <input type="hidden" asp-for="Input.EditorType" />
             <button type="submit" class="btn btn-default">Submit</button>
         </div>
     </form>
 </article>
 
 @section Styles {
-    <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.user.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/nature.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/object.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/people.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />
+    @switch (Model.Input.EditorType)
+    {
+        case EditorType.Text:
+            break;
+        case EditorType.Html:
+            break;
+        case EditorType.Markdown:
+            <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.user.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/nature.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/object.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/people.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />
+            break;
+        default:
+            break;
+    }
 }
 
 @section Scripts {
-
-    <environment>
-        <script src="~/thinker-md/javascripts/thinker-md.vendor.min.js" charset="utf-8" asp-append-version="true"></script>
-    </environment>
-    <script type="text/javascript">
-        $("textarea").markdown({
-            language: 'zh',
-            fullscreen: {
-                enable: true
-            },
-            resize: 'vertical',
-            localStorage: 'md',
-            imgurl: '/c/imgUpload',
-            base64url: '/c/imgUpload',
-            flowChart: true
-        });
-    </script>
-
+    @switch (Model.Input.EditorType)
+    {
+        case EditorType.Text:
+            break;
+        case EditorType.Html:
+            break;
+        case EditorType.Markdown:
+            <environment>
+                <script src="~/thinker-md/javascripts/thinker-md.vendor.min.js" charset="utf-8" asp-append-version="true"></script>
+            </environment>
+            <script type="text/javascript">
+                $("textarea").markdown({
+                    language: 'zh',
+                    fullscreen: {
+                        enable: true
+                    },
+                    resize: 'vertical',
+                    localStorage: 'md',
+                    imgurl: '/c/imgUpload',
+                    base64url: '/c/imgUpload',
+                    flowChart: true
+                });
+            </script>
+            break;
+        default:
+            break;
+    }
 }

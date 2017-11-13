@@ -9,21 +9,43 @@
 
 
 @section Styles {
-    <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.user.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/nature.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/object.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/people.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />
+    @switch (this.Model.Post.EditorType)
+    {
+        case EditorType.Text:
+            break;
+        case EditorType.Html:
+            break;
+        case EditorType.Markdown:
+            <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.user.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/nature.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/object.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/people.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />
+            break;
+        default:
+            break;
+    }
 }
 
 @section Scripts {
-    <script src="~/thinker-md/javascripts/thinker-md.vendor.min.js" charset="utf-8" asp-append-version="true"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#postContent").html(marked($("#postContent").html()));
-        });
-    </script>
+    @switch (this.Model.Post.EditorType)
+    {
+        case EditorType.Text:
+            break;
+        case EditorType.Html:
+            break;
+        case EditorType.Markdown:
+            <script src="~/thinker-md/javascripts/thinker-md.vendor.min.js" charset="utf-8" asp-append-version="true"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#postContent").html(marked($("#postContent").html()));
+                });
+            </script>
+            break;
+        default:
+            break;
+    }
 }
