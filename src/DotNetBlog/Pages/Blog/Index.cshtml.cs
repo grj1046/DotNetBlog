@@ -37,8 +37,8 @@ namespace DotNetBlog.Pages.Blog
             var queryPosts = from p in this.DbBlog.Posts.Include(a => a.Tags)
                              join pc in this.DbBlog.PostContents
                              on p.PostID equals pc.PostID
-                             where p.IsDeleted == false
-                             orderby pc.CreateAt descending
+                             where p.IsDeleted == false && p.CurrentContentID == pc.PostContentID
+                             orderby p.UpdateAt descending
                              select new
                              {
                                  PostID = p.PostID,
@@ -53,7 +53,7 @@ namespace DotNetBlog.Pages.Blog
                                  ContentCreateAt = pc.CreateAt
                              };
 
-            var posts = await queryPosts.Take(10).AsNoTracking().ToListAsync();
+            var posts = await queryPosts.Take(20).AsNoTracking().ToListAsync();
 
             var queryUsers = from u in this.DbAccount.Users.Include(a => a.Account)
                              join userID in posts.Select(a => a.UserID).Distinct()
@@ -63,7 +63,7 @@ namespace DotNetBlog.Pages.Blog
                                  UserID = u.UserID,
                                  UserNickName = u.NickName
                              };
-            var users = await queryUsers.ToListAsync();
+            var users = await queryUsers.AsNoTracking().ToListAsync();
 
             var query = from p in posts
                         join u in users on p.UserID equals u.UserID

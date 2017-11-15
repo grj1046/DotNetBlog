@@ -13,6 +13,9 @@ namespace DotNetBlog.Models
         public Guid PostID { get; set; }
 
         [Required]
+        public Guid CurrentContentID { get; set; }
+
+        [Required]
         public Guid UserID { get; set; }
 
         [MaxLength(256)]

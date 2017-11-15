@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `postcontents` (
 -- Dumping structure for table guorjblog.posts
 CREATE TABLE IF NOT EXISTS `posts` (
   `ID` char(36) NOT NULL,
+  `CurrentContentID` char(36) NOT NULL,
   `UserID` char(36) NOT NULL,
   `CreateAt` datetime(6) NOT NULL,
   `IsDeleted` bit(1) NOT NULL,

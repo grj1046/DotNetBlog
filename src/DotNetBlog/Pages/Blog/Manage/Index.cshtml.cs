@@ -35,7 +35,7 @@ namespace DotNetBlog.Pages.Blog.Manage
             var userID = this.User.GetUserID();
 
             var query = from p in this.DbBlog.Posts.Include(a => a.Tags)
-                        orderby p.CreateAt descending
+                        orderby p.UpdateAt descending
                         where p.UserID == userID && p.IsDeleted == false
                         select new PostViewModel()
                         {
@@ -46,7 +46,7 @@ namespace DotNetBlog.Pages.Blog.Manage
                             CreateAt = p.CreateAt,
                             Tags = p.Tags
                         };
-            this.Posts = query.Take(10).AsNoTracking();
+            this.Posts = query.Take(20).AsNoTracking();
         }
 
         public async Task<IActionResult> OnGetDeletePostAsync(Guid postID)

@@ -29,8 +29,7 @@ namespace DotNetBlog.Pages.Blog
             var query = from post in this.DbBlog.Posts.Include(a => a.Tags)
                         join postContent in this.DbBlog.PostContents
                         on post.PostID equals postContent.PostID
-                        orderby postContent.CreateAt descending
-                        where post.URL == p
+                        where post.URL == p && post.CurrentContentID == postContent.PostContentID
                         select new PostViewModel()
                         {
                             PostID = post.PostID,

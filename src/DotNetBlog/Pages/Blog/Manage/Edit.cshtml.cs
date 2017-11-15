@@ -34,8 +34,10 @@ namespace DotNetBlog.Pages.Blog.Manage
                 var query = from post in this.DbBlog.Posts.Include(a => a.Tags)
                             join postContent in this.DbBlog.PostContents
                             on post.PostID equals postContent.PostID
-                            orderby postContent.CreateAt descending
-                            where post.PostID == postID && post.UserID == userID && post.IsDeleted == false
+                            where post.PostID == postID
+                            && post.CurrentContentID == postContent.PostContentID
+                            && post.UserID == userID
+                            && post.IsDeleted == false
                             select new InputModel()
                             {
                                 PostID = post.PostID,
@@ -59,7 +61,7 @@ namespace DotNetBlog.Pages.Blog.Manage
                 //TODO: maybe can custom it.
                 this.Input = new InputModel
                 {
-                    EditorType = EditorType.Html
+                    EditorType = EditorType.Markdown
                 };
             }
             return Page();
@@ -89,6 +91,7 @@ namespace DotNetBlog.Pages.Blog.Manage
                 content.MD5Hash = md5Hash;
                 content.Content = this.Input.Content;
                 content.Post = post;
+                post.CurrentContentID = content.PostContentID;
                 this.DbBlog.Posts.Add(post);
                 this.DbBlog.PostContents.Add(content);
             }
@@ -99,24 +102,31 @@ namespace DotNetBlog.Pages.Blog.Manage
                 if (post == null)
                     return NotFound();
                 PostContent content = await this.DbBlog.PostContents
-                    .OrderByDescending(a => a.CreateAt)
-                    .FirstOrDefaultAsync(a => a.PostID == post.PostID);
+                    .FirstOrDefaultAsync(a => a.PostID == post.PostID && a.MD5Hash == md5Hash);
                 if (content == null)
-                    return NotFound();
-                if (content.MD5Hash != md5Hash)
                 {
                     PostContent newPostContent = new PostContent();
+                    newPostContent.PostContentID = Guid.NewGuid();
                     newPostContent.EditorType = this.Input.EditorType;
                     newPostContent.PostID = post.PostID;
                     newPostContent.MD5Hash = md5Hash;
                     newPostContent.Content = this.Input.Content;
                     newPostContent.Post = post;
+                    post.CurrentContentID = newPostContent.PostContentID;
                     post.UpdateAt = DateTime.Now;
                     this.DbBlog.PostContents.Add(newPostContent);
+                }
+                else
+                {
+                    if (post.CurrentContentID != content.PostContentID)
+                    {
+                        post.CurrentContentID = content.PostContentID;
+                    }
                 }
             }
             post.Title = this.Input.Title;
             post.Summary = this.Input.Summary;
+            post.UpdateAt = DateTime.Now;
 
             await this.DbBlog.SaveChangesAsync();
             return RedirectToPage("../Post", null, new { p = post.URL });
