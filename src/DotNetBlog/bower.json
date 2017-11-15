@@ -7,7 +7,8 @@
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "jquery-md5": "*",
-    "jsencrypt": "v2.3.0"
+    "jsencrypt": "v2.3.0",
+    "wangEditor": "v3.0.13"
   },
   "resolutions": {
     "jquery": "3.2.1"

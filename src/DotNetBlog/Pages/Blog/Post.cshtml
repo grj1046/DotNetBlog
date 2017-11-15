@@ -5,7 +5,20 @@
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@this.Model.Post.Title</h3>
-<div id="postContent">@this.Model.Post.Content</div>
+@switch (this.Model.Post.EditorType)
+{
+    case EditorType.Text:
+        <div id="postContent">@this.Model.Post.Content</div>
+        break;
+    case EditorType.Html:
+        <div id="postContent">@Html.Raw(this.Model.Post.Content)</div>
+        break;
+    case EditorType.Markdown:
+        <div id="postContent">@this.Model.Post.Content</div>
+        break;
+    default:
+        break;
+}
 
 
 @section Styles {
@@ -24,6 +37,11 @@
             <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />
+            <style type="text/css">
+                .body-content {
+                    margin-top: 20px;
+                }
+            </style>
             break;
         default:
             break;
@@ -40,9 +58,7 @@
         case EditorType.Markdown:
             <script src="~/thinker-md/javascripts/thinker-md.vendor.min.js" charset="utf-8" asp-append-version="true"></script>
             <script type="text/javascript">
-                $(document).ready(function () {
-                    $("#postContent").html(marked($("#postContent").html()));
-                });
+                $("#postContent").html(marked($("#postContent").html()));
             </script>
             break;
         default:

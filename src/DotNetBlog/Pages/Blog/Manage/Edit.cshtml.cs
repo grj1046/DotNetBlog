@@ -59,7 +59,7 @@ namespace DotNetBlog.Pages.Blog.Manage
                 //TODO: maybe can custom it.
                 this.Input = new InputModel
                 {
-                    EditorType = EditorType.Markdown
+                    EditorType = EditorType.Html
                 };
             }
             return Page();
