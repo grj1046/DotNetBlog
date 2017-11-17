@@ -13,10 +13,30 @@
             <span asp-validation-for="Input.Title" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Input.Content"></label>
+            <div style="display:flex;">
+                <label asp-for="Input.Content" style="flex:3; align-self:flex-end;"></label>
+                <div style="text-align:right; flex:1;">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button"
+                                id="editorOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            @this.Model.Input.EditorType
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="editorOptions" style="left:auto;right:0;z-index:10001;">
+                            @foreach (var item in Enum.GetNames(typeof(EditorType)))
+                            {
+                                @if (this.Model.Input.EditorType.ToString() != item)
+                                {
+                                    <li><a asp-page-handler="ChangeEditor" asp-route-editorType="@item" onclick="return changeEditorConfirm();">@item</a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
             @if (this.Model.Input.EditorType == EditorType.Html)
             {
-                <div id="textEditor"></div>
+                <div id="textEditor" style="margin-top: 5px;"></div>
             }
             <textarea asp-for="Input.Content" rows="20" class="form-control"></textarea>
             <span asp-validation-for="Input.Content" class="text-danger"></span>
@@ -33,6 +53,11 @@
     @switch (Model.Input.EditorType)
     {
         case EditorType.Text:
+            <style type="text/css">
+                #Input_Content {
+                    margin-top: 5px;
+                }
+            </style>
             break;
         case EditorType.Html:
             break;
@@ -97,4 +122,14 @@
         default:
             break;
     }
+    <script type="text/javascript">
+                function changeEditorConfirm() {
+                    var currVal = $("#Input_Content").val();
+                    if (currVal == "<p><br></p>")
+                        currVal = '';
+                    if (currVal) {
+                        return confirm("change editor will lost your content, do you want continue?");
+                    }
+                };
+    </script>
 }

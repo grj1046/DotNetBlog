@@ -132,6 +132,16 @@ namespace DotNetBlog.Pages.Blog.Manage
             return RedirectToPage("../Post", null, new { p = post.URL });
         }
 
+        public IActionResult OnGetChangeEditor(string editorType)
+        {
+            EditorType type = (EditorType)Enum.Parse(typeof(EditorType), editorType);
+            this.Input = new InputModel
+            {
+                EditorType = type
+            };
+            return Page();
+        }
+
         public class InputModel
         {
             public Guid? PostID { get; set; }
