@@ -2,16 +2,21 @@
 
 @if (this.User.Identity.IsAuthenticated)
 {
-    <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-page="/Account/Manage/Index" title="Manager">Hello @this.User.Identity.Name!</a>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
-            </li>
-        </ul>
-    </form>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a asp-page="/Blog/Manage/Edit">New Post</a></li>
+        <li class="dropdown">
+            <a href="javascript:void(0);" data-toggle="dropdown">
+                @this.User.Identity.Name
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a asp-page="/Account/Manage/Index">Profile</a></li>
+                <li><a asp-page="/Blog/Manage/Index">Blog</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="/Account/Logout" data-method="Post" rel="nofollow">Log out</a></li>
+            </ul>
+        </li>
+    </ul>
 }
 else
 {
