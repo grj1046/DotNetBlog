@@ -34,7 +34,7 @@ namespace DotNetBlog.Pages.Account.Manage
             this.Input = new InputModel()
             {
                 NickName = user.NickName,
-                Birthday = user.Birthday,
+                Birthday = user.Birthday?.ToString("yyyy/MM/dd"),
                 Gender = user.Gender
             };
             return Page();
@@ -47,7 +47,10 @@ namespace DotNetBlog.Pages.Account.Manage
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{userID}'.");
             user.NickName = this.Input.NickName;
-            user.Birthday = this.Input.Birthday;
+            if (string.IsNullOrEmpty(this.Input.Birthday))
+                user.Birthday = null;
+            else
+                user.Birthday = Convert.ToDateTime(this.Input.Birthday);
             user.Gender = this.Input.Gender;
             user.UpdateAt = DateTime.Now;
             await this.DbAccount.SaveChangesAsync();
@@ -59,8 +62,9 @@ namespace DotNetBlog.Pages.Account.Manage
         {
             //public Guid UserID { get; set; }
             public string NickName { get; set; }
-            [DataType(DataType.Date)]
-            public DateTime? Birthday { get; set; }
+            [DataType(DataType.Text)]
+            [DisplayFormat(DataFormatString = "yyyy/MM/dd")]
+            public string Birthday { get; set; }
             public Gender? Gender { get; set; }
         }
     }

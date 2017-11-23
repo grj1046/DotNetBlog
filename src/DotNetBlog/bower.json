@@ -9,7 +9,8 @@
     "jquery-md5": "*",
     "jsencrypt": "v2.3.0",
     "wangEditor": "v3.0.14",
-    "jquery-ujs": "v1.2.2"
+    "jquery-ujs": "v1.2.2",
+    "bootstrap-datepicker": "v1.7.1"
   },
   "resolutions": {
     "jquery": "3.2.1",

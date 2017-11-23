@@ -15,7 +15,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Birthday"></label>
-                <input asp-for="Input.Birthday" class="form-control" />
+                <input asp-for="Input.Birthday" class="form-control" date-provider="datepicker" />
                 <span asp-validation-for="Input.Birthday" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -28,6 +28,18 @@
     </div>
 </div>
 
+@section Styles {
+    <link rel="stylesheet" href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" asp-append-version="true" />
+}
+
 @section Scripts {
+    <script type="text/javascript" src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#Input_Birthday').datepicker({
+                format: "yyyy/mm/dd"
+            });
+        });
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
