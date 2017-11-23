@@ -20,7 +20,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Gender"></label>
-                <input asp-for="Input.Gender" class="form-control" />
+                <select asp-for="Input.Gender" class="form-control">
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                    <option value="3">Private</option>
+                </select>
                 <span asp-validation-for="Input.Gender" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-default">Save</button>
