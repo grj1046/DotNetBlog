@@ -16,22 +16,29 @@
             <div style="display:flex;">
                 <label asp-for="Input.Content" style="flex:3; align-self:flex-end;"></label>
                 <div style="text-align:right; flex:1;">
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button"
-                                id="editorOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            @this.Model.Input.EditorType
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="editorOptions" style="left:auto;right:0;z-index:10001;">
-                            @foreach (var item in Enum.GetNames(typeof(EditorType)))
-                            {
-                                @if (this.Model.Input.EditorType.ToString() != item)
+                    @if (this.Model.Input.PostID.HasValue && this.Model.Input.PostID.Value != Guid.Empty)
+                    {
+                        <span>@this.Model.Input.EditorType</span>
+                    }
+                    else
+                    {
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button"
+                                    id="editorOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                @this.Model.Input.EditorType
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="editorOptions" style="left:auto;right:0;z-index:10001;">
+                                @foreach (var item in Enum.GetNames(typeof(EditorType)))
                                 {
-                                    <li><a asp-page-handler="ChangeEditor" asp-route-editorType="@item" onclick="return changeEditorConfirm();">@item</a></li>
+                                    @if (this.Model.Input.EditorType.ToString() != item)
+                                    {
+                                        <li><a asp-page-handler="ChangeEditor" asp-route-editorType="@item" onclick="return changeEditorConfirm();">@item</a></li>
+                                    }
                                 }
-                            }
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
+                    }
                 </div>
             </div>
             @if (this.Model.Input.EditorType == EditorType.Html)
