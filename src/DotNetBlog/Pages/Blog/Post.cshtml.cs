@@ -41,15 +41,7 @@ namespace DotNetBlog.Pages.Blog
                             MD5Hash = postContent.MD5Hash,
                             ContentID = postContent.PostContentID,
                             Content = postContent.Content,
-                            ContentCreateAt = postContent.CreateAt,
-                            Comments = post.Comments.Where(a => !a.IsDeleted)
-                                .Select(a => new PostCommentViewModel()
-                                {
-                                    CommentID = a.CommentID,
-                                    ParentCommentID = a.ParentCommentID,
-                                    Content = a.Content,
-                                    UserName = a.UserName
-                                })
+                            ContentCreateAt = postContent.CreateAt
                         };
 
             var currPost = await query.AsNoTracking().FirstOrDefaultAsync();
@@ -76,17 +68,6 @@ namespace DotNetBlog.Pages.Blog
             public EditorType EditorType { get; set; }
             public string MD5Hash { get; internal set; }
             public DateTime ContentCreateAt { get; set; }
-
-            public IEnumerable<PostCommentViewModel> Comments { get; set; }
-        }
-
-        public class PostCommentViewModel
-        {
-            public Guid CommentID { get; set; }
-            public string Content { get; set; }
-            public DateTime CreateAt { get; set; }
-            public Guid ParentCommentID { get; set; }
-            public string UserName { get; set; }
         }
     }
 }

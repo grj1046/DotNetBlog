@@ -1,26 +1,30 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using DotNetBlog.Models;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using DotNetBlog.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DotNetBlog.Controllers
+namespace DotNetBlog.Pages.Blog
 {
-    public class BlogController : Controller
+    public class AddCommentModel : PageModel
     {
         public GuorjAccountDbContext DbAccount { get; set; }
         public GuorjBlogDbContext DbBlog { get; set; }
 
-        public BlogController(GuorjAccountDbContext dbAccount, GuorjBlogDbContext dbBlog)
+        public AddCommentModel(GuorjAccountDbContext dbAccount, GuorjBlogDbContext dbBlog)
         {
             this.DbAccount = dbAccount;
             this.DbBlog = dbBlog;
         }
 
-        [Route("/Blog/Post/AddComment")]
-        public async Task<JsonResult> AddComment(Guid postID, Guid contentID, [FromForm]CommentResult commentResult)
+        public void OnGet()
+        {
+        }
+
+        public async Task OnPost(Guid postID, Guid contentID, [FromForm]CommentResult commentResult)
         {
             if (postID == Guid.Empty)
                 throw new ArgumentNullException("PostID");
@@ -34,7 +38,7 @@ namespace DotNetBlog.Controllers
             comment.PostID = postID;
             comment.IsDeleted = false;
             comment.CreateAt = DateTime.Now;
-            comment.Content = commentResult.Comment?.Trim();
+            comment.Content = commentResult.Comment;
             comment.ContentID = contentID;
             comment.IsDeleted = false;
             if (this.User.Identity.IsAuthenticated)
@@ -47,12 +51,11 @@ namespace DotNetBlog.Controllers
             else if (!string.IsNullOrEmpty(commentResult.UserEmail))
             {
                 comment.UserEmail = commentResult.UserEmail;
-                comment.UserName = commentResult.UserName?.Trim();
+                comment.UserName = commentResult.UserName;
             }
 
             await this.DbBlog.Comments.AddAsync(comment);
             await this.DbBlog.SaveChangesAsync();
-            return Json(commentResult);
         }
 
         public class CommentResult
