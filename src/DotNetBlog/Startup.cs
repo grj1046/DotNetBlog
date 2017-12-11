@@ -53,6 +53,8 @@ namespace DotNetBlog
                 options.Conventions.AuthorizeFolder("/Blog/Manage");
 
                 options.Conventions.AuthorizePage("/Account/Logout");
+
+                options.Conventions.AddPageRoute("/Blog/Post", "Blog/Post/{postURL?}");
             }).AddJsonOptions(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;

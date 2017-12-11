@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNetBlog.Pages.Blog
 {
+    [Route("Blog/Post/{p}")]
     public class PostModel : PageModel
     {
         public GuorjBlogDbContext DbBlog { get; set; }
@@ -21,15 +22,16 @@ namespace DotNetBlog.Pages.Blog
             this.DbBlog = dbBlog;
         }
 
-        public async Task<IActionResult> OnGetAsync(string p)
+        public async Task<IActionResult> OnGetAsync()
         {
-            if (string.IsNullOrEmpty(p) || p.Length > 256)
+            var postUrl = Convert.ToString(RouteData.Values["postURL"]);
+            if (string.IsNullOrEmpty(postUrl))
                 return NotFound();
             //get guid
             var query = from post in this.DbBlog.Posts.Include(a => a.Tags).Include(a => a.Comments)
                         join postContent in this.DbBlog.PostContents
                         on post.PostID equals postContent.PostID
-                        where post.URL == p && post.CurrentContentID == postContent.PostContentID
+                        where post.URL == postUrl && post.CurrentContentID == postContent.PostContentID
                         select new PostViewModel()
                         {
                             PostID = post.PostID,

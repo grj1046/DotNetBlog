@@ -7,7 +7,7 @@
 <dl>
     @foreach (var item in Model.Posts)
     {
-        <dt><a asp-page="Post" asp-route-p="@item.URL" target="_blank">@item.Title</a></dt>
+        <dt><a asp-page="Post" asp-route-postURL="@item.URL" target="_blank">@item.Title</a></dt>
         <dd>@item.Summary</dd>
         <dd style="color:gray; font-size:small;">@item.UserNickName Posted @item.CreateAt</dd>
     }
