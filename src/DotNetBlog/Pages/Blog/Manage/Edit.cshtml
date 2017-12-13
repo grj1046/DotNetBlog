@@ -103,8 +103,10 @@
                     $content.val(html)
                 };
                 editor.create();
-                // 初始化 textarea 的值
-                $content.val(editor.txt.html());
+                //// 初始化 textarea 的值
+                //$content.val(editor.txt.html());
+                //初始化html editor的值
+                editor.txt.html($content.val());
                 $content.hide();
             </script>
             break;

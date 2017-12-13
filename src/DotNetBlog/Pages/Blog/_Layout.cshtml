@@ -52,7 +52,7 @@
                             <a asp-page="/Blog/Manage/Index" title="Manager Post">Hello @this.User.Identity.Name!</a>
                         </li>
                         <li>
-                            <a asp-page="/Blog/Manage/Edit" title="New Post">New Post</a>
+                            <a asp-page="/Blog/Manage/Edit" asp-route-postID="@Guid.Empty" title="New Post">New Post</a>
                         </li>
                     </ul>
                 }

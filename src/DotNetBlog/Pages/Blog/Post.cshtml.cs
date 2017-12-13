@@ -24,7 +24,7 @@ namespace DotNetBlog.Pages.Blog
 
         public async Task<IActionResult> OnGetAsync([FromRoute]string postURL)
         {
-            if (string.IsNullOrEmpty(postURL))
+            if (postURL == null)
                 return NotFound();
             //get guid
             var query = from post in this.DbBlog.Posts.Include(a => a.Tags).Include(a => a.Comments)

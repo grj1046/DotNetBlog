@@ -25,7 +25,7 @@ namespace DotNetBlog.Pages.Blog.Manage
             this.DbBlog = dbBlog;
         }
 
-        public async Task<IActionResult> OnGetAsync(Guid postID)
+        public async Task<IActionResult> OnGetAsync([FromRoute]Guid postID)
         {
             if (postID != Guid.Empty)
             {
@@ -129,7 +129,7 @@ namespace DotNetBlog.Pages.Blog.Manage
             post.UpdateAt = DateTime.Now;
 
             await this.DbBlog.SaveChangesAsync();
-            return RedirectToPage("../Post", null, new { p = post.URL });
+            return RedirectToPage("../Post", null, new { postURL = post.URL });
         }
 
         public IActionResult OnGetChangeEditor(string editorType)
