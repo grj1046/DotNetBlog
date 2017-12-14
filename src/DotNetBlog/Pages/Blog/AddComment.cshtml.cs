@@ -39,6 +39,7 @@ namespace DotNetBlog.Pages.Blog
             Comment comment = new Comment();
             comment.CommentID = commentResult.CommentID = Guid.NewGuid();
             comment.PostID = postID;
+            comment.ParentCommentID = commentResult.ParentCommentID;
             comment.IsDeleted = false;
             comment.CreateAt = DateTime.Now;
             comment.Content = commentResult.Comment;
@@ -60,6 +61,7 @@ namespace DotNetBlog.Pages.Blog
             await this.DbBlog.Comments.AddAsync(comment);
             await this.DbBlog.SaveChangesAsync();
             this.Comment = this.DbBlog.Comments.FirstOrDefault(a => a.CommentID == comment.CommentID);
+            this.ViewData["ContentID"] = contentID;
         }
 
         public class CommentResult

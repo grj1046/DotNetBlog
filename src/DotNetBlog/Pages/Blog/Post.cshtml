@@ -53,6 +53,7 @@
                             <textarea id="comment" name="comment" style="height:100px;padding:10px;" class="form-control"></textarea>
                         </div>
                         <div class="form-group" style="text-align:right;">
+                            <input id="parentCommentID" name="parentCommentID" type="hidden" value="@Guid.Empty" />
                             <button type="submit" class="btn btn-default">Submit</button>
                         </div>
                     </form>
@@ -121,13 +122,15 @@
                 $("#comment").val("");
                 //$("#formComment").ajaxSubmit();
             });
-        });
-        (function () {
             //load comments
-            $.get("GetComments/@this.Model.Post.PostID", function (data) {
+            $.get("GetComments/@this.Model.Post.PostID/@this.Model.Post.ContentID", function (data) {
                 $("#postComments").html(data);
                 $("#commentCount").text($("#postComments ul li").length);
             });
-        })();
+        });
+        function replayComment(commentID) {
+            $("#parentCommentID").val(commentID);
+            document.getElementById("comment").focus();
+        }
     </script>
 }

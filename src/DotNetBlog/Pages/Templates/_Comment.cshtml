@@ -1,12 +1,21 @@
 ﻿@using System.Security.Claims;
 @model DotNetBlog.Models.Comment
+
 <div id="cmd_@Model.CommentID">
     <bdo><a class="userName" href="javascript:void(0);">@Model.UserName</a></bdo>
     <span class="userComment">@Model.Content</span>
     <span class="commentTime">@Model.CreateAt</span>
-    <a href="javascript:replayComment(@Model.CommentID);">Reply</a>
+    @if (ViewData["ContentID"] != null && Convert.ToString(ViewData["ContentID"]) != Convert.ToString(Model.ContentID))
+    {
+        <span>
+            this comment is comment to
+            <a href="Blog/Post/@Model.PostID/history/@Model.ContentID">another</a>
+            conent
+        </span>
+    }
+    <a href="javascript:replayComment('@Model.CommentID.ToString()');">Reply</a>
     @if (this.User.Identity.IsAuthenticated && this.User.GetUserID() == this.Model.UserID)
     {
-        <a href="javascript:deleteComment(@Model.CommentID);">Delete</a>
+        <a href="javascript:deleteComment(''@Model.CommentID')">Delete</a>
     }
 </div>

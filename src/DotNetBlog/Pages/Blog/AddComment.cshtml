@@ -1,9 +1,9 @@
-﻿@page 
+﻿@page
 @model AddCommentModel
 @{
     Layout = "";
 }
 
 <li class="list-group-item">
-    @Html.Partial("Templates/_Comment", Model.Comment)
+    @Html.Partial("Templates/_Comment", Model.Comment, ViewData)
 </li>

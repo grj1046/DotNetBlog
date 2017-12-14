@@ -7,7 +7,7 @@
     @foreach (Comment item in this.Model.PostComments)
     {
         <li class="list-group-item">
-            @Html.Partial("Templates/_Comment", item)
+            @Html.Partial("Templates/_Comment", item, ViewData)
         </li>
     }
 </ul>

@@ -23,10 +23,11 @@ namespace DotNetBlog.Pages.Blog
         [BindProperty]
         public IEnumerable<Comment> PostComments { get; set; }
 
-        public async Task OnGet([FromRoute]Guid postID)
+        public async Task OnGet([FromRoute]Guid postID, [FromRoute]Guid? contentID)
         {
             if (postID == Guid.Empty)
                 throw new ArgumentNullException("PostID");
+            this.ViewData["ContentID"] = contentID;
             this.PostComments = await this.DbBlog.Comments
                 .Where(a => a.PostID == postID && !a.IsDeleted)
                 .AsNoTracking().ToListAsync();
