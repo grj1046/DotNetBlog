@@ -23,7 +23,7 @@ namespace DotNetBlog.Pages.Blog
         [BindProperty]
         public IEnumerable<Comment> PostComments { get; set; }
 
-        public async Task OnGet(Guid postID)
+        public async Task OnGet([FromRoute]Guid postID)
         {
             if (postID == Guid.Empty)
                 throw new ArgumentNullException("PostID");

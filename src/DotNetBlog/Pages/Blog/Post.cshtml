@@ -120,7 +120,7 @@
         });
         (function () {
             //load comments
-            $.get("GetComments?postID=@this.Model.Post.PostID", function (data) {
+            $.get("GetComments/@this.Model.Post.PostID", function (data) {
                 $("#postComments").html(data);
                 $("#commentCount").text($("#postComments ul li").length);
             });
