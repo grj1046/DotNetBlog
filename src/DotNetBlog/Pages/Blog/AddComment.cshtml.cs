@@ -20,18 +20,21 @@ namespace DotNetBlog.Pages.Blog
             this.DbBlog = dbBlog;
         }
 
+        [BindProperty]
+        public Comment Comment { get; set; }
+
         public void OnGet()
         {
         }
 
-        public async Task OnPost(Guid postID, Guid contentID, [FromForm]CommentResult commentResult)
+        public async Task OnPostAsync([FromRoute]Guid postID, [FromRoute] Guid contentID, [FromForm]CommentResult commentResult)
         {
             if (postID == Guid.Empty)
                 throw new ArgumentNullException("PostID");
             if (contentID == Guid.Empty)
                 throw new ArgumentNullException("ContentID");
-            if (!this.User.Identity.IsAuthenticated && string.IsNullOrEmpty(commentResult.UserEmail))
-                throw new UnauthorizedAccessException("User not Authenticated and UserEmail is empty also.");
+            //if (!this.User.Identity.IsAuthenticated && string.IsNullOrEmpty(commentResult.UserEmail))
+            //    throw new UnauthorizedAccessException("User not Authenticated and UserEmail is empty also.");
 
             Comment comment = new Comment();
             comment.CommentID = commentResult.CommentID = Guid.NewGuid();
@@ -56,6 +59,7 @@ namespace DotNetBlog.Pages.Blog
 
             await this.DbBlog.Comments.AddAsync(comment);
             await this.DbBlog.SaveChangesAsync();
+            this.Comment = this.DbBlog.Comments.FirstOrDefault(a => a.CommentID == comment.CommentID);
         }
 
         public class CommentResult

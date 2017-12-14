@@ -1,4 +1,5 @@
-﻿@page 
+﻿@page
+
 @model PostModel
 @{
     ViewData["Title"] = "Post";
@@ -28,7 +29,7 @@
                 <div class="panelList" id="postComments">
                 </div>
                 <div class="panelCommentForm">
-                    <form id="formComment" action="/Blog/Post/AddComment?PostID=@this.Model.Post.PostID&ContentID=@this.Model.Post.ContentID" method="post" autocomplete="off" novalidate="novalidate">
+                    <form id="formComment" asp-page="AddComment" asp-route-PostID="@this.Model.Post.PostID" asp-route-ContentID="@this.Model.Post.ContentID" method="post" autocomplete="off" novalidate="novalidate">
 
                         @if (!this.User.Identity.IsAuthenticated)
                         {
@@ -68,6 +69,7 @@
         case EditorType.Text:
             break;
         case EditorType.Html:
+            <link rel="stylesheet" href="~/lib/wangEditor/release/wangEditor.css" asp-append-version="true" />
             break;
         case EditorType.Markdown:
             <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.user.css" asp-append-version="true" />
@@ -114,7 +116,9 @@
                     //has some error
                     return;
                 }
-                alert("submit comment");
+                $("#postComments ul").append(data);
+                $("#commentCount").text($("#postComments ul li").length);
+                $("#comment").val("");
                 //$("#formComment").ajaxSubmit();
             });
         });
