@@ -1,27 +1,13 @@
-﻿@inject DotNetBlog.Models.GuorjAccountDbContext DbAccount
-
+﻿
 @if (this.User.Identity.IsAuthenticated)
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-page="/Blog/Manage/Edit" asp-route-postID="@Guid.Empty" title="New Post">New Post</a></li>
-        <li class="dropdown">
-            <a href="javascript:void(0);" data-toggle="dropdown">
-                @this.User.Identity.Name
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-                <li><a asp-page="/Account/Manage/Index">Account Setup</a></li>
-                <li><a asp-page="/Blog/Manage/Index">Blog Setup</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="/Account/Logout" data-method="Post" rel="nofollow">Log out</a></li>
-            </ul>
-        </li>
-    </ul>
+    <a asp-page="/Blog/Manage/Edit" asp-route-postID="@Guid.Empty" title="New Post">New Post</a>
+    <a href="javascript:void(0);">@this.User.Identity.Name</a>
+    <a asp-page="/Account/Manage/Index">Account Setup</a>
+    <a asp-page="/Blog/Manage/Index">Blog Setup</a>
+    <a href="/Account/Logout" data-method="Post" rel="nofollow">Log out</a>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-page="/Account/Register">Register</a></li>
-        <li><a asp-page="/Account/Login">Log in</a></li>
-    </ul>
+    <a asp-page="/Account/Login">Log in</a>
 }
