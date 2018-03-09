@@ -3,17 +3,18 @@
   "private": true,
   "dependencies": {
     "jquery": "3.2.1",
-    "jquery-validation": "1.14.0",
+    "jquery-validation": "1.17.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "jquery-md5": "*",
     "jsencrypt": "v2.3.0",
-    "wangEditor": "v3.0.15",
+    "wangEditor": "v3.1.0",
     "jquery-ujs": "v1.2.2",
     "bootstrap-datepicker": "v1.7.1",
     "jquery-form": "v4.2.2"
   },
   "resolutions": {
     "jquery": "3.2.1",
-    "wangEditor": "v3.0.15"
+    "wangEditor": "v3.1.0",
+    "jquery-validation": "1.17.0"
   }
 }

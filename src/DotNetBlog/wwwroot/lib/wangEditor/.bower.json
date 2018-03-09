@@ -17,15 +17,15 @@
     "node"
   ],
   "private": true,
-  "version": "3.0.15",
-  "_release": "3.0.15",
+  "version": "3.1.0",
+  "_release": "3.1.0",
   "_resolution": {
     "type": "version",
-    "tag": "v3.0.15",
-    "commit": "ffe6885a97dcf8907020902120ebe11ab84b256c"
+    "tag": "v3.1.0",
+    "commit": "0b1428c70211d92d7325c9b7cae5965d47ff0e09"
   },
   "_source": "https://github.com/wangfupeng1988/wangEditor.git",
-  "_target": "v3.0.15",
+  "_target": "v3.1.0",
   "_originalSource": "wangEditor",
   "_direct": true
 }

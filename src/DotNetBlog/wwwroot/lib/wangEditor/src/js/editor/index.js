@@ -128,9 +128,21 @@ Editor.prototype = {
         this.toolbarElemId = toolbarElemId
         this.textElemId = textElemId
 
+        // 记录输入法的开始和结束
+        let compositionEnd = true
+        $textContainerElem.on('compositionstart', () => {
+            // 输入法开始输入
+            compositionEnd = false
+        })
+        $textContainerElem.on('compositionend', () => {
+            // 输入法结束输入
+            compositionEnd = true
+        })
+
         // 绑定 onchange
         $textContainerElem.on('click keyup', () => {
-            this.change &&  this.change()
+            // 输入法结束才出发 onchange
+            compositionEnd && this.change &&  this.change()
         })
         $toolbarElem.on('click', function () {
             this.change &&  this.change()
@@ -143,9 +155,18 @@ Editor.prototype = {
             
             $(document).on('click', (e) => {
                 //判断当前点击元素是否在编辑器内
-                const isChild = $toolbarSelector.isContain($(e.target))
+                const isChild = $textElem.isContain($(e.target))
                 
+                //判断当前点击元素是否为工具栏
+                const isToolbar = $toolbarElem.isContain($(e.target))
+                const isMenu = $toolbarElem[0] == e.target ? true : false
+
                 if (!isChild) {
+                    //若为选择工具栏中的功能，则不视为成blur操作
+                    if(isToolbar && !isMenu){
+                        return
+                    }
+
                     if(this.isFocus){
                         this.onblur && this.onblur()
                     }
