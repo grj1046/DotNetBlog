@@ -2,43 +2,35 @@
 @model LoginModel
 @{
     ViewData["Title"] = "Log in";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DotNetBlog</title>
 
-<div class="container" style="display:flex; justify-content:flex-start; align-items:center; flex-direction:column;">
-    <div style="height:200px;"></div>
-    <div style="width:300px; border:1px solid #eaeaea;padding:0 30px;">
-        <h2>@ViewData["Title"]</h2>
-        <form method="post" autocomplete="off" novalidate="novalidate" onsubmit="cmdEncrypt();">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <p>
-                <label asp-for="Input.Email" class="input_label">
-                    Email(<a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" title="Register as a new user" style="font-size:smaller;">Register</a>)
-                </label>
-                <input asp-for="Input.Email" autofocus class="input_text" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </p>
-            <p>
-                <label asp-for="Input.Password" class="input_label">
-                    Password(<a asp-page="./ForgotPassword" title="reset your password" style="font-size:smaller;">Forgot?</a>)
-                </label>
-                <input asp-for="Input.Password" class="input_text" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </p>
-            <label asp-for="Input.RememberMe">
-                <input asp-for="Input.RememberMe" />
-                @Html.DisplayNameFor(m => m.Input.RememberMe)
-            </label>
-            <p>
-                <button type="submit" class="login_button">Log in</button>
-            </p>
-            <div>
-                <p></p>
-            </div>
-        </form>
-    </div>
-</div>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/base.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~~/css/base.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <script type="text/javascript">
+        if (top.location !== self.location) {
+            top.location = self.location
+        } else {
+            if (top !== self) {
+                if (confirm("Reload?")) {
+                    top.location.reload()
+                }
+            }
+        };
+    </script>
 
-@section Styles{
     <style type="text/css">
         .input_label {
             display: block;
@@ -70,15 +62,63 @@
                 background-color: #eaeaea;
             }
     </style>
-}
+</head>
+<body>
+    <header>
+        <span>
+            <a asp-page="/Index">Home</a>
+            <a asp-page="/Blog/Index">Blog</a>
+        </span>
+    </header>
+    <div class="container" style="display:flex; justify-content:center; align-items:flex-start;">
+        <div style="padding:0 30px;">
+            <h2>@ViewData["Title"]</h2>
+            <div style="display:flex; justify-content:center; align-items:flex-start;">
+                <form method="post" autocomplete="off" novalidate="novalidate" onsubmit="cmdEncrypt();" style="width:500px;">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <p>
+                        <label asp-for="Input.Email" class="input_label">
+                            Email(<a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" title="Register as a new user" style="font-size:smaller;">Register</a>)
+                        </label>
+                        <input asp-for="Input.Email" autofocus class="input_text" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </p>
+                    <p>
+                        <label asp-for="Input.Password" class="input_label">
+                            Password(<a asp-page="./ForgotPassword" title="reset your password" style="font-size:smaller;">Forgot?</a>)
+                        </label>
+                        <input asp-for="Input.Password" class="input_text" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </p>
+                    <label asp-for="Input.RememberMe">
+                        <input asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                    <p>
+                        <button type="submit" class="login_button">Log in</button>
+                    </p>
+                </form>
+                <div style="padding-left:50px;">
+                    No Account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" title="Register as a new user" style="font-size:smaller;">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-@section Scripts {
+    <footer>
+        <hr />
+        <p>&copy; 2018 - DotNetBlog</p>
+    </footer>
 
     <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/js/site.js"></script>
         <script src="~/js/jsencrypt.min.js"></script>
         <script src="~/js/jsrsa.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/js/jsencrypt.min.js" asp-append-version="true"></script>
         <script src="~/js/jsrsa.js" asp-append-version="true"></script>
     </environment>
@@ -88,5 +128,5 @@
             $("#Input_Password").val(hashedData);
         }
     </script>
-
-}
+</body>
+</html>

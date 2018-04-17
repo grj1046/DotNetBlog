@@ -2,44 +2,122 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+    Layout = null;
 }
-<h2>@ViewData["Title"]</h2>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" autocomplete="off" novalidate="novalidate" onsubmit="cmdEncrypt()">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            @*<input type="hidden" name="encrypted_pwd" id="encrypted_pwd" />*@
-            <button type="submit" class="btn btn-default">Register</button>
-        </form>
-    </div>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DotNetBlog</title>
 
     <environment include="Development">
+        <link rel="stylesheet" href="~/css/base.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~~/css/base.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <script type="text/javascript">
+        if (top.location !== self.location) {
+            top.location = self.location
+        } else {
+            if (top !== self) {
+                if (confirm("Reload?")) {
+                    top.location.reload()
+                }
+            }
+        };
+    </script>
+
+    <style type="text/css">
+        .input_label {
+            display: block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-size: 14px;
+            line-height: 1.42857143;
+        }
+
+        .input_text {
+            padding: 4px 2px;
+            width: 220px;
+            vertical-align: middle;
+        }
+
+        .login_button {
+            border: 0;
+            border-radius: 2px;
+            box-sizing: border-box;
+            cursor: pointer;
+            font-size: .875em;
+            margin: 0;
+            padding: 10px 24px;
+            transition: box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+            .login_button:hover {
+                background-color: #eaeaea;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <span>
+            <a asp-page="/Index">Home</a>
+            <a asp-page="/Blog/Index">Blog</a>
+        </span>
+    </header>
+    <div class="container" style="display:flex; justify-content:center; align-items:flex-start;">
+        <div style="padding:0 30px;">
+            <h2>@ViewData["Title"]</h2>
+            <div style="display:flex; justify-content:center; align-items:flex-start;">
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post" autocomplete="off" novalidate="novalidate" onsubmit="cmdEncrypt()" style="width:500px;">
+                    <h4>Create a new account.</h4>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <p>
+                        <label asp-for="Input.Email" class="input_label"></label>
+                        <input asp-for="Input.Email" class="input_text" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </p>
+                    <p>
+                        <label asp-for="Input.Password" class="input_label"></label>
+                        <input asp-for="Input.Password" class="input_text" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </p>
+                    <p>
+                        <label asp-for="Input.ConfirmPassword" class="input_label"></label>
+                        <input asp-for="Input.ConfirmPassword" class="input_text" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </p>
+                    @*<input type="hidden" name="encrypted_pwd" id="encrypted_pwd" />*@
+                    <p>
+                        <button type="submit" class="login_button">Register</button>
+                    </p>
+                </form>
+                <div style="padding-left:50px;">
+                    hav an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" title="Register as a new user" style="font-size:smaller;">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <hr />
+        <p>&copy; 2018 - DotNetBlog</p>
+    </footer>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/js/site.js"></script>
         <script src="~/js/jsencrypt.min.js"></script>
         <script src="~/js/jsrsa.js"></script>
     </environment>
     <environment exclude="Development">
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
         <script src="~/js/jsencrypt.min.js" asp-append-version="true"></script>
         <script src="~/js/jsrsa.js" asp-append-version="true"></script>
     </environment>
@@ -51,4 +129,5 @@
             return;
         }
     </script>
-}
+</body>
+</html>
