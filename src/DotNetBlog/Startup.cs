@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using DotNetBlog.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using DotNetBlog.Services;
+using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotNetBlog
 {
@@ -41,9 +42,6 @@ namespace DotNetBlog
                     //CookieBuilder builder = new CookieBuilder();
                     //builder.Name = "s";
                     //builder.Build(context: null);
-#pragma warning disable CS0618 // 类型或成员已过时
-                    options.CookieName = "s";
-#pragma warning restore CS0618 // 类型或成员已过时
 
                     //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
                 });
@@ -58,9 +56,6 @@ namespace DotNetBlog
                 options.Conventions.AddPageRoute("/Blog/Manage/Edit", "Blog/Manage/Edit/{PostID?}");
                 options.Conventions.AddPageRoute("/Blog/GetComments", "Blog/Post/GetComments/{PostID?}/{ContentID?}");
                 options.Conventions.AddPageRoute("/Blog/AddComment", "Blog/Post/AddComment/{PostID?}/{ContentID?}");
-            }).AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
             //services.AddMemoryCache(options =>
             //{
@@ -72,7 +67,7 @@ namespace DotNetBlog
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -82,18 +77,22 @@ namespace DotNetBlog
             else
             {
                 app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseAuthentication();
-
-            app.UseMvc(routes =>
+            app.UseRouting(routes =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                routes.MapRazorPages();
             });
+
+            app.UseCookiePolicy();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
         }
     }
 }

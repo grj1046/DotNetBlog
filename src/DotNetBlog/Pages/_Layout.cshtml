@@ -15,14 +15,14 @@
     </environment>
     <script type="text/javascript">
         if (top.location !== self.location) {
-            top.location = self.location
+            top.location = self.location;
         } else {
             if (top !== self) {
                 if (confirm("Reload?")) {
-                    top.location.reload()
+                    top.location.reload();
                 }
             }
-        };
+        }
     </script>
 
     @RenderSection("Styles", required: false)
