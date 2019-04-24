@@ -4,16 +4,16 @@
     ViewData["Title"] = "Home page";
 }
 <div style="margin-bottom:10px;">
-    @for (int i = 0; i < Model.Users.Count; i++)
-    {
-        <div style="margin-top:10px;">
-            <div>UserID: @Model.Users[i].UserID</div>
-            <div>Email: @Model.Users[i].Account.Email</div>
-            <div>Salt: @Model.Users[i].Account.Salt</div>
-            <div>PasswordHash: @Model.Users[i].Account.PasswordHash</div>
-            <div>CreateAt: @Model.Users[i].Account.CreateAt</div>
-        </div>
-    }
+    @*@for (int i = 0; i < Model.Users.Count; i++)
+        {
+            <div style="margin-top:10px;">
+                <div>UserID: @Model.Users[i].UserID</div>
+                <div>Email: @Model.Users[i].Account.Email</div>
+                <div>Salt: @Model.Users[i].Account.Salt</div>
+                <div>PasswordHash: @Model.Users[i].Account.PasswordHash</div>
+                <div>CreateAt: @Model.Users[i].Account.CreateAt</div>
+            </div>
+        }*@
 </div>
 
 <div class="row">

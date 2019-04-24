@@ -11,7 +11,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using DotNetBlog.Services;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
+using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace DotNetBlog
 {
@@ -27,24 +29,28 @@ namespace DotNetBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<GuorjAccountDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("GuorjAccountConnection"));
-            });
+            //services.AddDbContext<GuorjAccountDbContext>(options =>
+            //{
+            //    options.UseMySQL(Configuration.GetConnectionString("GuorjAccountConnection"));
+            //});
 
-            services.AddDbContext<GuorjBlogDbContext>(options =>
-            {
-                options.UseMySql(Configuration.GetConnectionString("GuorjBlogConnection"));
-            });
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    //CookieBuilder builder = new CookieBuilder();
-                    //builder.Name = "s";
-                    //builder.Build(context: null);
+            //services.AddDbContext<GuorjBlogDbContext>(options =>
+            //{
+            //    options.UseMySQL(Configuration.GetConnectionString("GuorjBlogConnection"));
+            //});
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(options =>
+            //    {
+            //        //CookieBuilder builder = new CookieBuilder();
+            //        //builder.Name = "s";
+            //        //builder.Build(context: null);
 
-                    //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
-                });
+            //        //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
+            //    });
+
+            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+
+
             services.AddMvc().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeFolder("/Account/Manage");
@@ -72,7 +78,7 @@ namespace DotNetBlog
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDatabaseErrorPage();
             }
             else
             {

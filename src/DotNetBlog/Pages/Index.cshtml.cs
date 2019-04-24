@@ -6,24 +6,32 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DotNetBlog.Models;
 using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
+using System.Data;
+using Dapper;
 
 namespace DotNetBlog.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly GuorjAccountDbContext db;
+        private readonly IDbConnectionFactory db;
 
         public List<User> Users { get; set; }
 
-        public IndexModel(GuorjAccountDbContext dotNetBlogDb)
+        public IndexModel(IDbConnectionFactory dotNetBlogDb)
         {
             this.db = dotNetBlogDb;
         }
 
         public void OnGet()
         {
-            this.Users = db.Users.Include(a => a.Account).Include(a => a.UserRoles).ToList();
+            var data = db.AccountDb.Query<Role>("SELECT * FROM roles");
+           
+        }
+
+        public class Role
+        {
+            public Guid RoleID { get; set; }
+            public string Name { get; set; }
         }
     }
 }

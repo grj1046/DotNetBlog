@@ -1,33 +1,58 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Configuration;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DotNetBlog.Models
 {
-    public class GuorjAccountDbContext : DbContext
+    //public abstract class GuorjAccountDb : DbConnection
+    //{
+    //    public GuorjAccountDb(IConfiguration configuration)
+    //    {
+    //        Configuration = configuration;
+    //    }
+    //    public IConfiguration Configuration { get; }
+    //}
+
+    public interface IDbConnectionFactory
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Account> Accounts { get; set; }
+        IDbConnection AccountDb { get; }
+        IDbConnection BlogDb { get; }
+    }
 
-        public DbSet<Role> Roles { get; set; }
+    public class DbConnectionFactory : IDbConnectionFactory
+    {
+        public IConfiguration Configuration { get; }
+        private IDbConnection accountDb;
+        private IDbConnection blogDb;
 
-        public DbSet<UserRole> UserRoles { get; set; }
-
-        public GuorjAccountDbContext(DbContextOptions<GuorjAccountDbContext> options) : base(options)
+        public DbConnectionFactory(IConfiguration configuration)
         {
-
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<UserRole>().HasKey(a => new { a.UserID, a.RoleID });
+            this.Configuration = configuration;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public IDbConnection AccountDb
         {
-            base.OnConfiguring(optionsBuilder);
+            get
+            {
+                if (this.accountDb == null)
+                    this.accountDb = new MySqlConnection(Configuration.GetConnectionString("GuorjAccountConnection"));
+                return this.accountDb;
+            }
+        }
+
+        public IDbConnection BlogDb
+        {
+            get
+            {
+                if (this.blogDb == null)
+                    this.blogDb = new MySqlConnection(Configuration.GetConnectionString("GuorjBlogConnection"));
+                return this.blogDb;
+            }
         }
     }
 }

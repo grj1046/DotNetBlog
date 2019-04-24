@@ -8,7 +8,6 @@ using DotNetBlog.Models;
 using DotNetBlog.Services;
 using System.ComponentModel.DataAnnotations;
 using DotNetBlog.Identity;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace DotNetBlog.Pages.Account.Manage
@@ -22,28 +21,26 @@ namespace DotNetBlog.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public GuorjAccountDbContext DbContext { get; set; }
         public IEmailSender EmailSender { get; set; }
 
-        public IndexModel(GuorjAccountDbContext dbContext, IEmailSender emailSender)
+        public IndexModel( IEmailSender emailSender)
         {
-            this.DbContext = dbContext;
             this.EmailSender = emailSender;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var userID = this.User.GetUserID();
-            var user = await this.DbContext.Users.Include(a => a.Account).FirstOrDefaultAsync(a => a.UserID == userID);
-            if (user == null)
-                throw new ApplicationException($"Unable to load user with ID '{userID}'.");
+            //var userID = this.User.GetUserID();
+            //var user = await this.DbContext.Users.Include(a => a.Account).FirstOrDefaultAsync(a => a.UserID == userID);
+            //if (user == null)
+            //    throw new ApplicationException($"Unable to load user with ID '{userID}'.");
 
-            this.UserName = user.Account.UserName;
-            this.Input = new InputModel()
-            {
-                Email = user.Account.Email,
-                PhoneNumber = user.Account.PhoneNumber
-            };
+            //this.UserName = user.Account.UserName;
+            //this.Input = new InputModel()
+            //{
+            //    Email = user.Account.Email,
+            //    PhoneNumber = user.Account.PhoneNumber
+            //};
 
             //TODO: Email
             IsEmailConfirmed = false;
@@ -57,35 +54,35 @@ namespace DotNetBlog.Pages.Account.Manage
                 return Page();
             var userID = this.User.GetUserID();
 
-            var user = await this.DbContext.Users.Include(a => a.Account).FirstOrDefaultAsync();
-            if (user == null)
-                throw new ApplicationException($"Unable to load user with ID '{userID}'.");
-            if (this.Input.Email != user.Account.Email)
-            {
-                user.Account.Email = this.Input.Email;
-                try
-                {
-                    await this.DbContext.SaveChangesAsync();
-                }
-                catch (Exception)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.UserID}'.");
-                }
-            }
-            if (this.Input.PhoneNumber != user.Account.PhoneNumber)
-            {
-                user.Account.PhoneNumber = this.Input.PhoneNumber;
-                try
-                {
-                    await this.DbContext.SaveChangesAsync();
-                }
-                catch (Exception)
-                {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.UserID}'.");
-                }
-            }
+            //var user = await this.DbContext.Users.Include(a => a.Account).FirstOrDefaultAsync();
+            //if (user == null)
+            //    throw new ApplicationException($"Unable to load user with ID '{userID}'.");
+            //if (this.Input.Email != user.Account.Email)
+            //{
+            //    user.Account.Email = this.Input.Email;
+            //    try
+            //    {
+            //        await this.DbContext.SaveChangesAsync();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.UserID}'.");
+            //    }
+            //}
+            //if (this.Input.PhoneNumber != user.Account.PhoneNumber)
+            //{
+            //    user.Account.PhoneNumber = this.Input.PhoneNumber;
+            //    try
+            //    {
+            //        await this.DbContext.SaveChangesAsync();
+            //    }
+            //    catch (Exception)
+            //    {
+            //        throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.UserID}'.");
+            //    }
+            //}
 
-            this.StatusMessage = "Your profile has been updated";
+            //this.StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
 
@@ -94,17 +91,17 @@ namespace DotNetBlog.Pages.Account.Manage
             if (!ModelState.IsValid)
                 return Page();
 
-            var userID = this.User.GetUserID();
+            //var userID = this.User.GetUserID();
 
-            var user = await this.DbContext.Users.Include(a => a.Account).FirstOrDefaultAsync();
-            if (user == null)
-                throw new ApplicationException($"Unable to load user with ID '{userID}'.");
+            //var user = await this.DbContext.Users.Include(a => a.Account).FirstOrDefaultAsync();
+            //if (user == null)
+            //    throw new ApplicationException($"Unable to load user with ID '{userID}'.");
 
-            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-            //await _emailSender.SendEmailConfirmationAsync(user.Email, callbackUrl);
+            ////var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            ////var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+            ////await _emailSender.SendEmailConfirmationAsync(user.Email, callbackUrl);
 
-            StatusMessage = "Verification email sent. Please check your email.";
+            //StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
         }
 

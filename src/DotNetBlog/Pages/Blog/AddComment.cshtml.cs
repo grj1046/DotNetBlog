@@ -11,13 +11,9 @@ namespace DotNetBlog.Pages.Blog
 {
     public class AddCommentModel : PageModel
     {
-        public GuorjAccountDbContext DbAccount { get; set; }
-        public GuorjBlogDbContext DbBlog { get; set; }
 
-        public AddCommentModel(GuorjAccountDbContext dbAccount, GuorjBlogDbContext dbBlog)
+        public AddCommentModel()
         {
-            this.DbAccount = dbAccount;
-            this.DbBlog = dbBlog;
         }
 
         [BindProperty]
@@ -36,31 +32,31 @@ namespace DotNetBlog.Pages.Blog
             //if (!this.User.Identity.IsAuthenticated && string.IsNullOrEmpty(commentResult.UserEmail))
             //    throw new UnauthorizedAccessException("User not Authenticated and UserEmail is empty also.");
 
-            Comment comment = new Comment();
-            comment.CommentID = commentResult.CommentID = Guid.NewGuid();
-            comment.PostID = postID;
-            comment.ParentCommentID = commentResult.ParentCommentID;
-            comment.IsDeleted = false;
-            comment.CreateAt = DateTime.Now;
-            comment.Content = commentResult.Comment;
-            comment.ContentID = contentID;
-            comment.IsDeleted = false;
-            if (this.User.Identity.IsAuthenticated)
-            {
-                var userID = this.User.GetUserID();
-                var userName = this.User.Identity.Name;
-                comment.UserID = userID;
-                comment.UserName = userName;
-            }
-            else if (!string.IsNullOrEmpty(commentResult.UserEmail))
-            {
-                comment.UserEmail = commentResult.UserEmail;
-                comment.UserName = commentResult.UserName;
-            }
+            //Comment comment = new Comment();
+            //comment.CommentID = commentResult.CommentID = Guid.NewGuid();
+            //comment.PostID = postID;
+            //comment.ParentCommentID = commentResult.ParentCommentID;
+            //comment.IsDeleted = false;
+            //comment.CreateAt = DateTime.Now;
+            //comment.Content = commentResult.Comment;
+            //comment.ContentID = contentID;
+            //comment.IsDeleted = false;
+            //if (this.User.Identity.IsAuthenticated)
+            //{
+            //    var userID = this.User.GetUserID();
+            //    var userName = this.User.Identity.Name;
+            //    comment.UserID = userID;
+            //    comment.UserName = userName;
+            //}
+            //else if (!string.IsNullOrEmpty(commentResult.UserEmail))
+            //{
+            //    comment.UserEmail = commentResult.UserEmail;
+            //    comment.UserName = commentResult.UserName;
+            //}
 
-            await this.DbBlog.Comments.AddAsync(comment);
-            await this.DbBlog.SaveChangesAsync();
-            this.Comment = this.DbBlog.Comments.FirstOrDefault(a => a.CommentID == comment.CommentID);
+            //await this.DbBlog.Comments.AddAsync(comment);
+            //await this.DbBlog.SaveChangesAsync();
+            //this.Comment = this.DbBlog.Comments.FirstOrDefault(a => a.CommentID == comment.CommentID);
             this.ViewData["ContentID"] = contentID;
         }
 
