@@ -9,15 +9,6 @@ using System.Threading.Tasks;
 
 namespace DotNetBlog.Models
 {
-    //public abstract class GuorjAccountDb : DbConnection
-    //{
-    //    public GuorjAccountDb(IConfiguration configuration)
-    //    {
-    //        Configuration = configuration;
-    //    }
-    //    public IConfiguration Configuration { get; }
-    //}
-
     public interface IDbConnectionFactory
     {
         IDbConnection AccountDb { get; }
