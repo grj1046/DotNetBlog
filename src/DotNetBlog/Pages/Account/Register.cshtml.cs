@@ -10,19 +10,23 @@ using System.Security.Cryptography;
 using System.Text;
 using DotNetBlog.Common;
 using DotNetBlog.Identity;
+using Dapper;
 
 namespace DotNetBlog.Pages.Account
 {
     public class RegisterModel : PageModel
     {
 
+        private readonly IDbConnectionFactory db;
+
         [BindProperty]
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
 
-        public RegisterModel()
+        public RegisterModel(IDbConnectionFactory dotNetBlogDb)
         {
+            this.db = dotNetBlogDb;
         }
 
         public void OnGet(string returnUrl = null)
@@ -35,33 +39,48 @@ namespace DotNetBlog.Pages.Account
             this.ReturnUrl = returnUrl;
             if (this.ModelState.IsValid)
             {
-                //if (this.DbContext.Accounts.Any(a => a.Email == Input.Email))
-                //{
-                //    this.ModelState.AddModelError(string.Empty, "the email address is already registered");
-                //    return Page();
-                //}
-                //string strSalt = UserManager.GetSalt();
-                //var strMd5Pwd = UserManager.GetPasswordHash(strSalt, Input.Password);
+                this.db.AccountDb.Open();
+                var trans = this.db.AccountDb.BeginTransaction();
+                try
+                {
+                    string strSql = "SELECT * FROM accounts WHERE Email = @Email;";
+                    var account = await this.db.AccountDb.QueryFirstOrDefaultAsync<Models.Account>(strSql, new { Email = Input.Email }, trans);
+                    if (account != null)
+                    {
+                        this.ModelState.AddModelError(string.Empty, "the email address is already registered");
+                        return Page();
+                    }
+                    string strSalt = UserManager.GetSalt();
+                    var strMd5Pwd = UserManager.GetPasswordHash(strSalt, Input.Password);
 
-                ////create user when pass authentication
-                ////send confirm email
-                //var nowDate = DateTime.Now;
-                //Models.Account account = new Models.Account();
-                //account.AccountID = Guid.NewGuid();
-                //account.Email = Input.Email;
-                //account.Salt = strSalt;
-                //account.PasswordHash = strMd5Pwd;
-                //account.CreateAt = nowDate;
-                //account.UpdateAt = nowDate;
-                //Models.User user = new Models.User();
-                //user.UserID = Guid.NewGuid();
-                //user.CreateAt = nowDate;
-                //user.UpdateAt = nowDate;
-                //user.Account = account;
-                //user.NickName = Input.Email.Substring(0, Input.Email.IndexOf('@'));
-                //this.DbContext.Users.Add(user);
-                //await this.DbContext.SaveChangesAsync();
-                return LocalRedirect(Url.GetLocalUrl(returnUrl));
+                    //create user when pass authentication
+                    //send confirm email
+                    var nowDate = DateTime.Now;
+                    var UserID = Guid.NewGuid();
+                    string strNickName = Input.Email.Substring(0, Input.Email.IndexOf('@'));
+                    strSql = @"
+INSERT Users(ID, NickName, CreateAt, UpdateAt) VALUE(@ID, @NickName, @CreateAt, @UpdateAt);
+INSERT accounts(AccountID, Email, Salt, PasswordHash, UserID, CreateAt, UpdateAt) VALUE (@AccountID, @Email, @Salt, @PasswordHash, @UserID, @CreateAt, @UpdateAt);";
+                    await this.db.AccountDb.ExecuteAsync(strSql, new
+                    {
+                        AccountID = Guid.NewGuid(),
+                        Input.Email,
+                        Salt = strSalt,
+                        PasswordHash = strMd5Pwd,
+                        UserID,
+                        ID = UserID,
+                        NickName = strNickName,
+                        CreateAt = nowDate,
+                        UpdateAt = nowDate
+                    }, trans);
+                    trans.Commit();
+                    return LocalRedirect(Url.GetLocalUrl(returnUrl));
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw new Exception(ex.Message);
+                }
             }
             return Page();
         }

@@ -8,7 +8,6 @@ using DotNetBlog.Models;
 
 namespace DotNetBlog.Pages.Blog
 {
-    [Route("Blog/Post/{p}")]
     public class PostModel : PageModel
     {
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Profile";
 }
 <h2>@ViewData["Title"]</h2>
-@Html.Partial("_StatusMessage", Model.StatusMessage)
+@Partial("_StatusMessage", Model.StatusMessage)
 <div class="row">
     <div class="col-md-6">
         <form method="post" autocomplete="off" novalidate="novalidate">

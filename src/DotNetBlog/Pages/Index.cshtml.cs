@@ -24,7 +24,7 @@ namespace DotNetBlog.Pages
 
         public void OnGet()
         {
-            var data = db.AccountDb.Query<Role>("SELECT * FROM roles");
+            //var data = db.AccountDb.Query<Role>("SELECT * FROM roles");
            
         }
 
