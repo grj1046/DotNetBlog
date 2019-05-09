@@ -51,7 +51,7 @@ namespace DotNetBlog
             services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
-                options.Cookie.Domain = "authCookie";
+                options.Cookie.Name = "auth";
             });
 
             services.AddMvc().AddRazorPagesOptions(options =>

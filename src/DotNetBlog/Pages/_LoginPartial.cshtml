@@ -5,9 +5,10 @@
     <a href="javascript:void(0);">@this.User.Identity.Name</a>
     <a asp-page="/Account/Manage/Index">Account Setup</a>
     <a asp-page="/Blog/Manage/Index">Blog Setup</a>
-    <a href="/Account/Logout" data-method="Post" rel="nofollow">Log out</a>
+    <!--data-method="Post" post method occured 400 bad request error.-->
+    <a asp-page="/Account/Logout" rel="nofollow">Log out</a>
 }
 else
 {
-    <a asp-page="/Account/Login">Log in</a>
+    <a asp-page="/Account/Login" rel="nofollow">Log in</a>
 }
