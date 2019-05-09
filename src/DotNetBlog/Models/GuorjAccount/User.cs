@@ -9,12 +9,10 @@ using System.Threading.Tasks;
 
 namespace DotNetBlog.Models
 {
-    //[Table("")]
     public class User
     {
         [Key]
-        [Column("ID")]
-        public Guid UserID { get; set; }
+        public Guid ID { get; set; }
 
         [StringLength(16, MinimumLength = 3)]
         public string NickName { get; set; }
@@ -32,11 +30,6 @@ namespace DotNetBlog.Models
         public DateTime CreateAt { get; set; } = DateTime.Now;
 
         public DateTime UpdateAt { get; set; } = DateTime.Now;
-
-
-        //[Range()]
-        public Account Account { get; set; }
-        public IEnumerable<UserRole> UserRoles { get; set; }
     }
 
     public enum Gender

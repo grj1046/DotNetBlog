@@ -13,7 +13,6 @@ namespace DotNetBlog.Models
         public Guid RoleID { get; set; }
         [Column("Name")]
         public string RoleName { get; set; }
-        public IEnumerable<UserRole> UserRoles { get; set; }
     }
 
     //many role to many user
@@ -26,7 +25,6 @@ namespace DotNetBlog.Models
         //[Key, Column(Order = 1)]
         public Guid RoleID { get; set; }
 
-        public User User { get; set; }
-        public Role Role { get; set; }
+        public string RoleName { get; set; }
     }
 }

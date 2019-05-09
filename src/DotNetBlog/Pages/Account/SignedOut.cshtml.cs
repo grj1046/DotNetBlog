@@ -13,7 +13,7 @@ namespace DotNetBlog.Pages.Account
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToPage("/Inddex");
+                return RedirectToPage("/Index");
             }
             return Page();
         }

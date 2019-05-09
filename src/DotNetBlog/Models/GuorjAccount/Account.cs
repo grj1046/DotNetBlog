@@ -32,14 +32,11 @@ namespace DotNetBlog.Models
         [StringLength(32, MinimumLength = 32)]
         public string PasswordHash { get; set; }
 
-        public DateTime CreateAt { get; set; } = DateTime.Now;
-        public DateTime UpdateAt { get; set; } = DateTime.Now;
-
         //[DisplayColumn()]
         [JsonIgnore]
-        //[ForeignKey("UserID")]
         public Guid UserID { get; set; }
-        [JsonIgnore]
-        public User User { get; set; }
+
+        public DateTime CreateAt { get; set; } = DateTime.Now;
+        public DateTime UpdateAt { get; set; } = DateTime.Now;
     }
 }
