@@ -1,15 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-	<RuntimeIdentifiers>win7-x64;win10-x64;linux-x64;ubuntu.14.04-x64</RuntimeIdentifiers>
+    <UserSecretsId>DotNetBlog-A4F3D511-F855-442E-95FE-186EAAED0295</UserSecretsId>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.60.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview5-19227-01" />
     <PackageReference Include="MySql.Data" Version="8.0.16" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\GuorjAccount\" />
   </ItemGroup>
 </Project>
