@@ -21,7 +21,7 @@ USE `guorjaccount`;
 CREATE TABLE IF NOT EXISTS `accounts` (
   `AccountID` char(36) NOT NULL,
   `UserName` varchar(16) DEFAULT NULL,
-  `Email` longtext DEFAULT NULL,
+  `Email` varchar(320) DEFAULT NULL,
   `PhoneNumber` varchar(11) DEFAULT NULL,
   `Salt` varchar(5) DEFAULT NULL,
   `PasswordHash` varchar(32) DEFAULT NULL,
