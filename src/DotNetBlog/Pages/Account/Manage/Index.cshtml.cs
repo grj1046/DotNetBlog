@@ -16,7 +16,7 @@ namespace DotNetBlog.Pages.Account.Manage
     public class IndexModel : PageModel
     {
         private readonly IDbConnectionFactory db;
-        public string UserName { get; set; }
+        public string NickName { get; set; }
         public bool IsEmailConfirmed { get; set; }
         [TempData]
         public string StatusMessage { get; set; }
@@ -34,12 +34,16 @@ namespace DotNetBlog.Pages.Account.Manage
         public async Task<IActionResult> OnGetAsync()
         {
             var userID = this.User.GetUserID();
-            string strSql = "select UserName, Email, PhoneNumber from accounts where UserID = @UserID;";
-            var account = await this.db.AccountDb.QueryFirstOrDefaultAsync<Models.Account>(strSql, new { UserID = userID });
-            if (account == null)
+            string strSql = @"
+select UserName, Email, PhoneNumber from accounts where UserID = @UserID;
+select NickName, Birthday, Gender from users where ID = @UserID;";
+            var multiResult = await this.db.AccountDb.QueryMultipleAsync(strSql, new { UserID = userID });
+            var account = await multiResult.ReadFirstOrDefaultAsync<Models.Account>();
+            var user = await multiResult.ReadFirstOrDefaultAsync<Models.User>();
+            if (account == null || user == null)
                 throw new ApplicationException($"Unable to load user with ID '{userID}'.");
 
-            this.UserName = account.UserName;
+            this.NickName = user.NickName;
             this.Input = new InputModel()
             {
                 Email = account.Email,
