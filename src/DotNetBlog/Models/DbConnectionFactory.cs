@@ -26,24 +26,8 @@ namespace DotNetBlog.Models
             this.Configuration = configuration;
         }
 
-        public IDbConnection AccountDb
-        {
-            get
-            {
-                if (this.accountDb == null)
-                    this.accountDb = new MySqlConnection(Configuration.GetConnectionString("GuorjAccountConnection"));
-                return this.accountDb;
-            }
-        }
+        public IDbConnection AccountDb => this.accountDb ?? new MySqlConnection(Configuration.GetConnectionString("GuorjAccountConnection"));
 
-        public IDbConnection BlogDb
-        {
-            get
-            {
-                if (this.blogDb == null)
-                    this.blogDb = new MySqlConnection(Configuration.GetConnectionString("GuorjBlogConnection"));
-                return this.blogDb;
-            }
-        }
+        public IDbConnection BlogDb => this.blogDb ?? new MySqlConnection(Configuration.GetConnectionString("GuorjBlogConnection"));
     }
 }
