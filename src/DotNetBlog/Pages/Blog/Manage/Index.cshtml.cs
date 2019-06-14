@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DotNetBlog.Models;
 using System.Security.Claims;
+using Dapper;
 
 namespace DotNetBlog.Pages.Blog.Manage
 {
@@ -13,15 +14,12 @@ namespace DotNetBlog.Pages.Blog.Manage
     //https://my.oschina.net/u/3563169/home
     public class IndexModel : PageModel
     {
-        //public GuorjAccountDbContext DbAccount { get; set; }
+        private readonly IDbConnectionFactory db;
 
-        //public GuorjBlogDbContext DbBlog { get; set; }
-
-        //public IndexModel(GuorjAccountDbContext dbAccount, GuorjBlogDbContext dbBlog)
-        //{
-        //    this.DbAccount = dbAccount;
-        //    this.DbBlog = dbBlog;
-        //}
+        public IndexModel(IDbConnectionFactory dotNetBlogDb)
+        {
+            this.db = dotNetBlogDb;
+        }
 
         [BindProperty]
         public IQueryable<PostViewModel> Posts { get; set; }
@@ -29,9 +27,31 @@ namespace DotNetBlog.Pages.Blog.Manage
         [TempData]
         public string StatusMessage { get; set; }
 
-        public void OnGet()
+        public async void OnGet()
         {
-            //var userID = this.User.GetUserID();
+            var userID = this.User.GetUserID();
+
+            //Post
+            string strSql = "select * from Posts where IsDeleted = 0 and UserID = @UserID order by UpdateAt desc limit 20;";
+            var posts = await this.db.BlogDb.QueryAsync<Models.Post>(strSql, new { UserID = userID });
+            //PostTag
+            var listPostID = posts.Select(a => a.PostID).ToList();
+            IEnumerable<Models.PostTag> postTags = new List<Models.PostTag>();
+            if (listPostID.Any())
+            {
+                strSql = "select * from PostTags where PostID in @PostIDs;";
+                //select * from PostTags where PostID in (SELECT NULL WHERE 1 = 0)
+                postTags = await this.db.BlogDb.QueryAsync<Models.PostTag>(strSql, new { PostIDs = listPostID });
+            }
+            this.Posts = posts.Select<Models.Post, PostViewModel>(a => new PostViewModel()
+            {
+                PostID = a.PostID,
+                URL = a.URL,
+                Title = a.Title,
+                Summary = a.Summary,
+                CreateAt = a.CreateAt,
+                Tags = postTags.Where(b => b.PostID == a.PostID)
+            }).AsQueryable();
 
             //var query = from p in this.DbBlog.Posts.Include(a => a.Tags)
             //            orderby p.UpdateAt descending

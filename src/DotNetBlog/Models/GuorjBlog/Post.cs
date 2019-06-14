@@ -30,15 +30,6 @@ namespace DotNetBlog.Models
 
         public bool IsDeleted { get; set; } = false;
 
-        public IEnumerable<PostTag> Tags { get; set; }
-
-        public IEnumerable<Comment> Comments { get; set; }
-
-        /// <summary>
-        /// Content is latest content
-        /// </summary>
-        public PostContent Content => this.Contents?.OrderByDescending(a => a.CreateAt)?.FirstOrDefault();
-
         public IEnumerable<PostContent> Contents { get; set; }
 
         public DateTime CreateAt { get; set; } = DateTime.Now;
