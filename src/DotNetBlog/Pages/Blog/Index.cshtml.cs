@@ -30,7 +30,7 @@ namespace DotNetBlog.Pages.Blog
             string strSql = "select * from Posts limit 20;";
             var posts = await this.db.BlogDb.QueryAsync<Models.Post>(strSql);
             //PostTag
-            var listPostID = posts.Select(a => a.PostID).ToList();
+            var listPostID = posts.Select(a => a.ID).ToList();
             IEnumerable<Models.PostTag> postTags = new List<Models.PostTag>();
             if (listPostID.Any())
             {
@@ -52,12 +52,12 @@ namespace DotNetBlog.Pages.Blog
             {
                 PostViewModel model = new PostViewModel()
                 {
-                    PostID = item.PostID,
+                    PostID = item.ID,
                     UserNickName = users.FirstOrDefault(a => a.ID == item.UserID)?.NickName,
                     URL = item.URL,
                     Title = item.Title,
                     Summary = item.Summary,
-                    Tags = postTags.Where(a => a.PostID == item.PostID),
+                    Tags = postTags.Where(a => a.PostID == item.ID),
                     CreateAt = item.CreateAt
                 };
                 list.Add(model);

@@ -35,7 +35,7 @@ namespace DotNetBlog.Pages.Blog.Manage
             string strSql = "select * from Posts where IsDeleted = 0 and UserID = @UserID order by UpdateAt desc limit 20;";
             var posts = await this.db.BlogDb.QueryAsync<Models.Post>(strSql, new { UserID = userID });
             //PostTag
-            var listPostID = posts.Select(a => a.PostID).ToList();
+            var listPostID = posts.Select(a => a.ID).ToList();
             IEnumerable<Models.PostTag> postTags = new List<Models.PostTag>();
             if (listPostID.Any())
             {
@@ -45,12 +45,12 @@ namespace DotNetBlog.Pages.Blog.Manage
             }
             this.Posts = posts.Select<Models.Post, PostViewModel>(a => new PostViewModel()
             {
-                PostID = a.PostID,
+                PostID = a.ID,
                 URL = a.URL,
                 Title = a.Title,
                 Summary = a.Summary,
                 CreateAt = a.CreateAt,
-                Tags = postTags.Where(b => b.PostID == a.PostID)
+                Tags = postTags.Where(b => b.PostID == a.ID)
             }).AsQueryable();
         }
 

@@ -11,15 +11,11 @@ namespace DotNetBlog.Models
     public class PostTag
     {
         [Key]
-        [Column("ID")]
-        public Guid TagID { get; set; }
+        public Guid ID { get; set; }
 
         [MaxLength(64)]
         public string Tag { get; set; }
 
         public Guid PostID { get; set; }
-
-        [JsonIgnore]
-        public Post Post { get; set; }
     }
 }

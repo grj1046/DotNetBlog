@@ -11,23 +11,23 @@ namespace DotNetBlog.Models
 {
     public interface IDbConnectionFactory
     {
-        IDbConnection AccountDb { get; }
-        IDbConnection BlogDb { get; }
+        MySqlConnection AccountDb { get; }
+        MySqlConnection BlogDb { get; }
     }
 
     public class DbConnectionFactory : IDbConnectionFactory
     {
         public IConfiguration Configuration { get; }
-        private IDbConnection accountDb;
-        private IDbConnection blogDb;
+        private MySqlConnection accountDb;
+        private MySqlConnection blogDb;
 
         public DbConnectionFactory(IConfiguration configuration)
         {
             this.Configuration = configuration;
         }
 
-        public IDbConnection AccountDb => this.accountDb ?? new MySqlConnection(Configuration.GetConnectionString("GuorjAccountConnection"));
+        public MySqlConnection AccountDb => this.accountDb ?? new MySqlConnection(Configuration.GetConnectionString("GuorjAccountConnection"));
 
-        public IDbConnection BlogDb => this.blogDb ?? new MySqlConnection(Configuration.GetConnectionString("GuorjBlogConnection"));
+        public MySqlConnection BlogDb => this.blogDb ?? new MySqlConnection(Configuration.GetConnectionString("GuorjBlogConnection"));
     }
 }

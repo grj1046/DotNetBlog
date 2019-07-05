@@ -12,7 +12,7 @@ namespace DotNetBlog.Models
     {
         [Key]
         [Column("ID")]
-        public Guid PostContentID { get; set; }
+        public Guid ID { get; set; }
 
         [Required]
         public Guid PostID { get; set; }
@@ -28,9 +28,6 @@ namespace DotNetBlog.Models
         [Required]
         public string Content { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;
-
-        [JsonIgnore]
-        public Post Post { get; set; }
     }
 
     public enum EditorType
