@@ -26,8 +26,8 @@ namespace DotNetBlog.Models
             this.Configuration = configuration;
         }
 
-        public MySqlConnection AccountDb => this.accountDb ?? new MySqlConnection(Configuration.GetConnectionString("GuorjAccountConnection"));
+        public MySqlConnection AccountDb => this.accountDb ?? (this.accountDb = new MySqlConnection(Configuration.GetConnectionString("GuorjAccountConnection")));
 
-        public MySqlConnection BlogDb => this.blogDb ?? new MySqlConnection(Configuration.GetConnectionString("GuorjBlogConnection"));
+        public MySqlConnection BlogDb => this.blogDb ?? (this.blogDb = new MySqlConnection(Configuration.GetConnectionString("GuorjBlogConnection")));
     }
 }
