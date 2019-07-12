@@ -43,8 +43,8 @@ namespace DotNetBlog.Pages.Blog
             IEnumerable<Models.User> users = new List<Models.User>();
             if (listUserID.Any())
             {
-                strSql = "select ID, NickName from Users where ID in IDs;";
-                users = await this.db.BlogDb.QueryAsync<Models.User>(strSql, new { IDs = listUserID });
+                strSql = "select ID, NickName from Users where ID in @IDs;";
+                users = await this.db.AccountDb.QueryAsync<Models.User>(strSql, new { IDs = listUserID });
             }
             //Result
             List<PostViewModel> list = new List<PostViewModel>();
