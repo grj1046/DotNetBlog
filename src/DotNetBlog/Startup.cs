@@ -54,7 +54,7 @@ namespace DotNetBlog
                 options.Cookie.Name = "auth";
             });
 
-            services.AddMvc().AddRazorPagesOptions(options =>
+            services.AddRazorPages().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AuthorizeFolder("/Account/Manage");
                 options.Conventions.AuthorizeFolder("/Blog/Manage");
@@ -93,15 +93,17 @@ namespace DotNetBlog
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting(routes =>
-            {
-                routes.MapRazorPages();
-            });
+            app.UseRouting();
 
-            app.UseCookiePolicy();
+            //app.UseCookiePolicy();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+            });
         }
     }
 }
