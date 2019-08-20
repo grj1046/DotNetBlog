@@ -4,14 +4,14 @@
     ViewData["Title"] = "Profile";
 }
 <h2>@ViewData["Title"]</h2>
-@Partial("_StatusMessage", Model.StatusMessage)
+@await Html.PartialAsync("_StatusMessage", Model.StatusMessage)
 <div class="row">
     <div class="col-md-6">
         <form method="post" autocomplete="off" novalidate="novalidate">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="UserName"></label>
-                <input asp-for="UserName" class="form-control" disabled="disabled" />
+                <label asp-for="NickName"></label>
+                <input asp-for="NickName" class="form-control" disabled="disabled" />
             </div>
             <div class="form-group">
                 <label asp-for="Input.Email"></label>

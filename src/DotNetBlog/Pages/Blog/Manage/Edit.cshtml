@@ -13,9 +13,9 @@
             <span asp-validation-for="Input.Title" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <div style="display:flex;">
-                <label asp-for="Input.Content" style="flex:3; align-self:flex-end;"></label>
-                <div style="text-align:right; flex:1;">
+            <div>
+                <label asp-for="Input.Content"></label>
+                <div>
                     @if (this.Model.Input.PostID.HasValue && this.Model.Input.PostID.Value != Guid.Empty)
                     {
                         <span>@this.Model.Input.EditorType</span>
@@ -69,13 +69,13 @@
         case EditorType.Html:
             break;
         case EditorType.Markdown:
-            <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
+            @*<link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/thinker-md/emoji/nature.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/thinker-md/emoji/object.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/thinker-md/emoji/people.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
             <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
-            <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />
+            <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />*@
             <style type="text/css">
                 .body-content {
                     margin-top: 20px;
@@ -93,7 +93,7 @@
         case EditorType.Text:
             break;
         case EditorType.Html:
-            <script src="~/lib/wangEditor/release/wangEditor.min.js" charset="utf-8" asp-append-version="true"></script>
+            @*<script src="~/lib/wangEditor/release/wangEditor.min.js" charset="utf-8" asp-append-version="true"></script>
             <script type="text/javascript">
                 var editor = new window.wangEditor('#textEditor');
                 var $content = $('#Input_Content');
@@ -107,10 +107,10 @@
                 //初始化html editor的值
                 editor.txt.html($content.val());
                 $content.hide();
-            </script>
+            </script>*@
             break;
         case EditorType.Markdown:
-            <environment>
+            @*<environment>
                 <script src="~/thinker-md/javascripts/thinker-md.vendor.min.js" charset="utf-8" asp-append-version="true"></script>
             </environment>
             <script type="text/javascript">
@@ -125,7 +125,7 @@
                     base64url: '/c/imgUpload',
                     flowChart: true
                 });
-            </script>
+            </script>*@
             break;
         default:
             break;

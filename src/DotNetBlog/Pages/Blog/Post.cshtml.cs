@@ -5,17 +5,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DotNetBlog.Models;
+using Dapper;
 
 namespace DotNetBlog.Pages.Blog
 {
     public class PostModel : PageModel
     {
+        private readonly IDbConnectionFactory db;
 
         [BindProperty]
         public PostViewModel Post { get; set; }
 
-        public PostModel()
+        public PostModel(IDbConnectionFactory dotNetBlogDB)
         {
+            this.db = dotNetBlogDB;
         }
 
         public async Task<IActionResult> OnGetAsync([FromRoute]string postURL)
@@ -23,28 +26,33 @@ namespace DotNetBlog.Pages.Blog
             if (postURL == null)
                 return NotFound();
             //get guid
-            //var query = from post in this.DbBlog.Posts.Include(a => a.Tags).Include(a => a.Comments)
-            //            join postContent in this.DbBlog.PostContents
-            //            on post.PostID equals postContent.PostID
-            //            where post.URL == postURL && post.CurrentContentID == postContent.PostContentID
-            //            select new PostViewModel()
-            //            {
-            //                PostID = post.PostID,
-            //                Title = post.Title,
-            //                URL = post.URL,
-            //                Summary = post.Summary,
-            //                Tags = post.Tags,
-            //                EditorType = postContent.EditorType,
-            //                MD5Hash = postContent.MD5Hash,
-            //                ContentID = postContent.PostContentID,
-            //                Content = postContent.Content,
-            //                ContentCreateAt = postContent.CreateAt
-            //            };
-
-            //var currPost = await query.AsNoTracking().FirstOrDefaultAsync();
-            //if (currPost == null)
-            //    return NotFound();
-            //this.Post = currPost;
+            string strSql = "select * from posts where URL = @URL limit 1;";
+            var post = await this.db.BlogDb.QueryFirstOrDefaultAsync<Models.Post>(strSql, new { URL = postURL });
+            if (post == null)
+                return NotFound();
+            strSql = @"
+select * from postcontents where PostID = @PostID and ID = @CurrentContentID limit 1;
+select * from posttags where PostID = @PostID;
+select * from comments where PostID = @PostID and IsDeleted = 0;";
+            var multiResult = await this.db.BlogDb.QueryMultipleAsync(strSql, new { PostID = post.ID, post.CurrentContentID });
+            var postContent = await multiResult.ReadFirstOrDefaultAsync<Models.PostContent>();
+            var postTags = await multiResult.ReadAsync<Models.PostTag>();
+            var comments = await multiResult.ReadAsync<Models.Comment>();
+            if (postContent == null)
+                return NotFound();
+            this.Post = new PostViewModel()
+            {
+                PostID = post.ID,
+                Title = post.Title,
+                URL = post.URL,
+                Summary = post.Summary,
+                Tags = postTags,
+                EditorType = postContent.EditorType,
+                MD5Hash = postContent.MD5Hash,
+                ContentID = postContent.ID,
+                Content = postContent.Content,
+                ContentCreateAt = postContent.CreateAt
+            };
             return Page();
         }
 

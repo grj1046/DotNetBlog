@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DotNetBlog.Models;
 using System.Security.Claims;
+using Dapper;
 
 namespace DotNetBlog.Pages.Blog.Manage
 {
@@ -13,15 +14,12 @@ namespace DotNetBlog.Pages.Blog.Manage
     //https://my.oschina.net/u/3563169/home
     public class IndexModel : PageModel
     {
-        //public GuorjAccountDbContext DbAccount { get; set; }
+        private readonly IDbConnectionFactory db;
 
-        //public GuorjBlogDbContext DbBlog { get; set; }
-
-        //public IndexModel(GuorjAccountDbContext dbAccount, GuorjBlogDbContext dbBlog)
-        //{
-        //    this.DbAccount = dbAccount;
-        //    this.DbBlog = dbBlog;
-        //}
+        public IndexModel(IDbConnectionFactory dotNetBlogDb)
+        {
+            this.db = dotNetBlogDb;
+        }
 
         [BindProperty]
         public IQueryable<PostViewModel> Posts { get; set; }
@@ -29,23 +27,31 @@ namespace DotNetBlog.Pages.Blog.Manage
         [TempData]
         public string StatusMessage { get; set; }
 
-        public void OnGet()
+        public async void OnGetAsync()
         {
-            //var userID = this.User.GetUserID();
+            var userID = this.User.GetUserID();
 
-            //var query = from p in this.DbBlog.Posts.Include(a => a.Tags)
-            //            orderby p.UpdateAt descending
-            //            where p.UserID == userID && p.IsDeleted == false
-            //            select new PostViewModel()
-            //            {
-            //                PostID = p.PostID,
-            //                URL = p.URL,
-            //                Title = p.Title,
-            //                Summary = p.Summary,
-            //                CreateAt = p.CreateAt,
-            //                Tags = p.Tags
-            //            };
-            //this.Posts = query.Take(20).AsNoTracking();
+            //Post
+            string strSql = "select * from Posts where IsDeleted = 0 and UserID = @UserID order by UpdateAt desc limit 20;";
+            var posts = await this.db.BlogDb.QueryAsync<Models.Post>(strSql, new { UserID = userID });
+            //PostTag
+            var listPostID = posts.Select(a => a.ID).ToList();
+            IEnumerable<Models.PostTag> postTags = new List<Models.PostTag>();
+            if (listPostID.Any())
+            {
+                strSql = "select * from PostTags where PostID in @PostIDs;";
+                //select * from PostTags where PostID in (SELECT NULL WHERE 1 = 0)
+                postTags = await this.db.BlogDb.QueryAsync<Models.PostTag>(strSql, new { PostIDs = listPostID });
+            }
+            this.Posts = posts.Select<Models.Post, PostViewModel>(a => new PostViewModel()
+            {
+                PostID = a.ID,
+                URL = a.URL,
+                Title = a.Title,
+                Summary = a.Summary,
+                CreateAt = a.CreateAt,
+                Tags = postTags.Where(b => b.PostID == a.ID)
+            }).AsQueryable();
         }
 
         public async Task<IActionResult> OnGetDeletePostAsync(Guid postID)
@@ -53,18 +59,22 @@ namespace DotNetBlog.Pages.Blog.Manage
             if (postID == Guid.Empty)
                 return Page();
 
-            //var userID = this.User.GetUserID();
+            var userID = this.User.GetUserID();
+            string strSql = "select * from users where ID = @ID";
+            var user = await this.db.AccountDb.QueryFirstOrDefaultAsync<Models.User>(strSql, new { ID = userID });
+            if (user == null)
+                throw new ApplicationException($"Unable to load user with ID '{userID}'.");
 
-            //var user = await this.DbAccount.Users.FirstOrDefaultAsync(a => a.UserID == userID);
-            //if (user == null)
-            //    throw new ApplicationException($"Unable to load user with ID '{userID}'.");
-
-            //var post = await this.DbBlog.Posts
-            //    .FirstOrDefaultAsync(a => a.UserID == user.UserID && a.PostID == postID && a.IsDeleted == false);
-            //post.IsDeleted = true;
-            //await this.DbBlog.SaveChangesAsync();
-
-            //StatusMessage = $"The Post [{post.Title}] has been deleted.";
+            strSql = "select * from posts where UserID = @UserID and PostID = @PostID and IsDeleted = 0;";
+            var post = await this.db.BlogDb.QueryFirstOrDefaultAsync<Models.Post>(strSql, new { UserID = userID, PostID = postID, IsDeleted = false });
+            if (post == null)
+            {
+                StatusMessage = $"The Post Not Found.";
+                return RedirectToPage();
+            }
+            strSql = "update posts set IsDeleted = 1 where ID = @PostID;";
+            await this.db.BlogDb.ExecuteAsync(strSql, new { PostID = postID });
+            StatusMessage = $"The Post [{post.Title}] has been deleted.";
             return RedirectToPage();
         }
 

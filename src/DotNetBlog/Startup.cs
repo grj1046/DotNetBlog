@@ -65,7 +65,7 @@ namespace DotNetBlog
                 options.Conventions.AddPageRoute("/Blog/Manage/Edit", "Blog/Manage/Edit/{PostID?}");
                 options.Conventions.AddPageRoute("/Blog/GetComments", "Blog/Post/GetComments/{PostID?}/{ContentID?}");
                 options.Conventions.AddPageRoute("/Blog/AddComment", "Blog/Post/AddComment/{PostID?}/{ContentID?}");
-            });
+            }).AddNewtonsoftJson();
             //services.AddMemoryCache(options =>
             //{
             //    options.SizeLimit = 1024 * 1024;

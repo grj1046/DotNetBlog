@@ -9,8 +9,8 @@ namespace DotNetBlog.Models
 {
     public class Post
     {
-        [Column("ID")]
-        public Guid PostID { get; set; }
+        //[Column("ID")]
+        public Guid ID { get; set; }
 
         [Required]
         public Guid CurrentContentID { get; set; }
@@ -29,15 +29,6 @@ namespace DotNetBlog.Models
         public string Summary { get; set; }
 
         public bool IsDeleted { get; set; } = false;
-
-        public IEnumerable<PostTag> Tags { get; set; }
-
-        public IEnumerable<Comment> Comments { get; set; }
-
-        /// <summary>
-        /// Content is latest content
-        /// </summary>
-        public PostContent Content => this.Contents?.OrderByDescending(a => a.CreateAt)?.FirstOrDefault();
 
         public IEnumerable<PostContent> Contents { get; set; }
 

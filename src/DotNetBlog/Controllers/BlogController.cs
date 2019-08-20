@@ -16,7 +16,7 @@ namespace DotNetBlog.Controllers
         }
 
         [Route("/Blog/Post/AddComment")]
-        public async Task<JsonResult> AddComment(Guid postID, Guid contentID, [FromForm]CommentResult commentResult)
+        public async Task<JsonResult> AddCommentAsync(Guid postID, Guid contentID, [FromForm]CommentResult commentResult)
         {
             //if (postID == Guid.Empty)
             //    throw new ArgumentNullException("PostID");

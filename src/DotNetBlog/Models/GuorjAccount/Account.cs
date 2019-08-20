@@ -24,6 +24,7 @@ namespace DotNetBlog.Models
 
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
+        [StringLength(320, MinimumLength = 3)]
         public string Email { get; set; }
 
         //[Column(TypeName = "char")]

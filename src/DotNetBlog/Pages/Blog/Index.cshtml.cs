@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using DotNetBlog.Models;
 using System.Security.Claims;
+using Dapper;
 
 namespace DotNetBlog.Pages.Blog
 {
@@ -13,8 +14,11 @@ namespace DotNetBlog.Pages.Blog
     public class IndexModel : PageModel
     {
 
-        public IndexModel()
+        private IDbConnectionFactory db;
+
+        public IndexModel(IDbConnectionFactory dotNetBlogDb)
         {
+            this.db = dotNetBlogDb;
         }
 
         [BindProperty]
@@ -22,57 +26,43 @@ namespace DotNetBlog.Pages.Blog
 
         public async Task<IActionResult> OnGetAsync()
         {
-            //var q = from u in this.DbAccount.Users
-            //        join p in this.DbBlog.Posts
-            //        on u.UserID equals p.UserID
-            //        select u;
-            //var v = q.FirstOrDefault();
-
-            //var queryPosts = from p in this.DbBlog.Posts.Include(a => a.Tags)
-            //                 join pc in this.DbBlog.PostContents
-            //                 on p.PostID equals pc.PostID
-            //                 where p.IsDeleted == false && p.CurrentContentID == pc.PostContentID
-            //                 orderby p.UpdateAt descending
-            //                 select new
-            //                 {
-            //                     PostID = p.PostID,
-            //                     UserID = p.UserID,
-            //                     Title = p.Title,
-            //                     URL = p.URL,
-            //                     Summary = p.Summary,
-            //                     Tags = p.Tags,
-            //                     EditorType = pc.EditorType,
-            //                     MD5Hash = pc.MD5Hash,
-            //                     Content = pc.Content,
-            //                     ContentCreateAt = pc.CreateAt
-            //                 };
-
-            //var posts = await queryPosts.Take(20).AsNoTracking().ToListAsync();
-
-            //var queryUsers = from u in this.DbAccount.Users.Include(a => a.Account)
-            //                 join userID in posts.Select(a => a.UserID).Distinct()
-            //                 on u.UserID equals userID
-            //                 select new
-            //                 {
-            //                     UserID = u.UserID,
-            //                     UserNickName = u.NickName
-            //                 };
-            //var users = await queryUsers.AsNoTracking().ToListAsync();
-
-            //var query = from p in posts
-            //            join u in users on p.UserID equals u.UserID
-            //            select new PostViewModel()
-            //            {
-            //                PostID = p.PostID,
-            //                UserNickName = u.UserNickName,
-            //                URL = p.URL,
-            //                Title = p.Title,
-            //                Summary = p.Summary,
-            //                Tags = p.Tags,
-            //                CreateAt = p.ContentCreateAt
-
-            //            };
-            //this.Posts = query.AsQueryable();
+            //Post
+            string strSql = "select * from Posts limit 20;";
+            var posts = await this.db.BlogDb.QueryAsync<Models.Post>(strSql);
+            //PostTag
+            var listPostID = posts.Select(a => a.ID).ToList();
+            IEnumerable<Models.PostTag> postTags = new List<Models.PostTag>();
+            if (listPostID.Any())
+            {
+                strSql = "select * from PostTags where PostID in @PostIDs;";
+                //select * from PostTags where PostID in (SELECT NULL WHERE 1 = 0)
+                postTags = await this.db.BlogDb.QueryAsync<Models.PostTag>(strSql, new { PostIDs = listPostID });
+            }
+            //User
+            var listUserID = posts.Select(a => a.UserID).Distinct();
+            IEnumerable<Models.User> users = new List<Models.User>();
+            if (listUserID.Any())
+            {
+                strSql = "select ID, NickName from Users where ID in @IDs;";
+                users = await this.db.AccountDb.QueryAsync<Models.User>(strSql, new { IDs = listUserID });
+            }
+            //Result
+            List<PostViewModel> list = new List<PostViewModel>();
+            foreach (Post item in posts)
+            {
+                PostViewModel model = new PostViewModel()
+                {
+                    PostID = item.ID,
+                    UserNickName = users.FirstOrDefault(a => a.ID == item.UserID)?.NickName,
+                    URL = item.URL,
+                    Title = item.Title,
+                    Summary = item.Summary,
+                    Tags = postTags.Where(a => a.PostID == item.ID),
+                    CreateAt = item.CreateAt
+                };
+                list.Add(model);
+            }
+            this.Posts = list.AsQueryable();
 
             return Page();
         }
