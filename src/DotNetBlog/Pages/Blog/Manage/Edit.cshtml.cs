@@ -101,7 +101,8 @@ select * from posttags where PostID = @PostID;";
                 tag.ID = Guid.NewGuid();
                 tag.PostID = post.ID;
                 tag.Tag = "Blog";
-                await this.db.BlogDb.OpenAsync();
+                if (this.db.BlogDb.State != System.Data.ConnectionState.Open)
+                    await this.db.BlogDb.OpenAsync();
                 var trans = this.db.BlogDb.BeginTransaction();
                 try
                 {

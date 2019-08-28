@@ -1,15 +1,5 @@
 # DotNetBlog
-blog.guorj.cn
-
-at `Package Manager Console`
-```
-More than one DbContext was found. Specify which one to use. 
-Use the '-Context' parameter for PowerShell commands and the '--context' parameter for dotnet commands.
-
-PM> add-migration -Context GuorjBlogDbContext Init
-
-PM> update-database --context=GuorjBlogDbContext
-```
+www.guorj.cn
 
 RID(Runtime Identifier) https://github.com/dotnet/corefx/blob/master/pkg/Microsoft.NETCore.Platforms/runtime.json
 Deploying .NET Core apps with command-line interface (CLI) tools
@@ -21,3 +11,17 @@ dotnet publish -c Release -r win10-x64
 dotnet publish -c Release -r osx.10.11-x64
 Windows RIDs
 https://docs.microsoft.com/en-us/dotnet/core/rid-catalog#Using RIDs
+
+
+mysql
+
+```
+[mysqld]
+datadir=C:/Program Files/MariaDB 10.3/data
+port=3306
+innodb_buffer_pool_size=1007M
+character_set_server=utf8
+[client]
+port=3306
+plugin-dir=C:/Program Files/MariaDB 10.3/lib/plugin
+```

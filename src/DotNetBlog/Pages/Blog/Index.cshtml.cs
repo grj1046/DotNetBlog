@@ -13,7 +13,6 @@ namespace DotNetBlog.Pages.Blog
     //https://www.oschina.net/blog
     public class IndexModel : PageModel
     {
-
         private IDbConnectionFactory db;
 
         public IndexModel(IDbConnectionFactory dotNetBlogDb)
@@ -27,7 +26,7 @@ namespace DotNetBlog.Pages.Blog
         public async Task<IActionResult> OnGetAsync()
         {
             //Post
-            string strSql = "select * from Posts limit 20;";
+            string strSql = "select * from Posts where IsDeleted = 0 order by CreateAt DESC limit 20;";
             var posts = await this.db.BlogDb.QueryAsync<Models.Post>(strSql);
             //PostTag
             var listPostID = posts.Select(a => a.ID).ToList();

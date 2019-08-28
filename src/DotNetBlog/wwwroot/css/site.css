@@ -1,6 +1,6 @@
 body {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     flex-direction: column;
 }
 
@@ -9,32 +9,40 @@ header {
     justify-content: space-between;
     padding: 5px 20px;
     background-color: #f8f8f8;
+    border-bottom: 1px solid #d6d9de;
 }
 
     header a {
-        color: #808080;
+        color: #808080 !important;
         padding-left: 5px;
         padding-right: 5px;
-        text-decoration: none;
+        text-decoration: none !important;
     }
 
         header a:active, header a:visited {
-            color: #808080;
+            color: #808080 !important;
         }
 
         header a:hover {
-            color: #f60;
+            color: #f60 !important;
             text-decoration: underline;
         }
 
 .container {
-    flex-grow: 1;
-    margin: 0 50px 0 50px;
+    margin-bottom: 10px;
+    padding: 0 20px;
 }
 
-footer p {
-    text-align: center;
+footer {
+    margin-top: auto;
+    flex-shrink: 0;
+    border-top: 1px solid #d6d9de;
 }
+
+    footer p {
+        text-align: center;
+        color: #808080;
+    }
 
 /* common css */
 

@@ -1,14 +1,25 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Blog";
 }
-<h2>@ViewData["Title"]</h2>
-<dl>
+<ul class="list-container">
     @foreach (var item in Model.Posts)
     {
-        <dt><a asp-page="Post" asp-route-postURL="@item.URL" target="_blank">@item.Title</a></dt>
-        <dd>@item.Summary</dd>
-        <dd style="color:gray; font-size:small;">@item.UserNickName Posted @item.CreateAt</dd>
+        <li class="list-item" style="display:flex;">
+            <div class="content">
+                <a class="title" asp-page="Post" asp-route-postURL="@item.URL" target="_blank" title="@item.Title">@item.Title</a>
+                <div class="summary">@item.Summary</div>
+                <div class="bottom" style="color:gray; font-size:small;">
+                    <span>@item.UserNickName Posted @item.CreateAt</span>
+                </div>
+            </div>
+            @if (item.CreateAt.Ticks % 2 == 1)
+            {
+                <a class="thumb-image" asp-page="Post" asp-route-postURL="@item.URL" target="_blank">
+                    <img src="~/images/banner1.svg" style="width:auto; height: 100%;" />
+                </a>
+            }
+        </li>
     }
-</dl>
+</ul>

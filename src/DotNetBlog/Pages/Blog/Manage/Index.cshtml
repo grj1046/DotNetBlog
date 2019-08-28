@@ -3,18 +3,28 @@
 @{
     ViewData["Title"] = "Post List";
 }
-<h2>@ViewData["Title"]</h2>
-@await  Html.PartialAsync("Templates/_StatusMessage", Model.StatusMessage)
-<dl>
+
+@await Html.PartialAsync("Templates/_StatusMessage", Model.StatusMessage)
+
+<ul class="list-container">
     @foreach (var item in Model.Posts)
     {
-        <dt><a asp-page="/Blog/Post" asp-route-postURL="@item.URL" target="_blank">@item.Title</a></dt>
-        <dd>
-            <span>@item.CreateAt</span>
-            <span>
-                <a asp-page="/Blog/Manage/Edit" asp-route-postID="@item.PostID" title="Edit">Edit</a>
-                <a asp-page-handler="DeletePost" asp-route-postID="@item.PostID" title="Delete">Delete</a>
-            </span>
-        </dd>
+        <li class="list-item" style="display:flex; margin-bottom:10px;">
+            <div class="content">
+                <a class="title" asp-page="/Blog/Post" asp-route-postURL="@item.URL" target="_blank" title="@item.Title">@item.Title</a>
+                <div class="summary">@item.Summary</div>
+                <div class="bottom" style="color:gray; font-size:small;">
+                    <span>Posted @item.CreateAt</span>
+                    <a asp-page="/Blog/Manage/Edit" asp-route-postID="@item.PostID" title="Edit">Edit</a>
+                    <a asp-page-handler="DeletePost" asp-route-postID="@item.PostID" title="Delete">Delete</a>
+                </div>
+            </div>
+            @if (item.CreateAt.Minute % 2 == 0)
+            {
+                <a class="thumb-image" style="margin-left:5px;" asp-page="/Blog/Post" asp-route-postURL="@item.URL" target="_blank">
+                    <img src="~/images/banner1.svg" style="width:auto; height: 100%;" />
+                </a>
+            }
+        </li>
     }
-</dl>
+</ul>
