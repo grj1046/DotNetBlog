@@ -38,10 +38,12 @@ namespace DotNetBlog.Pages.Blog.Manage
             }
             var userID = this.User.GetUserID();
             string strSql = @"
-select * from posts where ID = @ID and UserID = @UserID limit 1;
+select * from posts where ID = @PostID and UserID = @UserID limit 1;
 select * from postcontents where PostID = @PostID order by CreateAt desc limit 1;
 select * from posttags where PostID = @PostID;";
-            var multiResult = await this.db.BlogDb.QueryMultipleAsync(strSql, new { ID = postID, UserID = userID });
+            if (this.db.BlogDb.State != System.Data.ConnectionState.Open)
+                await this.db.BlogDb.OpenAsync();
+            var multiResult = await this.db.BlogDb.QueryMultipleAsync(strSql, new { PostID = postID, UserID = userID });
 
             var post = await multiResult.ReadFirstOrDefaultAsync<Models.Post>();
             var postContent = await multiResult.ReadFirstOrDefaultAsync<Models.PostContent>();
@@ -128,11 +130,11 @@ insert into posttags(ID, PostID, Tag)values(@ID, @PostID, @Tag);";
             else
             {
                 string strSql = @"
-select * from posts where ID = @ID and UserID = @UserID and IsDeleted = 0 limit 1;
+select * from posts where ID = @PostID and UserID = @UserID and IsDeleted = 0 limit 1;
 select * from postcontents where PostID = @PostID and MD5Hash = @MD5Hash order by CreateAt desc limit 1;
 select * from posttags where PostID = @PostID;";
                 var multiResult = await this.db.BlogDb.QueryMultipleAsync(strSql,
-                    new { ID = this.Input.PostID, UserID = userID, MD5Hash = md5Hash });
+                    new { PostID = this.Input.PostID, UserID = userID, MD5Hash = md5Hash });
 
                 var post = await multiResult.ReadFirstOrDefaultAsync<Models.Post>();
                 var postContent = await multiResult.ReadFirstOrDefaultAsync<Models.PostContent>();
@@ -141,7 +143,8 @@ select * from posttags where PostID = @PostID;";
                     return NotFound();
                 post.UpdateAt = DateTime.Now;
                 strURL = post.URL;
-                await this.db.BlogDb.OpenAsync();
+                if (this.db.BlogDb.State != System.Data.ConnectionState.Open)
+                    await this.db.BlogDb.OpenAsync();
                 var trans = this.db.BlogDb.BeginTransaction();
                 try
                 {
