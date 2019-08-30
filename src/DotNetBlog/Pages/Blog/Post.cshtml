@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Post";
 }
-<h2>@ViewData["Title"]</h2>
 <div>
     <h3 class="postTitle">@this.Model.Post.Title</h3>
     @switch (this.Model.Post.EditorType)
@@ -50,7 +49,7 @@
                             }
                         </div>
                         <div class="form-group">
-                            <textarea id="comment" name="comment" style="height:100px;padding:10px;" class="form-control"></textarea>
+                            <textarea id="comment" name="comment" style="height:100px;padding:10px; width: 98%; margin: 1%;" class="form-control"></textarea>
                         </div>
                         <div class="form-group" style="text-align:right;">
                             <input id="parentCommentID" name="parentCommentID" type="hidden" value="@Guid.Empty" />
@@ -70,16 +69,16 @@
         case EditorType.Text:
             break;
         case EditorType.Html:
-            <link rel="stylesheet" href="~/lib/wangEditor/release/wangEditor.css" asp-append-version="true" />
+            @*<link rel="stylesheet" href="~/lib/wangEditor/release/wangEditor.css" asp-append-version="true" />*@
             break;
         case EditorType.Markdown:
-            <link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
-            <link rel="stylesheet" href="~/thinker-md/emoji/nature.css" asp-append-version="true" />
-            <link rel="stylesheet" href="~/thinker-md/emoji/object.css" asp-append-version="true" />
-            <link rel="stylesheet" href="~/thinker-md/emoji/people.css" asp-append-version="true" />
-            <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
-            <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
-            <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />
+            @*<link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
+                <link rel="stylesheet" href="~/thinker-md/emoji/nature.css" asp-append-version="true" />
+                <link rel="stylesheet" href="~/thinker-md/emoji/object.css" asp-append-version="true" />
+                <link rel="stylesheet" href="~/thinker-md/emoji/people.css" asp-append-version="true" />
+                <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
+                <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
+                <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />*@
             break;
         default:
             break;
@@ -94,16 +93,17 @@
         case EditorType.Html:
             break;
         case EditorType.Markdown:
-            <script src="~/thinker-md/javascripts/thinker-md.vendor.min.js" charset="utf-8" asp-append-version="true"></script>
+            @*<script src="~/thinker-md/javascripts/thinker-md.vendor.min.js" charset="utf-8" asp-append-version="true"></script>*@
             <script type="text/javascript">
-                $(".postContent").html(marked($(".postContent").html()));
+                //$(".postContent").html(marked($(".postContent").html()));
+                $(".postContent").html($(".postContent").html());
             </script>
             break;
         default:
             break;
     }
 
-    <script src="~/lib/jquery-form/dist/jquery.form.min.js" charset="utf-8" asp-append-version="true"></script>
+    <script src="~/lib/jquery.form/jquery.form.min.js" charset="utf-8" asp-append-version="true"></script>
     <script type="text/javascript">
         $(function () {
             $("#formComment").ajaxForm(function (data, status) {

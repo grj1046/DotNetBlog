@@ -34,6 +34,8 @@ namespace DotNetBlog.Pages.Blog
 select * from postcontents where PostID = @PostID and ID = @CurrentContentID limit 1;
 select * from posttags where PostID = @PostID;
 select * from comments where PostID = @PostID and IsDeleted = 0;";
+            if (this.db.BlogDb.State != System.Data.ConnectionState.Open)
+                await this.db.BlogDb.OpenAsync();
             var multiResult = await this.db.BlogDb.QueryMultipleAsync(strSql, new { PostID = post.ID, post.CurrentContentID });
             var postContent = await multiResult.ReadFirstOrDefaultAsync<Models.PostContent>();
             var postTags = await multiResult.ReadAsync<Models.PostTag>();

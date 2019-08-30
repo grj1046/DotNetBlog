@@ -11,7 +11,6 @@ namespace DotNetBlog.Models
     public class PostContent
     {
         [Key]
-        //[Column("ID")]
         public Guid ID { get; set; }
 
         [Required]

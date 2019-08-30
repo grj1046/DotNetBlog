@@ -9,7 +9,6 @@ namespace DotNetBlog.Models
 {
     public class Post
     {
-        //[Column("ID")]
         public Guid ID { get; set; }
 
         [Required]

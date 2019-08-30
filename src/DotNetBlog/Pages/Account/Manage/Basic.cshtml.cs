@@ -62,7 +62,6 @@ namespace DotNetBlog.Pages.Account.Manage
 
         public class InputModel
         {
-            //public Guid UserID { get; set; }
             public string NickName { get; set; }
             [DataType(DataType.Text)]
             [DisplayFormat(DataFormatString = "yyyy/MM/dd")]

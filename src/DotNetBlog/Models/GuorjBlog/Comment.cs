@@ -10,8 +10,7 @@ namespace DotNetBlog.Models
     public class Comment
     {
         [Key]
-        [Column("ID")]
-        public Guid CommentID { get; set; }
+        public Guid ID { get; set; }
 
         public Guid ParentCommentID { get; set; } = Guid.Empty;
 

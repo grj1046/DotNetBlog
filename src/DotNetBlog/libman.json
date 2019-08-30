@@ -26,5 +26,10 @@
       "library": "codemirror@5.48.4",
       "destination": "wwwroot/lib/codemirror/"
     }
-  ]
+  ,
+{
+  "library": "jquery.form@4.2.2",
+  "destination": "wwwroot/lib/jquery.form/"
+}
+]
 }

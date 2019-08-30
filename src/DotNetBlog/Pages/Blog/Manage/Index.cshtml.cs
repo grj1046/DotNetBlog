@@ -65,7 +65,7 @@ namespace DotNetBlog.Pages.Blog.Manage
             if (user == null)
                 throw new ApplicationException($"Unable to load user with ID '{userID}'.");
 
-            strSql = "select * from posts where UserID = @UserID and PostID = @PostID and IsDeleted = 0;";
+            strSql = "select * from posts where UserID = @UserID and ID = @PostID and IsDeleted = 0;";
             var post = await this.db.BlogDb.QueryFirstOrDefaultAsync<Models.Post>(strSql, new { UserID = userID, PostID = postID, IsDeleted = false });
             if (post == null)
             {

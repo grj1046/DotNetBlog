@@ -33,7 +33,6 @@ namespace DotNetBlog.Models
         [StringLength(32, MinimumLength = 32)]
         public string PasswordHash { get; set; }
 
-        //[DisplayColumn()]
         [JsonIgnore]
         public Guid UserID { get; set; }
 

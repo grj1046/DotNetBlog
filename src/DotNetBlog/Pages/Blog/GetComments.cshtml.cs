@@ -5,14 +5,16 @@ using System.Threading.Tasks;
 using DotNetBlog.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Dapper;
 
 namespace DotNetBlog.Pages.Blog
 {
     public class GetCommentsModel : PageModel
     {
-
-        public GetCommentsModel()
+        private readonly IDbConnectionFactory db;
+        public GetCommentsModel(IDbConnectionFactory dotNetBlogDB)
         {
+            this.db = dotNetBlogDB;
         }
 
         [BindProperty]
@@ -22,10 +24,9 @@ namespace DotNetBlog.Pages.Blog
         {
             if (postID == Guid.Empty)
                 throw new ArgumentNullException("PostID");
-            //this.ViewData["ContentID"] = contentID;
-            //this.PostComments = await this.DbBlog.Comments
-            //    .Where(a => a.PostID == postID && !a.IsDeleted)
-            //    .AsNoTracking().ToListAsync();
+            this.ViewData["ContentID"] = contentID;
+            string strSql = "SELECT * FROM comments WHERE PostID = @PostID AND IsDeleted = 0;";
+            this.PostComments = await this.db.BlogDb.QueryAsync<Comment>(strSql, new { PostID = postID });
         }
     }
 }

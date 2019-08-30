@@ -14,6 +14,8 @@ using Microsoft.Extensions.Hosting;
 using System.Data.Common;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace DotNetBlog
 {
@@ -48,7 +50,7 @@ namespace DotNetBlog
             //        //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/cookie?tabs=aspnetcore2x
             //    });
 
-            services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+            services.AddTransient<IDbConnectionFactory, DbConnectionFactory>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
             {
                 options.Cookie.Name = "auth";
@@ -66,6 +68,10 @@ namespace DotNetBlog
                 options.Conventions.AddPageRoute("/Blog/GetComments", "Blog/Post/GetComments/{PostID?}/{ContentID?}");
                 options.Conventions.AddPageRoute("/Blog/AddComment", "Blog/Post/AddComment/{PostID?}/{ContentID?}");
             }).AddNewtonsoftJson();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+            });
             //services.AddMemoryCache(options =>
             //{
             //    options.SizeLimit = 1024 * 1024;

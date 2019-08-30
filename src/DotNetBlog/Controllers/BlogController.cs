@@ -5,49 +5,54 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DotNetBlog.Models;
 using System.Security.Claims;
+using Dapper;
 
 namespace DotNetBlog.Controllers
 {
     public class BlogController : Controller
     {
+        private readonly IDbConnectionFactory db;
 
-        public BlogController()
+        public BlogController(IDbConnectionFactory dotNetBlogDB)
         {
+            this.db = dotNetBlogDB;
         }
 
         [Route("/Blog/Post/AddComment")]
         public async Task<JsonResult> AddCommentAsync(Guid postID, Guid contentID, [FromForm]CommentResult commentResult)
         {
-            //if (postID == Guid.Empty)
-            //    throw new ArgumentNullException("PostID");
-            //if (contentID == Guid.Empty)
-            //    throw new ArgumentNullException("ContentID");
-            //if (!this.User.Identity.IsAuthenticated && string.IsNullOrEmpty(commentResult.UserEmail))
-            //    throw new UnauthorizedAccessException("User not Authenticated and UserEmail is empty also.");
+            if (postID == Guid.Empty)
+                throw new ArgumentNullException("PostID");
+            if (contentID == Guid.Empty)
+                throw new ArgumentNullException("ContentID");
+            if (!this.User.Identity.IsAuthenticated && string.IsNullOrEmpty(commentResult.UserEmail))
+                throw new UnauthorizedAccessException("User not Authenticated and UserEmail is empty also.");
 
-            //Comment comment = new Comment();
-            //comment.CommentID = commentResult.CommentID = Guid.NewGuid();
-            //comment.PostID = postID;
-            //comment.IsDeleted = false;
-            //comment.CreateAt = DateTime.Now;
-            //comment.Content = commentResult.Comment?.Trim();
-            //comment.ContentID = contentID;
-            //comment.IsDeleted = false;
-            //if (this.User.Identity.IsAuthenticated)
-            //{
-            //    var userID = this.User.GetUserID();
-            //    var userName = this.User.Identity.Name;
-            //    comment.UserID = userID;
-            //    comment.UserName = userName;
-            //}
-            //else if (!string.IsNullOrEmpty(commentResult.UserEmail))
-            //{
-            //    comment.UserEmail = commentResult.UserEmail;
-            //    comment.UserName = commentResult.UserName?.Trim();
-            //}
-
-            //await this.DbBlog.Comments.AddAsync(comment);
-            //await this.DbBlog.SaveChangesAsync();
+            Comment comment = new Comment();
+            comment.ID = commentResult.CommentID = Guid.NewGuid();
+            comment.PostID = postID;
+            comment.ParentCommentID = commentResult.ParentCommentID;
+            comment.IsDeleted = false;
+            comment.CreateAt = DateTime.Now;
+            comment.Content = commentResult.Comment;
+            comment.ContentID = contentID;
+            comment.IsDeleted = false;
+            if (this.User.Identity.IsAuthenticated)
+            {
+                var userID = this.User.GetUserID();
+                var userName = this.User.Identity.Name;
+                comment.UserID = userID;
+                comment.UserName = userName;
+            }
+            else if (!string.IsNullOrEmpty(commentResult.UserEmail))
+            {
+                comment.UserEmail = commentResult.UserEmail;
+                comment.UserName = commentResult.UserName;
+            }
+            string strSql = @"
+INSERT INTO comments(ID, Content, ContentID, CreateAt, IsDeleted, ParentCommentID, PostID, UserEmail, UserID, UserName)
+VALUES (@ID, @Content, @ContentID, @CreateAt, @IsDeleted, @ParentCommentID, @PostID, @UserEmail, @UserID, @UserName);";
+            await this.db.BlogDb.ExecuteAsync(strSql, comment);
             return Json(commentResult);
         }
 
