@@ -32,18 +32,48 @@
     </script>
 
     <style type="text/css">
-        .input_label {
-            display: block;
-            max-width: 100%;
-            margin-bottom: 5px;
-            font-size: 14px;
-            line-height: 1.42857143;
+        body {
+            background-color: #f9f9f9;
         }
 
-        .input_text {
-            padding: 4px 2px;
-            width: 220px;
-            vertical-align: middle;
+        #forgotPassword {
+            float: right;
+            font-size: smaller;
+        }
+
+        .login-container {
+            width: 340px;
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+        }
+
+        .login-form {
+            border-radius: 5px;
+            background-color: #fff;
+            margin-top: 16px !important;
+            border: 1px solid #d8dee2;
+            padding: 20px;
+        }
+
+            .login-form p {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+        .login-header {
+            background-color: transparent;
+            border: 0;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: none;
+        }
+
+        .input_label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 7px;
         }
 
         .login_button {
@@ -61,52 +91,67 @@
             .login_button:hover {
                 background-color: #eaeaea;
             }
+
+        .create-account {
+            border: 1px solid #d8dee2;
+            border-radius: 5px;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .validation-summary-errors {
+            border-radius: 5px;
+            border-style: solid;
+            border-width: 1px;
+            font-size: 13px;
+            margin: 0 auto 10px;
+            background-color: #ffdce0;
+            color: #86181d;
+        }
     </style>
 </head>
+
 <body>
     <header>
         <span>
-            <a asp-page="/Index">Home</a>
-            <a asp-page="/Blog/Index">Blog</a>
+            <a asp-page="/Index" tabindex="1">Home</a>
+            <a asp-page="/Blog/Index" tabindex="2">Blog</a>
         </span>
     </header>
-    <div class="container" style="display:flex; justify-content:center; align-items:flex-start;">
-        <div style="padding:0 30px;">
-            <h2>@ViewData["Title"]</h2>
-            <div style="display:flex; justify-content:center; align-items:flex-start;">
-                <form method="post" autocomplete="off" novalidate="novalidate" onsubmit="cmdEncrypt();" style="width:500px;">
-                    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="container" style="display:flex; justify-content:center;">
+        <div class="login-container">
+            <div class="login-header"><h2>@ViewData["Title"]</h2></div>
+            <form method="post" autocomplete="off" novalidate="novalidate" onsubmit="cmdEncrypt();">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="login-form">
                     <p>
-                        <label asp-for="Input.Email" class="input_label">
-                            Email(<a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" title="Register as a new user" style="font-size:smaller;">Register</a>)
-                        </label>
-                        <input asp-for="Input.Email" autofocus class="input_text" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        <label asp-for="Input.Email" class="input_label">Email address</label>
+                        <input asp-for="Input.Email" tabindex="3" autofocus="autofocus" autocomplete="off" autocorrect="off" class="form-control" />
+                        <span asp-validation-for="Input.Email"></span>
                     </p>
                     <p>
                         <label asp-for="Input.Password" class="input_label">
-                            Password(<a asp-page="./ForgotPassword" title="reset your password" style="font-size:smaller;">Forgot?</a>)
+                            Password <a asp-page="./ForgotPassword" id="forgotPassword" tabindex="8">Forgot password?</a>
                         </label>
-                        <input asp-for="Input.Password" class="input_text" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        <input asp-for="Input.Password" tabindex="4" class="form-control" />
+                        <span asp-validation-for="Input.Password"></span>
                     </p>
-                    <label asp-for="Input.RememberMe">
-                        <input asp-for="Input.RememberMe" />
+                    <label asp-for="Input.RememberMe" style="font-weight:normal;">
+                        <input asp-for="Input.RememberMe" tabindex="5" />
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                     <p>
-                        <button type="submit" class="login_button">Log in</button>
+                        <button type="submit" tabindex="6" class="login_button">Log in</button>
                     </p>
-                </form>
-                <div style="padding-left:50px;">
-                    No Account? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" title="Register as a new user" style="font-size:smaller;">Register</a>
                 </div>
-            </div>
+            </form>
+            <p class="create-account">
+                No Account? <a asp-page="Register" asp-route-returnUrl="@Model.ReturnUrl" tabindex="8" title="Register as a new user" style="font-size:smaller;">Create an account</a>.
+            </p>
         </div>
     </div>
 
     <footer>
-        <hr />
         <p>&copy; 2018 - DotNetBlog</p>
     </footer>
 
