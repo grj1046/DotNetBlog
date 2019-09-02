@@ -11,7 +11,7 @@
                 <a class="title" asp-page="Post" asp-route-postURL="@item.URL" target="_blank" title="@item.Title">@item.Title</a>
                 <div class="summary">@item.Summary</div>
                 <div class="bottom" style="color:gray; font-size:small;">
-                    <span>@item.UserNickName Posted @item.CreateAt</span>
+                    <span>Posted by @item.UserNickName on @item.CreateAt</span>
                 </div>
             </div>
             @if (item.CreateAt.Ticks % 2 == 1)

@@ -14,7 +14,7 @@
                 <a class="title" asp-page="/Blog/Post" asp-route-postURL="@item.URL" target="_blank" title="@item.Title">@item.Title</a>
                 <div class="summary">@item.Summary</div>
                 <div class="bottom" style="color:gray; font-size:small;">
-                    <span>Posted @item.CreateAt</span>
+                    <span>Posted on @item.CreateAt</span>
                     <a asp-page="/Blog/Manage/Edit" asp-route-postID="@item.PostID" title="Edit">Edit</a>
                     <a asp-page-handler="DeletePost" asp-route-postID="@item.PostID" title="Delete">Delete</a>
                 </div>

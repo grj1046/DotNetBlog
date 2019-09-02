@@ -32,21 +32,46 @@
     </script>
 
     <style type="text/css">
+        body {
+            background-color: #f9f9f9;
+        }
+
+        .signup-container {
+            width: 340px;
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+        }
+
+        .signup-form {
+            border-radius: 5px;
+            background-color: #fff;
+            margin-top: 16px !important;
+            border: 1px solid #d8dee2;
+            padding: 20px;
+        }
+
+            .signup-form p {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+        .signup-header {
+            background-color: transparent;
+            border: 0;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: none;
+        }
+
         .input_label {
+            font-weight: 600;
             display: block;
-            max-width: 100%;
-            margin-bottom: 5px;
-            font-size: 14px;
-            line-height: 1.42857143;
+            margin-bottom: 7px;
         }
 
-        .input_text {
-            padding: 4px 2px;
-            width: 220px;
-            vertical-align: middle;
-        }
-
-        .login_button {
+        .signup-button {
             border: 0;
             border-radius: 2px;
             box-sizing: border-box;
@@ -58,49 +83,71 @@
             user-select: none;
         }
 
-            .login_button:hover {
+            .signup-button:hover {
                 background-color: #eaeaea;
             }
+
+        .login-account {
+            border: 1px solid #d8dee2;
+            border-radius: 5px;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .validation-summary-errors {
+            border-radius: 5px;
+            border-style: solid;
+            border-width: 1px;
+            font-size: 13px;
+            margin: 0 auto 10px;
+            background-color: #ffdce0;
+            color: #86181d;
+        }
+
+        .field-validation-error {
+            font-size: 13px;
+            color: #86181d;
+        }
     </style>
 </head>
 <body>
     <header>
         <span>
-            <a asp-page="/Index">Home</a>
-            <a asp-page="/Blog/Index">Blog</a>
+            <a asp-page="/Index" tabindex="1">Home</a>
+            <a asp-page="/Blog/Index" tabindex="2">Blog</a>
         </span>
     </header>
-    <div class="container" style="display:flex; justify-content:center; align-items:flex-start;">
-        <div style="padding:0 30px;">
-            <h2>@ViewData["Title"]</h2>
-            <div style="display:flex; justify-content:center; align-items:flex-start;">
-                <form asp-route-returnUrl="@Model.ReturnUrl" method="post" autocomplete="off" novalidate="novalidate" onsubmit="cmdEncrypt()" style="width:500px;">
-                    <h4>Create a new account.</h4>
-                    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="container" style="display:flex; justify-content:center;">
+        <div class="signup-container">
+            <div class="signup-header"><h2>@ViewData["Title"]</h2></div>
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post" autocomplete="off" novalidate="novalidate" onsubmit="cmdEncrypt()">
+                <h4>Create a new account.</h4>
+                <div asp-validation-summary="All"></div>
+                <div class="signup-form">
                     <p>
-                        <label asp-for="Input.Email" class="input_label"></label>
-                        <input asp-for="Input.Email" class="input_text" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        <label asp-for="Input.Email" class="input_label">Email address</label>
+                        <input asp-for="Input.Email" tabindex="3" autofocus="autofocus" autocomplete="off" autocorrect="off" class="form-control" />
+                        <span asp-validation-for="Input.Email"></span>
                     </p>
                     <p>
                         <label asp-for="Input.Password" class="input_label"></label>
-                        <input asp-for="Input.Password" class="input_text" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        <input asp-for="Input.Password" tabindex="4" class="form-control" />
+                        <span asp-validation-for="Input.Password"></span>
                     </p>
                     <p>
                         <label asp-for="Input.ConfirmPassword" class="input_label"></label>
-                        <input asp-for="Input.ConfirmPassword" class="input_text" />
-                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        <input asp-for="Input.ConfirmPassword" tabindex="5" class="form-control" />
+                        <span asp-validation-for="Input.ConfirmPassword"></span>
                     </p>
                     @*<input type="hidden" name="encrypted_pwd" id="encrypted_pwd" />*@
                     <p>
-                        <button type="submit" class="login_button">Register</button>
+                        <button type="submit" tabindex="6" class="signup-button">Sign Up</button>
                     </p>
-                </form>
-                <div style="padding-left:50px;">
-                    hav an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" title="Register as a new user" style="font-size:smaller;">Log in</a>
                 </div>
-            </div>
+            </form>
+            <p class="login-account">
+                hav an account? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" tabindex="7" title="login with an exists account" style="font-size:smaller;">Log in</a>
+            </p>
         </div>
     </div>
 
