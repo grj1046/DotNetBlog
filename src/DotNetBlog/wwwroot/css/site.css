@@ -79,6 +79,24 @@ footer {
         box-shadow: 0 0 0 0.1rem rgba(91,155,213, 0.5) !important;
     }
 
+
+
+.btn-default {
+    border: 0;
+    border-radius: 2px;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: .875em;
+    margin: 0;
+    padding: 10px 24px;
+    transition: box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+}
+
+    .btn-default:hover {
+        background-color: #eaeaea;
+    }
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
 }

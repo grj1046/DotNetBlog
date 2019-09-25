@@ -13,26 +13,22 @@
             <span asp-validation-for="Input.Title" class="text-danger" style="align-items:stretch;"></span>
         </div>
         <div class="form-group" style="display:flex; flex-direction:column;">
-            <div>
-                @*<label asp-for="Input.Content"></label>*@
-                <div>
-                    @if (this.Model.Input.PostID.HasValue && this.Model.Input.PostID.Value != Guid.Empty)
+            @*<label asp-for="Input.Content"></label>*@
+            <div id="editorTabList">
+                @if (this.Model.Input.PostID.HasValue && this.Model.Input.PostID.Value != Guid.Empty)
+                {
+                    <a href="javascript:void(0);">@this.Model.Input.EditorType</a>
+                }
+                else
+                {
+                    @foreach (var item in Enum.GetNames(typeof(EditorType)))
                     {
-                        <span>@this.Model.Input.EditorType</span>
+                        @if (this.Model.Input.EditorType.ToString() != item)
+                        {
+                            <a asp-page-handler="ChangeEditor" asp-route-editorType="@item" class="item" onclick="return changeEditorConfirm();">@item</a>
+                        }
                     }
-                    else
-                    {
-                        <div>
-                            @foreach (var item in Enum.GetNames(typeof(EditorType)))
-                            {
-                                @*@if (this.Model.Input.EditorType.ToString() != item)*@
-                                {
-                                    <a asp-page-handler="ChangeEditor" asp-route-editorType="@item" onclick="return changeEditorConfirm();">@item</a>
-                                }
-                            }
-                        </div>
-                    }
-                </div>
+                }
             </div>
             @*@if (this.Model.Input.EditorType == EditorType.Html)
                 {
@@ -44,12 +40,32 @@
         <div class="form-group">
             <input type="hidden" asp-for="Input.PostID" />
             <input type="hidden" asp-for="Input.EditorType" />
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn-default">Submit</button>
         </div>
     </form>
 </article>
 
 @section Styles {
+    <style type="text/css">
+        #editorTabList {
+            display: flex;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+            #editorTabList .item {
+                padding: 5px 15px;
+                border-color: #32aa66 !important;
+                color: #32aa66 !important;
+            }
+
+                #editorTabList .item:active {
+                    background-color: transparent;
+                    border-bottom: 2px solid #b9b9bb;
+                }
+    </style>
+
+
     @switch (Model.Input.EditorType)
     {
         case EditorType.Text:
