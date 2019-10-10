@@ -17,7 +17,7 @@
             <div id="editorTabList">
                 @if (this.Model.Input.PostID.HasValue && this.Model.Input.PostID.Value != Guid.Empty)
                 {
-                    <a href="javascript:void(0);">@this.Model.Input.EditorType</a>
+                    <a href="javascript:void(0);" class="item active">@this.Model.Input.EditorType</a>
                 }
                 else
                 {
@@ -26,6 +26,10 @@
                         @if (this.Model.Input.EditorType.ToString() != item)
                         {
                             <a asp-page-handler="ChangeEditor" asp-route-editorType="@item" class="item" onclick="return changeEditorConfirm();">@item</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0);" class="item active">@this.Model.Input.EditorType</a>
                         }
                     }
                 }
@@ -37,7 +41,7 @@
             <textarea id="textEditor" asp-for="Input.Content" rows="20" class="form-control" style="align-items:stretch;"></textarea>
             <span asp-validation-for="Input.Content" class="text-danger" style="align-items:stretch;"></span>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-top:5px;">
             <input type="hidden" asp-for="Input.PostID" />
             <input type="hidden" asp-for="Input.EditorType" />
             <button type="submit" class="btn-default">Submit</button>
@@ -49,7 +53,7 @@
     <style type="text/css">
         #editorTabList {
             display: flex;
-            margin-top: 5px;
+            padding-top: 5px;
             font-weight: bold;
         }
 
@@ -57,12 +61,17 @@
                 padding: 5px 15px;
                 border-color: #32aa66 !important;
                 color: #32aa66 !important;
+                text-decoration: none;
             }
 
-                #editorTabList .item:active {
-                    background-color: transparent;
-                    border-bottom: 2px solid #b9b9bb;
+                #editorTabList .item:hover {
+                    background-color: #eaeaea !important;
                 }
+
+            #editorTabList .active {
+                background-color: transparent;
+                border-bottom: 2px solid #b9b9bb;
+            }
     </style>
 
 
