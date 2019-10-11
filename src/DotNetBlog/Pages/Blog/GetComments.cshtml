@@ -1,13 +1,39 @@
 ﻿@page
+@using System.Security.Claims;
 @model GetCommentsModel
 @{
     Layout = "";
 }
-<ul class="list-group">
+<div class="list-group">
+    @{int index = 0; }
     @foreach (Comment item in this.Model.PostComments)
     {
-        <li class="list-group-item">
-            @await Html.PartialAsync("Templates/_Comment", item)
-        </li>
+        <div id="cmd_@item.ID" class="list-group-item" style="padding:5px 5px 15px 5px; border-bottom: 1px dotted #ccc;">
+            @*@await Html.PartialAsync("Templates/_Comment", item)*@
+            <div style="display:flex; justify-content:space-between;">
+                <bdo>
+                    @{ index += 1; }
+                    <a href="#@item.ID" name="@item.ID">#@index</a>
+                    <span class="commentTime">@item.CreateAt</span>
+                    <a class="userName" href="javascript:void(0);">@item.UserName</a>
+                </bdo>
+                <div>
+                    @if (this.User.GetUserID() != item.UserID)
+                    {
+                        <a href="javascript:replayComment('@item. ID.ToString()');">reply</a>
+                    }
+                    @if (this.User.Identity.IsAuthenticated && this.User.GetUserID() == item.UserID)
+                    {
+                        <a href="javascript:deleteComment('@item.ID')">delete</a>
+                    }
+                </div>
+            </div>
+            <div class="userComment">@item.Content</div>
+
+            @if (ViewData["ContentID"] != null && Convert.ToString(ViewData["ContentID"]) != Convert.ToString(item.ContentID))
+            {
+                <div>this comment is comment to <a href="Blog/Post/@item.PostID/history/@item.ContentID">this</a> post conent</div>
+            }
+        </div>
     }
-</ul>
+</div>

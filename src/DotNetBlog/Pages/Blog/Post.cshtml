@@ -23,11 +23,11 @@
     <hr />
     <div class="blogComments">
         <div class="panel">
-            <div class="panel-heading">Comments (<span id="commentCount"></span>)</div>
+            <div class="panel-heading" style="padding: 20px 0 5px; border-bottom: 1px solid #ddd;">Comments (<span id="commentCount"></span>)</div>
             <div class="panel-body">
                 <div class="panelList" id="postComments">
                 </div>
-                <div class="panelCommentForm">
+                <div class="panelCommentForm" style="margin-top:5px;">
                     <form id="formComment" asp-page="AddComment" asp-route-PostID="@this.Model.Post.PostID" asp-route-ContentID="@this.Model.Post.ContentID" method="post" autocomplete="off" novalidate="novalidate">
 
                         @if (!this.User.Identity.IsAuthenticated)
