@@ -14,6 +14,12 @@ https://docs.microsoft.com/en-us/dotnet/core/rid-catalog#Using RIDs
 
 Run in a Linux container https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/docker/building-net-docker-images?view=aspnetcore-3.0
 
+## Bundling and Minification
+https://docs.microsoft.com/en-us/aspnet/core/client-side/bundling-and-minification?view=aspnetcore-3.0
+https://github.com/madskristensen/BundlerMinifier
+https://marketplace.visualstudio.com/items?itemName=MadsKristensen.BundlerMinifier
+https://dotnetthoughts.net/bundling-and-minification-in-aspnet-core/
+
 https://github.com/dotnet/dotnet-docker/blob/master/samples/aspnetapp/Dockerfile
 
 ```Dockerfile
