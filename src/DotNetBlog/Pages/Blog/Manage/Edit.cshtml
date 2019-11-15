@@ -82,15 +82,14 @@
                 #Input_Content {
                     margin-top: 5px;
                 }
-            </style>
-            break;
-        case EditorType.Html:
-            <style type="text/css">
+
                 .CodeMirror {
                     border: 1px solid #d1d5da;
                 }
             </style>
             <link rel="stylesheet" href="~/lib/codemirror/codemirror.css">
+            break;
+        case EditorType.Html:
             break;
         case EditorType.Markdown:
             @*<link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
@@ -115,16 +114,28 @@
     @switch (Model.Input.EditorType)
     {
         case EditorType.Text:
-            break;
-        case EditorType.Html:
-            <script src="~/lib/codemirror/codemirror.min.js"></script>
-            <script src="~/lib/codemirror/addon/selection/active-line.min.js"></script>
+            <script src="~/lib/codemirror/codemirror.min.js" asp-append-version="true"></script>
+            <script src="~/lib/codemirror/addon/selection/active-line.min.js" asp-append-version="true"></script>
             <script>
                 var textEditor = document.getElementById('textEditor');
                 var editor = CodeMirror.fromTextArea(textEditor, {
                     styleActiveLine: true,
                     lineNumbers: true,
                     lineWrapping: true
+                });
+            </script>
+            break;
+        case EditorType.Html:
+            <script src="~/lib/ckeditor5-build-classic/ckeditor.js" asp-append-version="true"></script>
+            <script type="text/javascript">
+                var textEditor = document.getElementById('textEditor');
+                ClassicEditor.create(textEditor).then(editor => {
+                    editor.model.document.on('change:data', () => {
+                        console.log('The data has changed!');
+                    });
+                    console.log(editor);
+                }).catch(error => {
+                    console.error(error);
                 });
             </script>
             break;
