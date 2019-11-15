@@ -38,7 +38,7 @@
                 {
                     <div id="textEditor" style="margin-top: 5px;"></div>
                 }*@
-            <textarea id="textEditor" asp-for="Input.Content" class="form-control" style="align-items:stretch; height:350px;"></textarea>
+            <textarea id="textEditor" asp-for="Input.Content" class="form-control" style="align-items:stretch; min-height:350px;"></textarea>
             <span asp-validation-for="Input.Content" class="text-danger" style="align-items:stretch;"></span>
         </div>
         <div class="form-group" style="margin-top:5px;">
@@ -127,9 +127,13 @@
             break;
         case EditorType.Html:
             <script src="~/lib/ckeditor5-build-classic/ckeditor.js" asp-append-version="true"></script>
+            <script src="~/lib/ckeditor5-build-classic/translations/zh-cn.js" asp-append-version="true"></script>
             <script type="text/javascript">
                 var textEditor = document.getElementById('textEditor');
-                ClassicEditor.create(textEditor).then(editor => {
+                ClassicEditor.create(textEditor, {
+                    // The language code is defined in the https://en.wikipedia.org/wiki/ISO_639-1 standard.
+                    language: 'zh-cn'
+                }).then(editor => {
                     editor.model.document.on('change:data', () => {
                         console.log('The data has changed!');
                     });
