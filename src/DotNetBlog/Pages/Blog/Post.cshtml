@@ -26,6 +26,7 @@
             <div class="panel-heading" style="padding: 20px 0 5px; border-bottom: 1px solid #ddd;">Comments (<span id="commentCount"></span>)</div>
             <div class="panel-body">
                 <div class="panelList" id="postComments">
+                    <ul></ul>
                 </div>
                 <div class="panelCommentForm" style="margin-top:5px;">
                     <form id="formComment" asp-page="AddComment" asp-route-PostID="@this.Model.Post.PostID" asp-route-ContentID="@this.Model.Post.ContentID" method="post" autocomplete="off" novalidate="novalidate">
@@ -48,12 +49,12 @@
                                 <input type="text" id="userName" name="userName" class="form-control" />
                             }
                         </div>
-                        <div class="form-group">
-                            <textarea id="comment" name="comment" style="height:100px;padding:10px; width: 98%; margin: 1%;" class="form-control"></textarea>
+                        <div class="form-group" style="display:flex;">
+                            <textarea id="comment" name="comment" style="height:100px;padding:10px; width: 100%; margin: 5px;" class="form-control"></textarea>
                         </div>
-                        <div class="form-group" style="text-align:right;">
+                        <div class="form-group" style="display:flex;justify-content:flex-end;">
                             <input id="parentCommentID" name="parentCommentID" type="hidden" value="@Guid.Empty" />
-                            <button type="submit" class="btn btn-default">Submit</button>
+                            <button type="submit" class="btn btn-default" style="margin-right:5px;">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -111,15 +112,15 @@
                     //has some error
                     return;
                 }
-                $("#postComments ul").append(data);
-                $("#commentCount").text($("#postComments ul li").length);
+                $("#postComments").append(data);
+                $("#commentCount").text($("#postComments div[class='list-group-item']").length);
                 $("#comment").val("");
                 //$("#formComment").ajaxSubmit();
             });
             //load comments
             $.get("GetComments/@this.Model.Post.PostID/@this.Model.Post.ContentID", function (data) {
                 $("#postComments").html(data);
-                $("#commentCount").text($("#postComments ul li").length);
+                $("#commentCount").text($("#postComments div[class='list-group-item']").length);
             });
         });
         function replayComment(commentID) {

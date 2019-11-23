@@ -3,9 +3,9 @@
 @model GetCommentsModel
 @{
     Layout = "";
+    int index = 0;
 }
 <div class="list-group">
-    @{int index = 0; }
     @foreach (Comment item in this.Model.PostComments)
     {
         <div id="cmd_@item.ID" class="list-group-item" style="padding:5px 5px 15px 5px; border-bottom: 1px dotted #ccc;">

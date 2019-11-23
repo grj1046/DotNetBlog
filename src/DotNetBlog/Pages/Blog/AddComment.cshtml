@@ -1,9 +1,35 @@
 ﻿@page
+@using System.Security.Claims;
 @model AddCommentModel
 @{
     Layout = "";
+    int index = 0;
 }
 
-<li class="list-group-item">
-    @await Html.PartialAsync("Templates/_Comment", Model.Comment)
-</li>
+<div id="cmd_@Model.Comment.ID" class="list-group-item" style="padding:5px 5px 15px 5px; border-bottom: 1px dotted #ccc;">
+    @*@await Html.PartialAsync("Templates/_Comment", item)*@
+    <div style="display:flex; justify-content:space-between;">
+        <bdo>
+            @{ index += 1; }
+            <a href="#@Model.Comment.ID" name="@Model.Comment.ID">#@index</a>
+            <span class="commentTime">@Model.Comment.CreateAt</span>
+            <a class="userName" href="javascript:void(0);">@Model.Comment.UserName</a>
+        </bdo>
+        <div>
+            @if (this.User.GetUserID() != Model.Comment.UserID)
+            {
+                <a href="javascript:replayComment('@Model.Comment.ID.ToString()');">reply</a>
+            }
+            @if (this.User.Identity.IsAuthenticated && this.User.GetUserID() == Model.Comment.UserID)
+            {
+                <a href="javascript:deleteComment('@Model.Comment.ID')">delete</a>
+            }
+        </div>
+    </div>
+    <div class="userComment">@Model.Comment.Content</div>
+
+    @if (ViewData["ContentID"] != null && Convert.ToString(ViewData["ContentID"]) != Convert.ToString(Model.Comment.ContentID))
+    {
+        <div>this comment is comment to <a href="Blog/Post/@Model.Comment.PostID/history/@Model.Comment.ContentID">this</a> post conent</div>
+    }
+</div>
