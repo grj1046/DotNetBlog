@@ -5,7 +5,7 @@
     ViewData["Title"] = "Post";
 }
 <div>
-    <h3 class="postTitle">@this.Model.Post.Title</h3>
+    <h1 class="postTitle">@this.Model.Post.Title</h1>
     @switch (this.Model.Post.EditorType)
     {
         case EditorType.Text:
@@ -15,7 +15,11 @@
             <div class="postContent">@Html.Raw(this.Model.Post.Content)</div>
             break;
         case EditorType.Markdown:
-            <div class="postContent">@this.Model.Post.Content</div>
+            @*<div class="postContent">@this.Model.Post.Content</div>*@
+            <div id="test-markdown-view" style="padding:inherit; width:inherit;">
+                <!-- Server-side output Markdown text -->
+                <textarea style="display:none;">@this.Model.Post.Content</textarea>
+            </div>
             break;
         default:
             break;
@@ -50,7 +54,8 @@
                             }
                         </div>
                         <div class="form-group" style="display:flex;">
-                            <textarea id="comment" name="comment" style="height:100px;padding:10px; width: 100%; margin: 5px;" class="form-control"></textarea>
+                            <textarea id="comment" name="comment" class="form-control"
+                                      style="height:100px;padding:10px; width: 100%; margin: 5px; resize:none;"></textarea>
                         </div>
                         <div class="form-group" style="display:flex;justify-content:flex-end;">
                             <input id="parentCommentID" name="parentCommentID" type="hidden" value="@Guid.Empty" />
@@ -80,6 +85,12 @@
                 <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
                 <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
                 <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />*@
+            <environment include="Development">
+                <link rel="stylesheet" href="~/lib/editor.md-1.5.0/css/editormd.preview.css" />
+            </environment>
+            <environment exclude="Development">
+                <link rel="stylesheet" href="~/lib/editor.md-1.5.0/css/editormd.preview.min.css" asp-append-version="true" />
+            </environment>
             break;
         default:
             break;
@@ -94,10 +105,24 @@
         case EditorType.Html:
             break;
         case EditorType.Markdown:
-            @*<script src="~/thinker-md/javascripts/thinker-md.vendor.min.js" charset="utf-8" asp-append-version="true"></script>*@
+            <environment include="Development">
+                <script src="~/lib/editor.md-1.5.0/editormd.js" charset="utf-8"></script>
+                <script src="~/lib/editor.md-1.5.0/lib/marked.min.js" charset="utf-8"></script>
+                <script src="~/lib/editor.md-1.5.0/lib/prettify.min.js" charset="utf-8"></script>
+            </environment>
+            <environment exclude="Development">
+                <script src="~/lib/editor.md-1.5.0/editormd.min.js" charset="utf-8" asp-append-version="true"></script>
+                <script src="~/lib/editor.md-1.5.0/lib/marked.min.js" charset="utf-8" asp-append-version="true"></script>
+                <script src="~/lib/editor.md-1.5.0/lib/prettify.min.js" charset="utf-8" asp-append-version="true"></script>
+            </environment>
             <script type="text/javascript">
-                //$(".postContent").html(marked($(".postContent").html()));
-                $(".postContent").html($(".postContent").html());
+                $(function () {
+                });
+                var testView = editormd.markdownToHTML("test-markdown-view", {
+                    // markdown : "[TOC]\n### Hello world!\n## Heading 2", // Also, you can dynamic set Markdown text
+                    // htmlDecode : true,  // Enable / disable HTML tag encode.
+                    // htmlDecode : "style,script,iframe",  // Note: If enabled, you should filter some dangerous HTML tags for website security.
+                });
             </script>
             break;
         default:
