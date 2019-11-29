@@ -85,3 +85,12 @@ A markdown parser and compiler. Built for speed. https://marked.js.org/
 
   * https://github.com/markedjs/marked
   * https://marked.js.org/demo/
+
+  ## MailKit
+
+  A cross-platform .NET library for IMAP, POP3, and SMTP. http://www.mimekit.net
+DotNet官方推荐使用MailKit而不是使用自带的：https://docs.microsoft.com/en-us/dotnet/api/system.net.mail.smtpclient
+
+> We don't recommend that you use the *SmtpClient* class for new development because *SmtpClient* doesn't support many modern protocols. Use [MailKit](https://github.com/jstedfast/MailKit) or other libraries instead. For more information, see [SmtpClient shouldn't be used](https://github.com/dotnet/platform-compat/blob/master/docs/DE0005.md) on GitHub.
+
+    * https://github.com/jstedfast/MailKit
