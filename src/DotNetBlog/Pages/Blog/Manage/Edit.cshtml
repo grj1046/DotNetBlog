@@ -93,6 +93,11 @@
             <link rel="stylesheet" href="~/lib/codemirror/codemirror.css">
             break;
         case EditorType.Html:
+            <style type="text/css">
+                .ck-content {
+                    min-height: 300px;
+                }
+            </style>
             break;
         case EditorType.Markdown:
             <environment include="Development">
@@ -175,7 +180,18 @@
                         height: "640px",
                         // markdown: "xxxx",     // dynamic set Markdown text
                         placeholder: "Enjoy Markdown! coding now...",
-                        path: "./../../../lib/editor.md-1.5.0/lib/"  // Autoload modules mode, codemirror, marked... dependents libs path
+                        //Autoload modules mode, codemirror, marked... dependents libs path
+                        path: "./../../../lib/editor.md-1.5.0/lib/",
+                        autoHeight: true,
+                        emoji: true,
+                        lineNumbers: true,
+                        taskList: true,
+                        tex: true,
+                        flowChart: true,
+                        sequenceDiagram: true,
+                        imageUpload: true,
+                        imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                        imageUploadURL: "./../../Image/upload"
                     });
                 });
             </script>

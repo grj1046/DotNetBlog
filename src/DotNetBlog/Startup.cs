@@ -64,8 +64,8 @@ namespace DotNetBlog
                 options.Conventions.AuthorizePage("/Account/Logout");
 
                 options.Conventions.AddPageRoute("/Blog/Post", "Blog/Post/{PostURL?}");
-                options.Conventions.AddPageRoute("/Blog/Manage/Edit", "Blog/Manage/Edit/{PostID?}");
                 options.Conventions.AddPageRoute("/Blog/Manage/Edit", "Blog/Manage/Post/New");
+                options.Conventions.AddPageRoute("/Blog/Manage/Edit", "Blog/Manage/Edit/{PostID?}");
                 options.Conventions.AddPageRoute("/Blog/GetComments", "Blog/Post/GetComments/{PostID?}/{ContentID?}");
                 options.Conventions.AddPageRoute("/Blog/AddComment", "Blog/Post/AddComment/{PostID?}/{ContentID?}");
             }).AddNewtonsoftJson();
