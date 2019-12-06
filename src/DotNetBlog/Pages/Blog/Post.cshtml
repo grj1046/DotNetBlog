@@ -8,10 +8,10 @@
     <h1 class="postTitle">@this.Model.Post.Title</h1>
     @switch (this.Model.Post.EditorType)
     {
-        case EditorType.Text:
+        case EditorType.SourceCode:
             <div class="postContent">@this.Model.Post.Content</div>
             break;
-        case EditorType.Html:
+        case EditorType.RichText:
             <div class="postContent">@Html.Raw(this.Model.Post.Content)</div>
             break;
         case EditorType.Markdown:
@@ -72,9 +72,9 @@
 @section Styles {
     @switch (this.Model.Post.EditorType)
     {
-        case EditorType.Text:
+        case EditorType.SourceCode:
             break;
-        case EditorType.Html:
+        case EditorType.RichText:
             @*<link rel="stylesheet" href="~/lib/wangEditor/release/wangEditor.css" asp-append-version="true" />*@
             break;
         case EditorType.Markdown:
@@ -100,9 +100,9 @@
 @section Scripts {
     @switch (this.Model.Post.EditorType)
     {
-        case EditorType.Text:
+        case EditorType.SourceCode:
             break;
-        case EditorType.Html:
+        case EditorType.RichText:
             break;
         case EditorType.Markdown:
             <environment include="Development">

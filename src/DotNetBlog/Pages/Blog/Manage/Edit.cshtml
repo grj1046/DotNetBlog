@@ -34,13 +34,8 @@
                     }
                 }
             </div>
-            @*@if (this.Model.Input.EditorType == EditorType.Html)
-                {
-                    <div id="textEditor" style="margin-top: 5px;"></div>
-                <textarea id="textEditor" asp-for="Input.Content" class="form-control" style="align-items:stretch; min-height:350px;"></textarea>
-                }*@
             <div id="textEditorMD">
-                <textarea id="textEditor" asp-for="Input.Content"></textarea>
+                <textarea id="textEditor" asp-for="Input.Content" style="display:none;"></textarea>
             </div>
             <span asp-validation-for="Input.Content" class="text-danger" style="align-items:stretch;"></span>
         </div>
@@ -80,7 +75,8 @@
 
     @switch (Model.Input.EditorType)
     {
-        case EditorType.Text:
+        case EditorType.SourceCode:
+            <link rel="stylesheet" href="~/lib/codemirror/codemirror.css">
             <style type="text/css">
                 #Input_Content {
                     margin-top: 5px;
@@ -90,9 +86,8 @@
                     border: 1px solid #d1d5da;
                 }
             </style>
-            <link rel="stylesheet" href="~/lib/codemirror/codemirror.css">
             break;
-        case EditorType.Html:
+        case EditorType.RichText:
             <style type="text/css">
                 .ck-content {
                     min-height: 300px;
@@ -110,6 +105,17 @@
                 .body-content {
                     margin-top: 20px;
                 }
+
+                .CodeMirror {
+                    border: 1px solid #eee;
+                    min-height: 300px;
+                }
+
+                .CodeMirror-scroll {
+                    min-height: 300px;
+                    overflow-y: hidden;
+                    overflow-x: auto;
+                }
             </style>
             break;
         default:
@@ -120,7 +126,7 @@
 @section Scripts {
     @switch (Model.Input.EditorType)
     {
-        case EditorType.Text:
+        case EditorType.SourceCode:
             <environment include="Development">
                 <script src="~/lib/codemirror/codemirror.js"></script>
                 <script src="~/lib/codemirror/addon/selection/active-line.js"></script>
@@ -138,7 +144,7 @@
                 });
             </script>
             break;
-        case EditorType.Html:
+        case EditorType.RichText:
             <environment include="Development">
                 <script src="~/lib/ckeditor5-build-classic/ckeditor.js"></script>
                 <script src="~/lib/ckeditor5-build-classic/translations/zh-cn.js"></script>
@@ -177,7 +183,7 @@
                 $(function () {
                     var editor = editormd("textEditorMD", {
                         width: "100%",
-                        height: "640px",
+                        minHeight: "640px",
                         // markdown: "xxxx",     // dynamic set Markdown text
                         placeholder: "Enjoy Markdown! coding now...",
                         //Autoload modules mode, codemirror, marked... dependents libs path
@@ -201,12 +207,11 @@
     }
     <script type="text/javascript">
         function changeEditorConfirm() {
-            var currVal = $("#Input_Content").val();
-            if (currVal == "<p><br></p>")
-                currVal = '';
-            if (currVal) {
-                return confirm("change editor will lost your content, do you want continue?");
-            }
+            //var currVal = $("#textEditor").val();
+            //console.log("currVal", currVal);
+            //if (currVal) {
+            //    return confirm("change editor will lost your content, do you want continue?");
+            //}
         };
     </script>
 }

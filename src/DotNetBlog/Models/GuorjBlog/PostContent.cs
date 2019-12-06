@@ -18,7 +18,7 @@ namespace DotNetBlog.Models
 
         [EnumDataType(typeof(EditorType))]
         [Column(TypeName = "tinyint")]
-        public EditorType EditorType { get; set; } = EditorType.Text;
+        public EditorType EditorType { get; set; } = EditorType.SourceCode;
 
         [Required]
         [StringLength(32, MinimumLength = 32)]
@@ -31,8 +31,8 @@ namespace DotNetBlog.Models
 
     public enum EditorType
     {
-        Text = 1,
-        Html = 2,
+        SourceCode = 1,
+        RichText = 2,
         Markdown = 3
     }
 }
