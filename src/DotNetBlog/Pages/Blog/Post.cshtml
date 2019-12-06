@@ -12,7 +12,7 @@
             <div class="postContent">@this.Model.Post.Content</div>
             break;
         case EditorType.RichText:
-            <div class="postContent">@Html.Raw(this.Model.Post.Content)</div>
+            <div class="postContent ck-content">@Html.Raw(this.Model.Post.Content)</div>
             break;
         case EditorType.Markdown:
             @*<div class="postContent">@this.Model.Post.Content</div>*@
@@ -75,16 +75,14 @@
         case EditorType.SourceCode:
             break;
         case EditorType.RichText:
-            @*<link rel="stylesheet" href="~/lib/wangEditor/release/wangEditor.css" asp-append-version="true" />*@
+            <environment include="Development">
+                <link rel="stylesheet" href="~/css/ckeditor5.css" />
+            </environment>
+            <environment exclude="Development">
+                <link rel="stylesheet" href="~/css/ckeditor5.min.css" asp-append-version="true" />
+            </environment>
             break;
         case EditorType.Markdown:
-            @*<link rel="stylesheet" href="~/thinker-md/stylesheets/thinker-md.vendor.css" asp-append-version="true" />
-                <link rel="stylesheet" href="~/thinker-md/emoji/nature.css" asp-append-version="true" />
-                <link rel="stylesheet" href="~/thinker-md/emoji/object.css" asp-append-version="true" />
-                <link rel="stylesheet" href="~/thinker-md/emoji/people.css" asp-append-version="true" />
-                <link rel="stylesheet" href="~/thinker-md/emoji/place.css" asp-append-version="true" />
-                <link rel="stylesheet" href="~/thinker-md/emoji/Sysmbols.css" asp-append-version="true" />
-                <link rel="stylesheet" href="~/thinker-md/emoji/twemoji.css" asp-append-version="true" />*@
             <environment include="Development">
                 <link rel="stylesheet" href="~/lib/editor.md-1.5.0/css/editormd.preview.css" />
             </environment>
