@@ -83,7 +83,16 @@
                 }
 
                 .CodeMirror {
-                    border: 1px solid #d1d5da;
+                    border: 1px solid #eee;
+                    min-height: 300px;
+                    height: auto;
+                }
+
+                .CodeMirror-scroll {
+                    min-height: 300px;
+                    height: auto;
+                    overflow-y: hidden;
+                    overflow-x: auto;
                 }
             </style>
             break;
@@ -130,14 +139,41 @@
             <environment include="Development">
                 <script src="~/lib/codemirror/codemirror.js"></script>
                 <script src="~/lib/codemirror/addon/selection/active-line.js"></script>
+                <script src="~/lib/codemirror/addon/selection/selection-pointer.js"></script>
+                <script src="~/lib/codemirror/mode/xml/xml.js"></script>
+                <script src="~/lib/codemirror/mode/javascript/javascript.js"></script>
+                <script src="~/lib/codemirror/mode/css/css.js"></script>
+                <script src="~/lib/codemirror/mode/vbscript/vbscript.js"></script>
+                <script src="~/lib/codemirror/mode/htmlmixed/htmlmixed.js"></script>
             </environment>
             <environment exclude="Development">
                 <script src="~/lib/codemirror/codemirror.min.js" asp-append-version="true"></script>
                 <script src="~/lib/codemirror/addon/selection/active-line.min.js" asp-append-version="true"></script>
+                <script src="~/lib/codemirror/addon/selection/selection-pointer.min.js" asp-append-version="true"></script>
+                <script src="~/lib/codemirror/mode/xml/xml.min.js" asp-append-version="true"></script>
+                <script src="~/lib/codemirror/mode/javascript/javascript.min.js" asp-append-version="true"></script>
+                <script src="~/lib/codemirror/mode/css/css.min.js" asp-append-version="true"></script>
+                <script src="~/lib/codemirror/mode/vbscript/vbscript.min.js" asp-append-version="true"></script>
+                <script src="~/lib/codemirror/mode/htmlmixed/htmlmixed.min.js" asp-append-version="true"></script>
             </environment>
-            <script>
+            <script type="text/javascript">
+                // Define an extended mixed-mode that understands vbscript and
+                // leaves mustache/handlebars embedded templates in html mode
+                var mixedMode = {
+                    name: "htmlmixed",
+                    scriptTypes: [{
+                        matches: /\/x-handlebars-template|\/x-mustache/i,
+                        mode: null
+                    },
+                    {
+                        matches: /(text|application)\/(x-)?vb(a|script)/i,
+                        mode: "vbscript"
+                    }]
+                };
                 var textEditor = document.getElementById('textEditor');
                 var editor = CodeMirror.fromTextArea(textEditor, {
+                    mode: mixedMode,
+                    selectionPointer: true,
                     styleActiveLine: true,
                     lineNumbers: true,
                     lineWrapping: true

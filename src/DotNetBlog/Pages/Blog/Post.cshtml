@@ -9,7 +9,10 @@
     @switch (this.Model.Post.EditorType)
     {
         case EditorType.SourceCode:
-            <div class="postContent">@this.Model.Post.Content</div>
+            <div class="postContent">
+                @*@Html.Raw(this.Model.Post.Content)*@
+                <iframe id="iframeView" style="width: 100%; border: 1px solid #eaeaea;" height="100" frameborder="0" scrolling="auto" onload="setIframeHeight(this);" srcdoc="@this.Model.Post.Content"> </iframe>
+            </div>
             break;
         case EditorType.RichText:
             <div class="postContent ck-content">@Html.Raw(this.Model.Post.Content)</div>
@@ -99,6 +102,18 @@
     @switch (this.Model.Post.EditorType)
     {
         case EditorType.SourceCode:
+            <script type="text/javascript">
+                function setIframeHeight(iframe) {
+                    if (iframe) {
+                        var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+                        if (iframeWin.document.body) {
+                            var height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+                            iframe.height = height > 1500 ? 1500 : height;
+                            //iframe.height = height;
+                        }
+                    }
+                };
+            </script>
             break;
         case EditorType.RichText:
             break;
@@ -124,8 +139,6 @@
                 <script src="~/lib/editor.md-1.5.0/editormd.min.js" charset="utf-8" asp-append-version="true"></script>
             </environment>
             <script type="text/javascript">
-                $(function () {
-                });
                 var testView = editormd.markdownToHTML("markdown-view", {
                     //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
                     htmlDecode: "style,script,iframe",  // you can filter tags decode
