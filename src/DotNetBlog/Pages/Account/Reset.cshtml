@@ -1,7 +1,7 @@
 ﻿@page
-@model LoginModel
+@model ResetModel
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Reset Password";
     Layout = null;
 }
 <!DOCTYPE html>
@@ -115,29 +115,15 @@
                 <div asp-validation-summary="All"></div>
                 <div class="login-form">
                     <p>
-                        <label asp-for="Input.Email" class="input_label">Email address</label>
+                        <label asp-for="Input.Email" class="input_label">Please input your email address</label>
                         <input asp-for="Input.Email" tabindex="3" autofocus="autofocus" autocomplete="off" autocorrect="off" class="form-control" />
                         <span asp-validation-for="Input.Email"></span>
                     </p>
                     <p>
-                        <label asp-for="Input.Password" class="input_label">
-                            Password <a href="./Reset" id="forgotPassword" tabindex="8">Forgot password?</a>
-                        </label>
-                        <input asp-for="Input.Password" tabindex="4" class="form-control" />
-                        <span asp-validation-for="Input.Password"></span>
-                    </p>
-                    <label asp-for="Input.RememberMe" style="font-weight:normal;">
-                        <input asp-for="Input.RememberMe" tabindex="5" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                    <p>
-                        <button type="submit" tabindex="6" class="login_button">Log in</button>
+                        <button type="submit" tabindex="6" class="login_button">Send Email</button>
                     </p>
                 </div>
             </form>
-            <p class="create-account">
-                No Account? <a asp-page="Register" asp-route-returnUrl="@Model.ReturnUrl" tabindex="8" title="Register as a new user" style="font-size:smaller;">Create an account</a>.
-            </p>
         </div>
     </div>
 
@@ -148,20 +134,10 @@
     <environment include="Development">
         <script src="~/lib/jquery/jquery.js"></script>
         <script src="~/js/site.js"></script>
-        <script src="~/js/jsencrypt.min.js"></script>
-        <script src="~/js/jsrsa.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/lib/jquery/jquery.min.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/js/jsencrypt.min.js" asp-append-version="true"></script>
-        <script src="~/js/jsrsa.js" asp-append-version="true"></script>
     </environment>
-    <script type="text/javascript">
-        function cmdEncrypt() {
-            var hashedData = rsaEncrypt($("#Input_Password").val());
-            $("#Input_Password").val(hashedData);
-        }
-    </script>
 </body>
 </html>
